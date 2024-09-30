@@ -1,0 +1,51 @@
+query Products {
+  products {
+    id
+    createdAt
+    faqs {
+      answer {
+        en
+        ms
+      }
+      question {
+        en
+        ms
+      }
+    }
+    feedback {
+      comment {
+        ms
+        en
+      }
+      rating
+    }
+    images
+    name {
+      en
+      ms
+    }
+    price
+    salePrice
+    satisfiedCustomers
+    totalUnits
+    unitsSold
+    updatedAt
+    sections {
+      description {
+        ms
+        en
+      }
+      heading {
+        en
+        ms
+      }
+      images
+      orderIndex
+      subheading {
+        en
+        ms
+      }
+      type
+    }
+  }
+}
