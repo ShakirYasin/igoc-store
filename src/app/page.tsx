@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import HeaderListing from "@/components/HeaderListing";
 import ProductCard from "@/components/ProductCard";
 import StylizedHeading from "@/components/StylizedHeading";
@@ -141,7 +142,7 @@ export default function Home() {
           text2="Semua Bila"
           text3="Anai-Anai"
           text4="Menyerang!"
-          className="text-center text-6xl max-w-[770px] mx-auto font-semibold leading-tight"
+          className="text-center text-6xl max-w-[900px] mx-auto font-semibold leading-tight"
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-14">
           {products.map((product) => (
@@ -149,7 +150,7 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <HeaderListing className="bg-black" />
+      <Footer />
     </div>
   );
 }

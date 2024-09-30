@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import animate from "tailwindcss-animate";
 
+
 const config: Config = {
     darkMode: ["class"],
     content: [
@@ -50,7 +51,8 @@ const config: Config = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+  			limeGreen: 'hsl(120, 100%, 50%)', // Added lime green color
   		},
   		fontFamily: {
   			sans: ["var(--font-montserrat)", "sans-serif"]

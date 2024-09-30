@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Star, Heart } from "lucide-react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import "swiper/css";
 import "swiper/css/autoplay";
@@ -37,7 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onWishlistToggle,
 }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
-
+  const router = useRouter();
   const toggleWishlist = () => {
     const newWishlistState = !isWishlisted;
     setIsWishlisted(newWishlistState);
@@ -45,7 +46,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden relative pb-4">
+    <div
+      className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden relative pb-4 cursor-pointer"
+      onClick={() => router.push(`/${product.id}`)}
+    >
       <div className="relative px-5 py-6">
         <div className="overflow-hidden">
           <div className="relative w-full h-[300px]">
