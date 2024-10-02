@@ -5,7 +5,10 @@ import Layout from "./Layout";
 import HeroSection from "./HeroSection";
 import MainSection from "./MainSection";
 import WarningSection from "./WarningSection";
-
+import FreeGiftSection from "./FreeGiftSection";
+import Feedback from "./feedback";
+import PaymentMethods from "./PaymentMethods";
+import Faqs from "./Faqs";
 const ProductDetailComponent = () => {
   const product = {
     id: "1",
@@ -26,6 +29,10 @@ const ProductDetailComponent = () => {
 
       <MainSection />
       <WarningSection />
+      <FreeGiftSection />
+      <Feedback />
+      <PaymentMethods />
+      <Faqs />
     </Layout>
   );
 };

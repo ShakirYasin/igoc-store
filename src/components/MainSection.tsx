@@ -39,8 +39,8 @@ const sectionData: SectionData[] = [
     description:
       "Formulated from special imported ingredients from Germany, the PESNAI formula was created to be SYSTEMIC. Termites that are affected by PESNAI spray will permeate and return to the nest, indirectly other termites will be eliminated when they come into contact with each other.",
     images: [
-      { src: "/assets/images/image1.png", alt: "White Ants" },
-      { src: "/assets/images/image2.png", alt: "Weaver Ants" },
+      { src: "/assets/images/mud.png", alt: "White Ants" },
+      { src: "/assets/images/wooden.png", alt: "Weaver Ants" },
     ],
   },
   {
@@ -63,10 +63,10 @@ const sectionData: SectionData[] = [
       "Water-based formula makes PESNAI quickly absorb on the spray subject and is not sticky or greasy.",
     images: [
       {
-        src: "/assets/images/image3.png",
-        alt: "PESNAI Water-Based",
+        src: "/assets/images/pesnai.png",
+        alt: "pesnai",
       },
-      { src: "/assets/images/image4.png", alt: "Liquid Type" },
+      { src: "/assets/images/oilbased.png", alt: "Liquid Type" },
     ],
   },
 ];
