@@ -1,39 +1,56 @@
-import React from "react";
-
+import { localizedHeadings } from "@/constants/locales";
+import { localizeObject } from "@/utils/site.utils";
+import { useParams } from "next/navigation";
 import { GiftItem } from "./GiftItem";
 import StylizedHeading from "./StylizedHeading";
 
-const gifts = [
-  {
-    icon: "/assets/images/icons/freegift1.svg",
-    title: "FREE PENINSULA",
-    subtitle: "SHIPPING COST",
-  },
-  {
-    icon: "/assets/images/icons/freegift3.svg",
-    title: "FREE PAIR",
-    subtitle: "OF GLOVES",
-  },
-  {
-    icon: "/assets/images/icons/freegift2.svg",
-    title: "FREE UNIT OF PESNAI",
-    subtitle: "BY PACKAGE",
-  },
-];
+// const gifts = [
+//   {
+//     icon: "/images/icons/freegift1.svg",
+//     title: "FREE PENINSULA",
+//     subtitle: "SHIPPING COST",
+//   },
+//   {
+//     icon: "/images/icons/freegift3.svg",
+//     title: "FREE PAIR",
+//     subtitle: "OF GLOVES",
+//   },
+//   {
+//     icon: "/images/icons/freegift2.svg",
+//     title: "FREE UNIT OF PESNAI",
+//     subtitle: "BY PACKAGE",
+//   },
+// ];
 
+export type TGiftSection = {
+  text: string;
+  icon: string;
+};
+export type TGiftData = {
+  heading1: string;
+  heading2: string;
+  sections: TGiftSection[];
+};
 const FreeGiftSection = () => {
+  const params = useParams();
+  const lang = params.lang;
+  const gifts = localizeObject(
+    localizedHeadings.gift,
+    lang as string
+  ) as TGiftData;
+
+  console.log({ gifts });
   return (
     <div className="bg-black text-white py-8">
       <div className="max-w-[1276px] mx-auto">
-        <StylizedHeading text1="FREE" text2="GIFT" isWhiteText />
-        <div className="flex justify-between items-center gap-4 mt-14">
-          {gifts.map((gift, index) => (
-            <GiftItem
-              key={index}
-              icon={gift.icon}
-              title={gift.title}
-              subtitle={gift.subtitle}
-            />
+        <StylizedHeading
+          text1={gifts.heading1}
+          text2={gifts.heading2}
+          isWhiteText
+        />
+        <div className="grid md:grid-cols-3 grid-cols-1 md:gap-60 gap-10 mt-14">
+          {gifts.sections.map((gift, index) => (
+            <GiftItem key={index} giftData={gift} />
           ))}
         </div>
       </div>

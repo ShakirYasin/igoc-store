@@ -17,21 +17,8 @@ export const getAPIEndpointRestApi = (): string => {
 };
 
 const axiosGraphQLInstance = globalAxios.create({
-  baseURL: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_LIVE,
+  baseURL: getAPIEndpointGraphql(),
 });
-
-// axiosGraphQLInstance.interceptors.request.use(
-//   function (config) {
-//     const token = getAuthToken();
-//     if (token) {
-//       config.headers["Authorization"] = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   function (error) {
-//     return Promise.reject(error);
-//   }
-// );
 
 export function axiosGraphQL<TData, TVariables>(
   query: string,
@@ -39,7 +26,7 @@ export function axiosGraphQL<TData, TVariables>(
 ) {
   return async (): Promise<TData> => {
     const { data: response } = await axiosGraphQLInstance.post(
-      getAPIEndpointGraphql(),
+      "",
       {
         query,
         variables,
@@ -56,26 +43,9 @@ export function axiosGraphQL<TData, TVariables>(
   };
 }
 
-const axios = globalAxios.create({
+const axiosRestApi = globalAxios.create({
   baseURL: getAPIEndpointRestApi(),
 });
 
-// axios.interceptors.request.use(
-//   function (config) {
-//     const token = getAuthToken();
+export default axiosRestApi;
 
-//     if (token) {
-//       config.headers["Authorization"] = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   function (error) {
-//     return Promise.reject(error);
-//   }
-// );
-
-// export const getClientSideAuthToken = () => {
-//   return localStorage.getItem(AUTH_KEY);
-// };
-
-export default axios;

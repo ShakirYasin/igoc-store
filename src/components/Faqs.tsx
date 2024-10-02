@@ -1,39 +1,35 @@
-import React from "react";
-import StylizedHeading from "./StylizedHeading";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { ConvertMultilingualToString } from "@/utils/site.utils";
+import { Faq } from "graphql/generated/hooks";
+import StylizedHeading from "./StylizedHeading";
 
-const faqData = [
-  {
-    question: "HOW LONG CAN THE EFFECTS BE SEEN?",
-    answer: "as early 2-3 days depending on the frequency of spraying",
-  },
-  {
-    question: "HOW LONG DOES 1 BOTTLE LAST?",
-    answer:
-      "The duration of a bottle depends on usage frequency and application amount.",
-  },
-  {
-    question: "HOW LONG IS THE DELIVERY TIME?",
-    answer:
-      "Delivery times vary based on your location and chosen shipping method.",
-  },
-];
+export type TFAQHeading = {
+  text1: string;
+  text2: string;
+};
 
-const Faqs = () => {
+const Faqs = ({
+  faqSection,
+  faqHeading,
+}: {
+  faqSection: ConvertMultilingualToString<Faq>[];
+  faqHeading: TFAQHeading;
+}) => {
+  console.log({ faqHeading });
   return (
     <div className="max-w-screen-xl mx-auto py-16">
       <StylizedHeading
-        text1="Frequently asked"
-        text2="Questions"
+        text1={faqHeading?.text1}
+        text2={faqHeading?.text2}
         className="text-center text-6xl font-bold mb-8"
       />
       <Accordion type="single" collapsible className="w-full">
-        {faqData.map((faq, index) => (
+        {faqSection?.map((faq, index) => (
           <AccordionItem
             key={index}
             value={`item-${index}`}

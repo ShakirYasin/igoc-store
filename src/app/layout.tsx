@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
 
+import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import ProductLayout from "@/layout/ProductLayout";
-import ReactQueryProvider from "@/provider/ReactQueryProvider";
 
-// const geistSans = localFont({
-//   src: "./fonts/GeistVF.woff",
-//   variable: "--font-geist-sans",
-//   weight: "100 900",
-// });
-// const geistMono = localFont({
-//   src: "./fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-//   weight: "100 900",
-// });
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -39,9 +28,7 @@ export default function RootLayout({ children, params: { lang } }: Props) {
   return (
     <html lang={lang}>
       <body className={`${montserrat.variable} font-sans antialiased`}>
-        <ReactQueryProvider>
-          <ProductLayout>{children}</ProductLayout>
-        </ReactQueryProvider>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );

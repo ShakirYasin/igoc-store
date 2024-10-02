@@ -1,39 +1,83 @@
 "use client";
 
-import React from "react";
-import Layout from "./Layout";
+import {
+  Faq,
+  Feedback,
+  Product,
+  Section,
+  useProductByIdQuery,
+} from "graphql/generated/hooks";
+import Faqs, { TFAQHeading } from "./Faqs";
+import FeedbackSection from "./feedback";
+import FreeGiftSection from "./FreeGiftSection";
 import HeroSection from "./HeroSection";
 import MainSection from "./MainSection";
-import WarningSection from "./WarningSection";
-import FreeGiftSection from "./FreeGiftSection";
-import Feedback from "./feedback";
 import PaymentMethods from "./PaymentMethods";
-import Faqs from "./Faqs";
-const ProductDetailComponent = () => {
-  const product = {
-    id: "1",
-    name: "Bawah lantai penuh sarang anai-anai",
-    images: [
-      "/assets/images/product-1.png",
-      "/assets/images/product-1.png",
-      "/assets/images/product-2.png",
-      "/assets/images/product-3.png",
-    ],
-    rating: 4.8,
-    price: 39.0,
-    discount: 20,
-  };
-  return (
-    <Layout>
-      <HeroSection product={product} />
+import WarningSection from "./WarningSection";
+import {
+  ConvertMultilingualToString,
+  localizeObject,
+} from "@/utils/site.utils";
+import { localizedHeadings } from "@/constants/locales";
 
-      <MainSection />
-      <WarningSection />
+export type TFeedbackHeading = {
+  text1: string;
+  text2: string;
+};
+const ProductDetailComponent = ({
+  slug,
+  lang,
+}: {
+  slug: string;
+  lang: string;
+}) => {
+  const { data } = useProductByIdQuery({
+    productId: slug,
+  });
+  const productData = localizeObject(
+    data?.product as Product,
+    lang
+  ) as ConvertMultilingualToString<Product>;
+
+  const sectionData = productData?.sections?.filter(
+    (section) => section.type === "NORMAL"
+  );
+  const warningSection = productData?.sections?.filter(
+    (section) => section.type === "WARNING"
+  );
+  const faqSection = productData?.faqs;
+  const feedbackSection = productData?.feedback;
+  const feebackHeading = localizeObject(
+    localizedHeadings.feedback,
+    lang
+  ) as TFeedbackHeading;
+  return (
+    <>
+      <HeroSection product={productData} />
+
+      <MainSection
+        sectionData={sectionData as ConvertMultilingualToString<Section>[]}
+      />
+      {warningSection?.[0] && (
+        <WarningSection
+          warningSection={
+            warningSection?.[0] as ConvertMultilingualToString<Section>
+          }
+        />
+      )}
       <FreeGiftSection />
-      <Feedback />
+      <FeedbackSection
+        feedbackSection={
+          feedbackSection as ConvertMultilingualToString<Feedback>[]
+        }
+        feebackHeading={feebackHeading}
+      />
       <PaymentMethods />
-      <Faqs />
-    </Layout>
+      <Faqs
+        faqSection={faqSection as ConvertMultilingualToString<Faq>[]}
+        faqHeading={localizeObject(localizedHeadings.faq, lang) as TFAQHeading}
+      />
+    </>
   );
 };
 

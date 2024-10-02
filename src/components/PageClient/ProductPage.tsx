@@ -1,22 +1,21 @@
 "use client";
 
-import { demoProducts } from "@/constants/demo";
+import { localizedHeadings } from "@/constants/locales";
 import {
   ConvertMultilingualToString,
-  getLocalizedHeading,
   localizeObject,
 } from "@/utils/site.utils";
 import {
   ProductPageInfo,
   useProductsForPageQuery,
-  useProductsQuery,
 } from "graphql/generated/hooks";
+import ProductsLoading from "../Loading/ProductsLoading";
 import ProductCard from "../ProductCard";
 
 const ProductPage = ({ lang }: { lang: string }) => {
-  // const { data, isLoading } = useProductsQuery();
   const { data, isLoading } = useProductsForPageQuery();
-  const heading = getLocalizedHeading(lang);
+
+  const headings = localizeObject(localizedHeadings.home, lang);
   return (
     <div className="max-w-[1440px] mx-auto bg-background py-24">
       <h1
@@ -24,20 +23,26 @@ const ProductPage = ({ lang }: { lang: string }) => {
           lang === "ms" ? "max-w-[770px]" : "max-w-[870px]"
         }  mx-auto font-semibold leading-tight`}
       >
-        <span className="text-black "> {heading.text1}</span>
-        <span className="text-lime-400"> {heading.text2}</span>
-        <span className="text-lime-400"> {heading.text3}</span>
-        <span className="text-black"> {heading.text4}</span>
+        <span className="text-black "> {headings?.text1 as string}</span>
+        <span className="text-lime-400"> {headings?.text2 as string}</span>
+        <span className="text-lime-400"> {headings?.text3 as string}</span>
+        <span className="text-black"> {headings?.text4 as string}</span>
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-14">
-        {data?.productsForPage?.map((product) => {
-          const localizedProduct = localizeObject(
-            product,
-            lang
-          ) as ConvertMultilingualToString<ProductPageInfo>;
+        {isLoading ? (
+          <ProductsLoading />
+        ) : (
+          data?.productsForPage?.map((product) => {
+            const localizedProduct = localizeObject(
+              product,
+              lang
+            ) as ConvertMultilingualToString<ProductPageInfo>;
 
-          return <ProductCard key={product?._id} product={localizedProduct} />;
-        })}
+            return (
+              <ProductCard key={product?._id} product={localizedProduct} />
+            );
+          })
+        )}
       </div>
     </div>
   );

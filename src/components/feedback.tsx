@@ -1,32 +1,34 @@
 import React from "react";
 import { FeedbackCard } from "./FeedbackCard";
 import StylizedHeading from "./StylizedHeading";
+import { TFeedbackHeading } from "./ProductDetailComponent";
+import { ConvertMultilingualToString } from "@/utils/site.utils";
+import { Feedback } from "graphql/generated/hooks";
 
-const Feedback = () => {
+const FeedbackSection = ({
+  feedbackSection,
+  feebackHeading,
+}: {
+  feedbackSection: ConvertMultilingualToString<Feedback>[];
+  feebackHeading: TFeedbackHeading;
+}) => {
   return (
     <div className="py-20">
       <div className="max-w-screen-xl mx-auto">
         <StylizedHeading
-          text1="FEED"
-          text2="BACK"
+          text1={feebackHeading.text1}
+          text2={feebackHeading.text2}
           className="text-6xl font-bold text-center mt-6"
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-          <FeedbackCard
-            avatar="/assets/images/avatar-feedback.png"
-            name="KAK MIDAH, KEDAH"
-            comment="DIA SELALU CUKUP PERSIAPAN SAYA SEBELUM KOT BARANG POPOK ATAU DUIT ATAU APA-APA SAJA"
-          />
-          <FeedbackCard
-            avatar="/assets/images/avatar-feedback.png"
-            name="PUAN DA, KEMAMAN"
-            comment="ALHAMDULILLAH, DUIT BELI SEBELUM KELUAR UNTUK APA-APA SANGAT MEMBANTU"
-          />
+          {feedbackSection?.map((feedback, index) => (
+            <FeedbackCard key={index} feedbackData={feedback} />
+          ))}
         </div>
       </div>
     </div>
   );
 };
 
-export default Feedback;
+export default FeedbackSection;

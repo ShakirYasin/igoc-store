@@ -30,6 +30,19 @@ export type CreateProductInput = {
   totalUnits: Scalars['Int']['input'];
 };
 
+export type Customer = {
+  __typename?: 'Customer';
+  image?: Maybe<Scalars['String']['output']>;
+  location?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+export type CustomerInput = {
+  image: Scalars['String']['input'];
+  location: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+};
+
 export type Faq = {
   __typename?: 'FAQ';
   answer?: Maybe<MultilingualString>;
@@ -43,12 +56,16 @@ export type FaqInput = {
 
 export type Feedback = {
   __typename?: 'Feedback';
-  comment?: Maybe<MultilingualString>;
+  comment?: Maybe<Scalars['String']['output']>;
+  customer?: Maybe<Customer>;
+  isGoogleReview?: Maybe<Scalars['Boolean']['output']>;
   rating?: Maybe<Scalars['Float']['output']>;
 };
 
 export type FeedbackInput = {
-  comment: MultilingualStringInput;
+  comment: Scalars['String']['input'];
+  customer: CustomerInput;
+  isGoogleReview: Scalars['Boolean']['input'];
   rating: Scalars['Float']['input'];
 };
 
@@ -139,12 +156,19 @@ export enum SectionType {
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, feedback?: Array<{ __typename?: 'Feedback', rating?: number | null, comment?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null }> | null };
+export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null }> | null };
 
 export type ProductsForPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ProductsForPageQuery = { __typename?: 'Query', productsForPage?: Array<{ __typename?: 'ProductPageInfo', _id?: string | null, avgRating?: number | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null };
+
+export type ProductByIdQueryVariables = Exact<{
+  productId: Scalars['ID']['input'];
+}>;
+
+
+export type ProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
 
 
 
@@ -164,11 +188,14 @@ export const ProductsDocument = `
       }
     }
     feedback {
-      comment {
-        ms
-        en
-      }
+      comment
       rating
+      isGoogleReview
+      customer {
+        name
+        image
+        location
+      }
     }
     images
     name {
@@ -246,6 +273,79 @@ export const useProductsForPageQuery = <
       {
     queryKey: variables === undefined ? ['ProductsForPage'] : ['ProductsForPage', variables],
     queryFn: axiosGraphQL<ProductsForPageQuery, ProductsForPageQueryVariables>(ProductsForPageDocument, variables),
+    ...options
+  }
+    )};
+
+export const ProductByIdDocument = `
+    query ProductById($productId: ID!) {
+  product(productId: $productId) {
+    _id
+    createdAt
+    faqs {
+      answer {
+        en
+        ms
+      }
+      question {
+        en
+        ms
+      }
+    }
+    feedback {
+      comment
+      rating
+      isGoogleReview
+      customer {
+        name
+        image
+        location
+      }
+    }
+    images
+    name {
+      en
+      ms
+    }
+    price
+    salePrice
+    satisfiedCustomers
+    totalUnits
+    unitsSold
+    updatedAt
+    sections {
+      description {
+        ms
+        en
+      }
+      heading {
+        en
+        ms
+      }
+      images
+      orderIndex
+      subheading {
+        en
+        ms
+      }
+      type
+    }
+  }
+}
+    `;
+
+export const useProductByIdQuery = <
+      TData = ProductByIdQuery,
+      TError = unknown
+    >(
+      variables: ProductByIdQueryVariables,
+      options?: Omit<UseQueryOptions<ProductByIdQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<ProductByIdQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<ProductByIdQuery, TError, TData>(
+      {
+    queryKey: ['ProductById', variables],
+    queryFn: axiosGraphQL<ProductByIdQuery, ProductByIdQueryVariables>(ProductByIdDocument, variables),
     ...options
   }
     )};

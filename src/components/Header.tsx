@@ -1,12 +1,17 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Menu, X } from "lucide-react";
+import { localizedHeadings } from "@/constants/locales";
+import { localizeObject } from "@/utils/site.utils";
+import { Search, X } from "lucide-react";
 import Image from "next/image";
+import { useParams } from "next/navigation";
+import { useState } from "react";
+import LanguageSelectInput from "./LanguageSelectInput";
 
 export default function Header() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-
+  const { lang } = useParams();
+  const headerData = localizeObject(localizedHeadings.header, lang as string);
   const toggleSearch = () => {
     setIsSearchVisible(!isSearchVisible);
   };
@@ -16,13 +21,15 @@ export default function Header() {
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Image
-            src="/assets/images/igoclogo.png"
+            src="/images/igoclogo.png"
             alt="IMAGE MARKETING"
             width={227}
             height={100}
           />
         </div>
-        <div className="hidden md:block text-6xl font-bold">FLASH SALE!</div>
+        <div className="hidden md:block text-6xl font-bold">
+          {headerData.heading as string}
+        </div>
         <div className="flex items-center space-x-4">
           {isSearchVisible ? (
             <div className="flex items-center bg-gray-800 rounded-full transition-all duration-300 ease-in-out">
@@ -46,11 +53,9 @@ export default function Header() {
             </Button>
           )}
           <Button className="bg-limeGreen hover:bg-limeGreen text-black font-semibold">
-            SHOP NOW
+            {headerData.buttonText as string}
           </Button>
-          <Button variant="ghost" size="icon">
-            <Menu className="h-5 w-5" />
-          </Button>
+          <LanguageSelectInput />
         </div>
       </div>
     </header>

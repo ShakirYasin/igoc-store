@@ -1,28 +1,22 @@
 import Image from "next/image";
 import React from "react";
+import { TGiftSection } from "./FreeGiftSection";
 
 interface GiftItemProps {
-  icon: string;
-  title: string;
-  subtitle: string;
+  giftData: TGiftSection;
 }
 
-export const GiftItem: React.FC<GiftItemProps> = ({
-  icon,
-  title,
-  subtitle,
-}) => {
+export const GiftItem: React.FC<GiftItemProps> = ({ giftData }) => {
   return (
     <div className="text-center">
       <Image
-        src={icon}
-        alt={title}
+        src={giftData.icon}
+        alt={giftData.text}
         width={173}
         height={103}
         className="mx-auto mb-4 h-[103px] w-[173px]"
       />
-      <h3 className="font-bold text-2xl">{title}</h3>
-      <p className="text-2xl">{subtitle}</p>
+      <h3 className="font-bold text-2xl">{giftData.text}</h3>
     </div>
   );
 };

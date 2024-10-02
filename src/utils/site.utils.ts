@@ -1,26 +1,12 @@
 import { MultilingualString } from "graphql/generated/hooks";
 
-export const getLocalizedHeading = (lang: string) => {
-  if (lang === "ms") {
-    return {
-      text1: "Habis Rosak",
-      text2: "Semua Bila",
-      text3: "Anai-Anai",
-      text4: "Menyerang!",
-    };
-  }
-  return {
-    text1: "Everything",
-    text2: "Gets Destroyed When",
-    text3: "Termites",
-    text4: "Attack!",
-  };
-};
 
-interface LanguageObject {
-  ms?: string;
-  en?: string;
-}
+
+
+// interface LanguageObject {
+//   ms?: string;
+//   en?: string;
+// }
 export type ConvertMultilingualToString<T> = T extends MultilingualString
   ? string
   : T extends Array<infer U>
@@ -29,20 +15,39 @@ export type ConvertMultilingualToString<T> = T extends MultilingualString
   ? { [K in keyof T]: ConvertMultilingualToString<T[K]> }
   : T;
 
-export const localizeObject = <T extends Record<string, any>>(
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+export const localizeObject = <T extends Record<string, unknown>>(
   obj: T,
   lang: string
 ): ConvertMultilingualToString<T> | T => {
-  const result: T = { ...obj };
+  
+  const result: any = Array.isArray(obj) ? [] : {};
 
-  for (const key in result) {
-    if (typeof result[key] === "object" && result[key] !== null) {
-      const value = result[key] as LanguageObject;
+  for (const key in obj) {
+    if (Array.isArray(obj[key])) {
+      result[key] = obj[key].map((item) => 
+        typeof item === 'object' && item !== null
+          ? localizeObject(item, lang)
+          : item
+      );
+    } else if (typeof obj[key] === "object" && obj[key] !== null) {
+      const value = obj[key] ;
       if ("ms" in value && "en" in value) {
-        result[key] = (value[lang as keyof LanguageObject] || value.en) as unknown as T[Extract<keyof T, string>];
+        result[key] = (value[lang as keyof typeof value] || value.en);
+      } else {
+        result[key] = localizeObject(obj[key] as Record<string, unknown>, lang);
       }
+    } else {
+      result[key] = obj[key];
     }
   }
 
   return result;
 };
+/* eslint-enable @typescript-eslint/no-explicit-any */
+/* eslint-enable @typescript-eslint/no-unsafe-assignment */
+/* eslint-enable @typescript-eslint/no-unsafe-return */
+/* eslint-enable @typescript-eslint/no-unsafe-member-access */

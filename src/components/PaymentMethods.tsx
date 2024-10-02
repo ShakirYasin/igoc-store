@@ -10,24 +10,40 @@ import {
 import { Button } from "./ui/button";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Label } from "./ui/label";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
- 
-  FormMessage,
-} from "./ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { useForm } from "react-hook-form";
-
+import { useParams } from "next/navigation";
+import { localizedHeadings } from "@/constants/locales";
+import { localizeObject } from "@/utils/site.utils";
+export type TPaymentMethodsHeading = {
+  text1: string;
+  text2: string;
+  selectionText: string;
+  selectionText2: string;
+  buttonText: string;
+  package: string;
+  name: string;
+  postcode: string;
+  fullAddress: string;
+  phoneNumber: string;
+  city: string;
+  state: string;
+};
 const PaymentMethods = () => {
   const form = useForm();
+  const params = useParams();
+  const lang = params.lang as string;
+  const paymentMethodsHeading = localizeObject(localizedHeadings.payment, lang);
   return (
     <div className="py-16 bg-lime-400">
       <div className="max-w-screen-xl mx-auto">
         <h2 className="text-6xl font-bold mb-4 text-center">
-          <span className="text-white">PAYMENT </span>
-          <span className="text-black">METHODS</span>
+          <span className="text-white">
+            {paymentMethodsHeading.text1 as string}{" "}
+          </span>
+          <span className="text-black">
+            {paymentMethodsHeading.text2 as string}
+          </span>
         </h2>
         <Form {...form}>
           <FormField
@@ -41,7 +57,7 @@ const PaymentMethods = () => {
                     defaultValue={field.value}
                   >
                     <SelectTrigger className="w-full h-[75px] text-xl font-medium px-8">
-                      <SelectValue placeholder="Package" />
+                      <SelectValue placeholder={paymentMethodsHeading.package as string} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="option1">Option 1</SelectItem>
@@ -63,7 +79,7 @@ const PaymentMethods = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="NAME"
+                        placeholder={paymentMethodsHeading.name as string}
                         className="h-[75px] text-xl font-medium px-8"
                       />
                     </FormControl>
@@ -79,7 +95,7 @@ const PaymentMethods = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="FULL ADDRESS"
+                        placeholder={paymentMethodsHeading.fullAddress as string}
                         className="h-[75px] text-xl font-medium px-8"
                       />
                     </FormControl>
@@ -95,7 +111,7 @@ const PaymentMethods = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="CITY"
+                        placeholder={paymentMethodsHeading.city as string}
                         className="h-[75px] text-xl font-medium px-8"
                       />
                     </FormControl>
@@ -113,7 +129,7 @@ const PaymentMethods = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="POSTCODE"
+                        placeholder={paymentMethodsHeading.postcode as string}
                         className="h-[75px] text-xl font-medium px-8"
                       />
                     </FormControl>
@@ -129,7 +145,7 @@ const PaymentMethods = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="PHONE NUMBER"
+                        placeholder={paymentMethodsHeading.phoneNumber as string}
                         className="h-[75px] text-xl font-medium px-8"
                       />
                     </FormControl>
@@ -148,7 +164,7 @@ const PaymentMethods = () => {
                         defaultValue={field.value}
                       >
                         <SelectTrigger className="w-full h-[75px] text-xl font-medium px-8">
-                          <SelectValue placeholder="STATE" />
+                          <SelectValue placeholder={paymentMethodsHeading.state as string} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="state1">State 1</SelectItem>
@@ -170,7 +186,7 @@ const PaymentMethods = () => {
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    defaultValue={"cod"}
                     className="space-y-2"
                   >
                     <div className="flex items-center space-x-2">
@@ -183,7 +199,7 @@ const PaymentMethods = () => {
                         htmlFor="cod"
                         className="text-black text-xl font-medium"
                       >
-                        COD - Cash on delivery
+                        {paymentMethodsHeading.selectionText as string}
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -196,7 +212,7 @@ const PaymentMethods = () => {
                         htmlFor="online"
                         className="text-black text-xl font-medium"
                       >
-                        Online Payment / Credit Card
+                        {paymentMethodsHeading.selectionText2 as string}
                       </Label>
                     </div>
                   </RadioGroup>
@@ -209,7 +225,7 @@ const PaymentMethods = () => {
             type="submit"
             className="bg-white text-lime-400 rounded-full px-14"
           >
-            BUY NOW
+            {paymentMethodsHeading.buttonText as string}
           </Button>
         </Form>
       </div>

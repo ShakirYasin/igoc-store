@@ -13,11 +13,14 @@ query Products {
       }
     }
     feedback {
-      comment {
-        ms
-        en
-      }
+      comment
       rating
+      isGoogleReview
+      customer {
+        name
+        image
+        location
+      }
     }
     images
     name {
@@ -60,6 +63,61 @@ query ProductsForPage {
     name {
       en
       ms
+    }
+  }
+}
+
+query ProductById($productId: ID!) {
+  product(productId: $productId) {
+    _id
+    createdAt
+    faqs {
+      answer {
+        en
+        ms
+      }
+      question {
+        en
+        ms
+      }
+    }
+    feedback {
+      comment
+      rating
+      isGoogleReview
+      customer {
+        name
+        image
+        location
+      }
+    }
+    images
+    name {
+      en
+      ms
+    }
+    price
+    salePrice
+    satisfiedCustomers
+    totalUnits
+    unitsSold
+    updatedAt
+    sections {
+      description {
+        ms
+        en
+      }
+      heading {
+        en
+        ms
+      }
+      images
+      orderIndex
+      subheading {
+        en
+        ms
+      }
+      type
     }
   }
 }

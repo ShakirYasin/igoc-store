@@ -1,8 +1,9 @@
-import React from 'react'
-import Header from './Header'
-import Footer from './Footer'
+"use client";
+import React from "react";
+import Header from "./Header";
+import Footer from "./Footer";
 
-const Layout = ({children}:{children:React.ReactNode}) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <Header />
@@ -10,6 +11,6 @@ const Layout = ({children}:{children:React.ReactNode}) => {
       <Footer />
     </div>
   );
-}
+};
 
-export default Layout
+export default Layout;

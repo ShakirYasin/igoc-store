@@ -16,18 +16,20 @@ export default function LanguageSelectInput() {
   ];
   const router = useRouter();
 
-  const handleLanguageChange = (newLanguage: string) => {
-    router.push(`/${newLanguage}`);
-  };
   const pathname = usePathname();
-  const language = pathname.split("/")[1];
+  const currentLanguage = pathname.split("/")[1] === "ms" ? "ms" : "en";
+
+  const handleLanguageChange = (newLanguage: string) => {
+    const newPathname = pathname.replace(`/${currentLanguage}`, "");
+    router.push(`/${newLanguage}${newPathname}`);
+  };
 
   return (
     <Select
-      value={language ? language : "en"}
+      value={currentLanguage ? currentLanguage : "en"}
       onValueChange={handleLanguageChange}
     >
-      <SelectTrigger className="w-[40px] h-[40px] text-primary bg-transparent border-none rounded-full flex items-center justify-center p-0 focus-visible:ring-0 focus-visible:ring-offset-0">
+      <SelectTrigger className="w-[40px] h-[40px] text-primary bg-transparent border-none rounded-full flex items-center justify-center p-0 focus:ring-offset-0">
         <Globe className="h-10 w-10 text-white" />
       </SelectTrigger>
       <SelectContent className="focus-visible:ring-0 focus-visible:ring-offset-0">

@@ -6,7 +6,7 @@ const Footer = () => {
     <div className="bg-black">
       <Image
         className="mx-auto"
-        src={"/assets/images/igoclogo.png"}
+        src={"/images/igoclogo.png"}
         alt="logo"
         width={227}
         height={100}

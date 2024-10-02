@@ -4,30 +4,36 @@ import React, { useState } from "react";
 import Image from "next/image";
 import StylizedHeading from "./StylizedHeading";
 import { Button } from "./ui/button";
-interface Product {
-  id: string;
-  name: string;
-  images: string[];
-  rating: number;
-  price: number;
-  discount: number;
-}
+import {
+  ConvertMultilingualToString,
+  localizeObject,
+} from "@/utils/site.utils";
+import { Product } from "graphql/generated/hooks";
+import { useParams } from "next/navigation";
+import { localizedHeadings } from "@/constants/locales";
 
 interface HeroSectionProps {
-  product: Product;
+  product: ConvertMultilingualToString<Product>;
 }
 
 const HeroSection = ({ product }: HeroSectionProps) => {
-  const [selectedImage, setSelectedImage] = useState(product.images[0]);
+  const [selectedImage, setSelectedImage] = useState(product?.images?.[0]);
+  const { lang } = useParams();
+  const heroSectionHeading = localizeObject(
+    localizedHeadings.hero,
+    lang as string
+  );
   return (
     <div className="max-w-[1276px] mx-auto py-32">
       <div className="grid grid-cols-2">
         <div className="flex items-center justify-center gap-7">
-          <div className="flex flex-col space-y-2">
-            {product.images.map((image, index) => (
+          <div className="flex flex-col space-y-2 max-h-[320px] overflow-y-auto scrollbar-hide">
+            {product?.images?.map((image, index) => (
               <div
                 key={index}
-                className="relative cursor-pointer"
+                className={`relative cursor-pointer ${
+                  index >= 4 ? "mt-2" : ""
+                }`}
                 onClick={() => setSelectedImage(image)}
               >
                 <Image
@@ -41,8 +47,8 @@ const HeroSection = ({ product }: HeroSectionProps) => {
             ))}
           </div>
           <Image
-            src={selectedImage || product.images[0]}
-            alt={product.name}
+            src={selectedImage || product?.images?.[0] || ""}
+            alt={product?.name || ""}
             width={441}
             height={441}
             className="object-cover rounded-xl"
@@ -51,25 +57,31 @@ const HeroSection = ({ product }: HeroSectionProps) => {
         <div className="py-4">
           <StylizedHeading
             className="text-6xl font-bold inline-flex gap-3 flex-wrap"
-            text1={product.name.split(" ")[0]}
-            text2={product.name.split(" ")[1]}
-            text3={product.name.split(" ")[2]}
-            text4={product.name.split(" ")[3]}
+            text1={product?.name?.split(" ")[0] || ""}
+            text2={product?.name?.split(" ")[1] || ""}
+            text3={product?.name?.split(" ")[2] || ""}
+            text4={product?.name?.split(" ")[3] || ""}
           />
           <div className="flex items-center justify-between mt-10 ">
             <div className="flex flex-col justify-between min-h-[131px]">
-              <p className="text-black text-3xl font-bold">UNIT SOLD</p>
-              <p className="text-3xl font-bold text-lime-400">146,890</p>
+              <p className="text-black text-3xl font-bold">
+                {heroSectionHeading.text1 as string}
+              </p>
+              <p className="text-3xl font-bold text-lime-400">
+                {product?.totalUnits}
+              </p>
             </div>
             <div className="flex flex-col justify-between min-h-[131px]">
               <p className="text-black text-3xl font-bold">
-                SATISFIED CUSTOMERS
+                {heroSectionHeading.text2 as string}
               </p>
-              <p className="text-3xl font-bold text-lime-400">27,571</p>
+              <p className="text-3xl font-bold text-lime-400">
+                {product?.satisfiedCustomers}
+              </p>
             </div>
           </div>
           <Button className="bg-lime-400 text-white px-24 py-5 mt-12 rounded-full text-md font-semibold hover:bg-green-600 transition duration-300">
-            BUY NOW
+            {heroSectionHeading.buttonText as string}
           </Button>
         </div>
       </div>

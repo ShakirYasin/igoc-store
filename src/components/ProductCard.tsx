@@ -9,11 +9,15 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { ConvertMultilingualToString } from "@/utils/site.utils";
+import {
+  ConvertMultilingualToString,
+  localizeObject,
+} from "@/utils/site.utils";
 import { ProductPageInfo as OriginalProductPageInfo } from "graphql/generated/hooks";
 import "swiper/css";
 import "swiper/css/pagination";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { localizedHeadings } from "@/constants/locales";
 
 type ProductPageInfo = ConvertMultilingualToString<OriginalProductPageInfo>;
 
@@ -28,40 +32,54 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const toggleWishlist = () => {
     const newWishlistState = !isWishlisted;
     setIsWishlisted(newWishlistState);
     onWishlistToggle?.(product._id as string, newWishlistState);
   };
-
+  const languagePath = pathname.split("/")[1];
+  const handleClick = () => {
+    const productPath =
+      languagePath && languagePath.length === 2
+        ? `/${languagePath}/${product._id}`
+        : `/${product._id}`;
+    router.push(productPath);
+  };
+  const productText = localizeObject(
+    localizedHeadings.productListing,
+    languagePath
+  );
   return (
     <div
       className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden relative pb-4 cursor-pointer"
-      onClick={() => router.push(`/${product._id}`)}
+      onClick={handleClick}
     >
       <div className="relative px-5 py-6">
         <div className="overflow-hidden">
           <div className="relative w-full h-[300px]">
             <Swiper pagination={true} modules={[Pagination]}>
               {product.images &&
-                product.images.map((image, index) => (
-                  <SwiperSlide key={index}>
-                    <Image
-                      src={image}
-                      alt={`${product.name}`}
-                      width={420}
-                      height={300}
-                      objectFit="cover"
-                      className="transition-transform ease-in-out duration-300 hover:scale-110"
-                      placeholder="blur"
-                      blurDataURL="/images/productimage.png"
-                      onError={() => {
-                        // This will be called if the image fails to load
-                        console.error(`Failed to load image: ${image}`);
-                      }}
-                    />
-                  </SwiperSlide>
-                ))}
+                product.images.map((image, index) => {
+                  return (
+                    <SwiperSlide key={index}>
+                      <Image
+                        src={image}
+                        alt={`${product.name}`}
+                        width={420}
+                        height={300}
+                        objectFit="cover"
+                        className="transition-transform ease-in-out duration-300 hover:scale-110"
+                        placeholder="blur"
+                        blurDataURL="/images/productimage.png"
+                        onError={() => {
+                          // This will be called if the image fails to load
+                          console.error(`Failed to load image: ${image}`);
+                        }}
+                      />
+                    </SwiperSlide>
+                  );
+                })}
               {/* Add more SwiperSlide components here for additional images */}
             </Swiper>
           </div>
@@ -121,7 +139,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             )}
           </div>
           <button className="bg-lime-400 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-lime-500 transition-colors">
-            BUY NOW
+            {productText?.buttonText as string}
           </button>
         </div>
       </div>
