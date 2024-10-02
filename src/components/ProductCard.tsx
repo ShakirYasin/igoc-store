@@ -13,6 +13,7 @@ import { ConvertMultilingualToString } from "@/utils/site.utils";
 import { ProductPageInfo as OriginalProductPageInfo } from "graphql/generated/hooks";
 import "swiper/css";
 import "swiper/css/pagination";
+import { useRouter } from "next/navigation";
 
 type ProductPageInfo = ConvertMultilingualToString<OriginalProductPageInfo>;
 
@@ -26,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onWishlistToggle,
 }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
-
+  const router = useRouter();
   const toggleWishlist = () => {
     const newWishlistState = !isWishlisted;
     setIsWishlisted(newWishlistState);
@@ -34,7 +35,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden relative pb-4">
+    <div
+      className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden relative pb-4 cursor-pointer"
+      onClick={() => router.push(`/${product._id}`)}
+    >
       <div className="relative px-5 py-6">
         <div className="overflow-hidden">
           <div className="relative w-full h-[300px]">
