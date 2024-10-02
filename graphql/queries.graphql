@@ -1,6 +1,6 @@
 query Products {
   products {
-    id
+    _id
     createdAt
     faqs {
       answer {
@@ -46,6 +46,20 @@ query Products {
         ms
       }
       type
+    }
+  }
+}
+
+query ProductsForPage {
+  productsForPage {
+    _id
+    avgRating
+    images
+    price
+    salePrice
+    name {
+      en
+      ms
     }
   }
 }

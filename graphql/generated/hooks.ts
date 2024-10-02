@@ -1,5 +1,3 @@
-"use client";
-
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { axiosGraphQL } from '@/utils/axios.fetcher';
 export type Maybe<T> = T | null;
@@ -77,10 +75,10 @@ export type MutationCreateProductArgs = {
 
 export type Product = {
   __typename?: 'Product';
+  _id?: Maybe<Scalars['ID']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   faqs?: Maybe<Array<Faq>>;
   feedback?: Maybe<Array<Feedback>>;
-  id?: Maybe<Scalars['ID']['output']>;
   images?: Maybe<Array<Scalars['String']['output']>>;
   name?: Maybe<MultilingualString>;
   price?: Maybe<Scalars['Float']['output']>;
@@ -92,10 +90,21 @@ export type Product = {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
+export type ProductPageInfo = {
+  __typename?: 'ProductPageInfo';
+  _id?: Maybe<Scalars['ID']['output']>;
+  avgRating?: Maybe<Scalars['Float']['output']>;
+  images?: Maybe<Array<Scalars['String']['output']>>;
+  name?: Maybe<MultilingualString>;
+  price?: Maybe<Scalars['Float']['output']>;
+  salePrice?: Maybe<Scalars['Float']['output']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   product?: Maybe<Product>;
   products?: Maybe<Array<Product>>;
+  productsForPage?: Maybe<Array<ProductPageInfo>>;
 };
 
 
@@ -130,14 +139,19 @@ export enum SectionType {
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, feedback?: Array<{ __typename?: 'Feedback', rating?: number | null, comment?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null }> | null };
+export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, feedback?: Array<{ __typename?: 'Feedback', rating?: number | null, comment?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null }> | null };
+
+export type ProductsForPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProductsForPageQuery = { __typename?: 'Query', productsForPage?: Array<{ __typename?: 'ProductPageInfo', _id?: string | null, avgRating?: number | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null };
 
 
 
 export const ProductsDocument = `
     query Products {
   products {
-    id
+    _id
     createdAt
     faqs {
       answer {
@@ -200,6 +214,38 @@ export const useProductsQuery = <
       {
     queryKey: variables === undefined ? ['Products'] : ['Products', variables],
     queryFn: axiosGraphQL<ProductsQuery, ProductsQueryVariables>(ProductsDocument, variables),
+    ...options
+  }
+    )};
+
+export const ProductsForPageDocument = `
+    query ProductsForPage {
+  productsForPage {
+    _id
+    avgRating
+    images
+    price
+    salePrice
+    name {
+      en
+      ms
+    }
+  }
+}
+    `;
+
+export const useProductsForPageQuery = <
+      TData = ProductsForPageQuery,
+      TError = unknown
+    >(
+      variables?: ProductsForPageQueryVariables,
+      options?: Omit<UseQueryOptions<ProductsForPageQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<ProductsForPageQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<ProductsForPageQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['ProductsForPage'] : ['ProductsForPage', variables],
+    queryFn: axiosGraphQL<ProductsForPageQuery, ProductsForPageQueryVariables>(ProductsForPageDocument, variables),
     ...options
   }
     )};

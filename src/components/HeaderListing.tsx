@@ -9,7 +9,9 @@ const HeaderListing = ({
   isFooter?: boolean;
 }) => {
   return (
-    <div className={`${className} flex items-center justify-between px-4`}>
+    <div
+      className={`${className} bg-black flex items-center justify-between px-4`}
+    >
       <div className="flex-1"></div>
       <Image
         className="mx-auto"

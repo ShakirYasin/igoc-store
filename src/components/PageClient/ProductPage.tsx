@@ -1,12 +1,21 @@
 "use client";
 
 import { demoProducts } from "@/constants/demo";
-import { getLocalizedHeading } from "@/utils/site.utils";
-import { useProductsQuery } from "graphql/generated/hooks";
+import {
+  ConvertMultilingualToString,
+  getLocalizedHeading,
+  localizeObject,
+} from "@/utils/site.utils";
+import {
+  ProductPageInfo,
+  useProductsForPageQuery,
+  useProductsQuery,
+} from "graphql/generated/hooks";
 import ProductCard from "../ProductCard";
 
 const ProductPage = ({ lang }: { lang: string }) => {
-  const { data, isLoading } = useProductsQuery();
+  // const { data, isLoading } = useProductsQuery();
+  const { data, isLoading } = useProductsForPageQuery();
   const heading = getLocalizedHeading(lang);
   return (
     <div className="max-w-[1440px] mx-auto bg-background py-24">
@@ -21,9 +30,14 @@ const ProductPage = ({ lang }: { lang: string }) => {
         <span className="text-black"> {heading.text4}</span>
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-14">
-        {demoProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {data?.productsForPage?.map((product) => {
+          const localizedProduct = localizeObject(
+            product,
+            lang
+          ) as ConvertMultilingualToString<ProductPageInfo>;
+
+          return <ProductCard key={product?._id} product={localizedProduct} />;
+        })}
       </div>
     </div>
   );

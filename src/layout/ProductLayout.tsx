@@ -11,7 +11,7 @@ const ProductLayout = ({ children }: { children: React.ReactNode }) => {
       {children}
       <HeaderListing
         isFooter={true}
-        className="bg-black sticky top-0 left-0 right-0 z-50 flex justify-between items-center"
+        className=" sticky top-0 left-0 right-0 z-50 flex justify-between items-center"
       />
     </div>
   );
