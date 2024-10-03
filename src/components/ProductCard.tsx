@@ -42,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const handleClick = () => {
     const productPath =
       languagePath && languagePath.length === 2
-        ? `/${languagePath}/${product._id}`
+        ? `/${languagePath}/${product.slug}`
         : `/${product.slug}`;
     router.push(productPath);
   };
