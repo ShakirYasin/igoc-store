@@ -1,4 +1,4 @@
-import { localizedHeadings } from "@/constants/locales";
+import { localizedData } from "@/constants/locales";
 import { localizeObject } from "@/utils/site.utils";
 import { useParams } from "next/navigation";
 import { GiftItem } from "./GiftItem";
@@ -34,10 +34,7 @@ export type TGiftData = {
 const FreeGiftSection = () => {
   const params = useParams();
   const lang = params.lang;
-  const gifts = localizeObject(
-    localizedHeadings.gift,
-    lang as string
-  ) as TGiftData;
+  const gifts = localizeObject(localizedData.gift, lang as string) as TGiftData;
 
   return (
     <div className="bg-black text-white py-8">

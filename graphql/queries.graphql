@@ -56,6 +56,7 @@ query Products {
 query ProductsForPage {
   productsForPage {
     _id
+    slug
     avgRating
     images
     price
@@ -66,10 +67,65 @@ query ProductsForPage {
     }
   }
 }
-
+query ProductBySlug($slug: String!) {
+  productBySlug(slug: $slug) {
+    _id
+    slug
+    createdAt
+    faqs {
+      answer {
+        en
+        ms
+      }
+      question {
+        en
+        ms
+      }
+    }
+    feedback {
+      comment
+      rating
+      isGoogleReview
+      customer {
+        name
+        image
+        location
+      }
+    }
+    images
+    name {
+      en
+      ms
+    }
+    price
+    salePrice
+    satisfiedCustomers
+    totalUnits
+    unitsSold
+    updatedAt
+    sections {
+      description {
+        ms
+        en
+      }
+      heading {
+        en
+        ms
+      }
+      images
+      orderIndex
+      subheading {
+        en
+        ms
+      }
+      type
+    }
+  }
+}
 query ProductById($productId: ID!) {
   product(productId: $productId) {
     _id
+    slug
     createdAt
     faqs {
       answer {

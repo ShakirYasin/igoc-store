@@ -13,7 +13,7 @@ import { Label } from "./ui/label";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { useForm } from "react-hook-form";
 import { useParams } from "next/navigation";
-import { localizedHeadings } from "@/constants/locales";
+import { localizedData } from "@/constants/locales";
 import { localizeObject } from "@/utils/site.utils";
 export type TPaymentMethodsHeading = {
   text1: string;
@@ -33,7 +33,7 @@ const PaymentMethods = () => {
   const form = useForm();
   const params = useParams();
   const lang = params.lang as string;
-  const paymentMethodsHeading = localizeObject(localizedHeadings.payment, lang);
+  const paymentMethodsHeading = localizeObject(localizedData.payment, lang);
   return (
     <div className="py-16 bg-lime-400">
       <div className="max-w-screen-xl mx-auto">
@@ -57,7 +57,9 @@ const PaymentMethods = () => {
                     defaultValue={field.value}
                   >
                     <SelectTrigger className="w-full h-[75px] text-xl font-medium px-8">
-                      <SelectValue placeholder={paymentMethodsHeading.package as string} />
+                      <SelectValue
+                        placeholder={paymentMethodsHeading.package as string}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="option1">Option 1</SelectItem>
@@ -95,7 +97,9 @@ const PaymentMethods = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder={paymentMethodsHeading.fullAddress as string}
+                        placeholder={
+                          paymentMethodsHeading.fullAddress as string
+                        }
                         className="h-[75px] text-xl font-medium px-8"
                       />
                     </FormControl>
@@ -145,7 +149,9 @@ const PaymentMethods = () => {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder={paymentMethodsHeading.phoneNumber as string}
+                        placeholder={
+                          paymentMethodsHeading.phoneNumber as string
+                        }
                         className="h-[75px] text-xl font-medium px-8"
                       />
                     </FormControl>
@@ -164,7 +170,9 @@ const PaymentMethods = () => {
                         defaultValue={field.value}
                       >
                         <SelectTrigger className="w-full h-[75px] text-xl font-medium px-8">
-                          <SelectValue placeholder={paymentMethodsHeading.state as string} />
+                          <SelectValue
+                            placeholder={paymentMethodsHeading.state as string}
+                          />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="state1">State 1</SelectItem>

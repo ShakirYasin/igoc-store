@@ -10,7 +10,7 @@ import {
 } from "@/utils/site.utils";
 import { Product } from "graphql/generated/hooks";
 import { useParams } from "next/navigation";
-import { localizedHeadings } from "@/constants/locales";
+import { localizedData } from "@/constants/locales";
 
 interface HeroSectionProps {
   product: ConvertMultilingualToString<Product>;
@@ -19,10 +19,7 @@ interface HeroSectionProps {
 const HeroSection = ({ product }: HeroSectionProps) => {
   const [selectedImage, setSelectedImage] = useState(product?.images?.[0]);
   const { lang } = useParams();
-  const heroSectionHeading = localizeObject(
-    localizedHeadings.hero,
-    lang as string
-  );
+  const heroSectionHeading = localizeObject(localizedData.hero, lang as string);
   return (
     <div className="max-w-[1276px] mx-auto py-32">
       <div className="grid grid-cols-2">

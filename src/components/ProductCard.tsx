@@ -17,7 +17,7 @@ import { ProductPageInfo as OriginalProductPageInfo } from "graphql/generated/ho
 import "swiper/css";
 import "swiper/css/pagination";
 import { usePathname, useRouter } from "next/navigation";
-import { localizedHeadings } from "@/constants/locales";
+import { localizedData } from "@/constants/locales";
 
 type ProductPageInfo = ConvertMultilingualToString<OriginalProductPageInfo>;
 
@@ -43,11 +43,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
     const productPath =
       languagePath && languagePath.length === 2
         ? `/${languagePath}/${product._id}`
-        : `/${product._id}`;
+        : `/${product.slug}`;
     router.push(productPath);
   };
   const productText = localizeObject(
-    localizedHeadings.productListing,
+    localizedData.productListing,
     languagePath
   );
   return (

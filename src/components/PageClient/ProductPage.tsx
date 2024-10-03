@@ -1,6 +1,6 @@
 "use client";
 
-import { localizedHeadings } from "@/constants/locales";
+import { localizedData } from "@/constants/locales";
 import {
   ConvertMultilingualToString,
   localizeObject,
@@ -15,7 +15,7 @@ import ProductCard from "../ProductCard";
 const ProductPage = ({ lang }: { lang: string }) => {
   const { data, isLoading } = useProductsForPageQuery();
 
-  const headings = localizeObject(localizedHeadings.home, lang);
+  const headings = localizeObject(localizedData.home, lang);
   return (
     <div className="max-w-[1440px] mx-auto bg-background py-24">
       <h1
