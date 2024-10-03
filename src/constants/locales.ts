@@ -1,4 +1,3 @@
-
 export const locales = [
   { locale: "en" },
   { locale: "ms" }
@@ -7,7 +6,7 @@ export const locales = [
 export const defaultLocale = "en";
 
 
-export const localizedHeadings = {
+export const localizedData = {
   header: {
     heading: { ms: "JUALAN KILAT!", en: "FLASH SALE!" },
     buttonText: { ms: "BELI SEKARANG", en: "SHOP NOW" },
@@ -65,5 +64,27 @@ export const localizedHeadings = {
     phoneNumber: { ms: "NOMBOR TELEFON", en: "PHONE NUMBER" },
     city: { ms: "BANDAR", en: "CITY" },
     state: { ms: "NEGERI", en: "STATE" },
+  },
+  metadata: {
+    home: {
+      title: {
+        ms: "IGOC - Penyelesaian Kawalan Anai-anai Terbaik di Malaysia",
+        en: "IGOC - Best Termite Control Solutions in Malaysia"
+      },
+      description: {
+        ms: "IGOC menawarkan penyelesaian kawalan anai-anai terkemuka untuk melindungi rumah dan bangunan anda. Dapatkan perkhidmatan profesional dan produk berkualiti tinggi untuk mengatasi masalah anai-anai.",
+        en: "IGOC offers leading termite control solutions to protect your home and buildings. Get professional services and high-quality products to overcome termite problems."
+      }
+    },
+    productListing: {
+      title: {
+        ms: "Produk Kawalan Anai-anai IGOC - Perlindungan Terbaik untuk Rumah Anda",
+        en: "IGOC Termite Control Products - Best Protection for Your Home"
+      },
+      description: {
+        ms: "Temui rangkaian produk kawalan anai-anai IGOC yang komprehensif. Dari rawatan pencegahan hingga penyelesaian pembasmian, kami mempunyai semua yang anda perlukan untuk melindungi harta benda anda.",
+        en: "Discover IGOC's comprehensive range of termite control products. From preventive treatments to eradication solutions, we have everything you need to protect your property."
+      }
+    }
   },
 };

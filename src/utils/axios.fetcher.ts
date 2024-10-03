@@ -2,7 +2,7 @@ import globalAxios from "axios";
 
 export const getAPIEndpointGraphql = (): string => {
   if (process.env.NODE_ENV !== "production") {
-    return process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT as string;
+    return  process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT as string
   } else {
     return process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_LIVE as string;
   }
@@ -25,6 +25,7 @@ export function axiosGraphQL<TData, TVariables>(
   variables?: TVariables
 ) {
   return async (): Promise<TData> => {
+
     const { data: response } = await axiosGraphQLInstance.post(
       "",
       {

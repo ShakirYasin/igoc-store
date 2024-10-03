@@ -6,6 +6,7 @@ import {
   Product,
   Section,
   useProductByIdQuery,
+  useProductBySlugQuery,
 } from "graphql/generated/hooks";
 import Faqs, { TFAQHeading } from "./Faqs";
 import FeedbackSection from "./feedback";
@@ -18,7 +19,7 @@ import {
   ConvertMultilingualToString,
   localizeObject,
 } from "@/utils/site.utils";
-import { localizedHeadings } from "@/constants/locales";
+import { localizedData } from "@/constants/locales";
 
 export type TFeedbackHeading = {
   text1: string;
@@ -31,11 +32,11 @@ const ProductDetailComponent = ({
   slug: string;
   lang: string;
 }) => {
-  const { data } = useProductByIdQuery({
-    productId: slug,
+  const { data } = useProductBySlugQuery({
+    slug,
   });
   const productData = localizeObject(
-    data?.product as Product,
+    data?.productBySlug as Product,
     lang
   ) as ConvertMultilingualToString<Product>;
 
@@ -48,7 +49,7 @@ const ProductDetailComponent = ({
   const faqSection = productData?.faqs;
   const feedbackSection = productData?.feedback;
   const feebackHeading = localizeObject(
-    localizedHeadings.feedback,
+    localizedData.feedback,
     lang
   ) as TFeedbackHeading;
   return (
@@ -75,7 +76,7 @@ const ProductDetailComponent = ({
       <PaymentMethods />
       <Faqs
         faqSection={faqSection as ConvertMultilingualToString<Faq>[]}
-        faqHeading={localizeObject(localizedHeadings.faq, lang) as TFAQHeading}
+        faqHeading={localizeObject(localizedData.faq, lang) as TFAQHeading}
       />
     </>
   );

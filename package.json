@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "dotenv -e .env graphql-codegen"
+    "generate": "graphql-codegen"
   },
   "dependencies": {
     "@graphql-codegen/cli": "^5.0.2",
@@ -27,8 +27,7 @@
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "dotenv": "^16.4.5",
-    "dotenv-cli": "^7.4.2",
+ 
     "graphql": "^16.8.1",
     "lucide-react": "^0.446.0",
     "next": "14.2.13",

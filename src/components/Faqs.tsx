@@ -20,7 +20,7 @@ const Faqs = ({
   faqSection: ConvertMultilingualToString<Faq>[];
   faqHeading: TFAQHeading;
 }) => {
-  console.log({ faqHeading });
+
   return (
     <div className="max-w-screen-xl mx-auto py-16">
       <StylizedHeading

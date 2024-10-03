@@ -11,7 +11,7 @@ const WarningSection = ({
   return (
     <div className="max-w-[1276px] mx-auto py-20">
       <h2 className="text-6xl font-bold mb-4">{warningSection.heading}</h2>
-      <p className="mt-5">{warningSection?.subheading}</p>
+      <p className="mt-5 text-[#1E282A]">{warningSection?.subheading}</p>
       <div className="flex items-start gap-10 mt-6">
         <Image
           src={warningSection?.images?.[0] as string}
@@ -22,7 +22,7 @@ const WarningSection = ({
         <div className="flex-1 flex flex-col justify-between text-[#ED1E24] gap-7">
           {warningSection?.description?.split(".").map((line, index) => (
             <p key={index} className="font-bold text-2xl">
-              {line}.
+              {line}
             </p>
           ))}
         </div>

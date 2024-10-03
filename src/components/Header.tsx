@@ -1,17 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { localizedHeadings } from "@/constants/locales";
+import { localizedData } from "@/constants/locales";
 import { localizeObject } from "@/utils/site.utils";
 import { Search, X } from "lucide-react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import LanguageSelectInput from "./LanguageSelectInput";
 
 export default function Header() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const { lang } = useParams();
-  const headerData = localizeObject(localizedHeadings.header, lang as string);
+  const router = useRouter();
+  const headerData = localizeObject(localizedData.header, lang as string);
   const toggleSearch = () => {
     setIsSearchVisible(!isSearchVisible);
   };
@@ -19,7 +20,10 @@ export default function Header() {
   return (
     <header className="bg-black text-white p-4">
       <div className="container mx-auto flex items-center justify-between">
-        <div className="flex items-center space-x-2">
+        <div
+          className="flex items-center space-x-2 cursor-pointer"
+          onClick={() => router.push(lang === "en" ? "/" : `/${lang}`)}
+        >
           <Image
             src="/images/igoclogo.png"
             alt="IMAGE MARKETING"
