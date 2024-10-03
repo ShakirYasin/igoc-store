@@ -39,7 +39,6 @@ const FreeGiftSection = () => {
     lang as string
   ) as TGiftData;
 
-  console.log({ gifts });
   return (
     <div className="bg-black text-white py-8">
       <div className="max-w-[1276px] mx-auto">

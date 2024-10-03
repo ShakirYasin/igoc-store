@@ -9,7 +9,7 @@ interface FeedbackCardProps {
 }
 
 export const FeedbackCard: React.FC<FeedbackCardProps> = ({ feedbackData }) => {
-  console.log({ feedbackData });
+
   return (
     <div className="border border-[#D9D9D9] rounded-2xl p-10">
       <div className="flex items-center justify-between">

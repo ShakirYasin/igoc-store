@@ -4,7 +4,6 @@ import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 
-
 const montserrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-montserrat",
