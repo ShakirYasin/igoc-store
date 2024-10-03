@@ -1,12 +1,16 @@
 "use client";
 
+import { localizedData } from "@/constants/locales";
+import {
+  ConvertMultilingualToString,
+  localizeObject,
+} from "@/utils/site.utils";
 import {
   Faq,
   Feedback,
   Product,
   Section,
-  useProductByIdQuery,
-  useProductBySlugQuery,
+  useProductBySlugQuery
 } from "graphql/generated/hooks";
 import Faqs, { TFAQHeading } from "./Faqs";
 import FeedbackSection from "./feedback";
@@ -15,11 +19,6 @@ import HeroSection from "./HeroSection";
 import MainSection from "./MainSection";
 import PaymentMethods from "./PaymentMethods";
 import WarningSection from "./WarningSection";
-import {
-  ConvertMultilingualToString,
-  localizeObject,
-} from "@/utils/site.utils";
-import { localizedData } from "@/constants/locales";
 
 export type TFeedbackHeading = {
   text1: string;
