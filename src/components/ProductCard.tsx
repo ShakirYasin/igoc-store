@@ -18,6 +18,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { usePathname, useRouter } from "next/navigation";
 import { localizedData } from "@/constants/locales";
+import { Button } from "./ui/button";
 
 type ProductPageInfo = ConvertMultilingualToString<OriginalProductPageInfo>;
 
@@ -51,10 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     languagePath
   );
   return (
-    <div
-      className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden relative pb-4 cursor-pointer"
-      onClick={handleClick}
-    >
+    <div className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden relative pb-4 cursor-pointer">
       <div className="relative px-5 py-6">
         <div className="overflow-hidden">
           <div className="relative w-full h-[300px]">
@@ -69,7 +67,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                         width={420}
                         height={300}
                         objectFit="cover"
-                        className="transition-transform ease-in-out duration-300 hover:scale-110"
+                        className="transition-transform ease-in-out duration-300 hover:scale-110 w-full h-full md:w-[420px] md:h-[300px]"
                         placeholder="blur"
                         blurDataURL="/images/productimage.png"
                         onError={() => {
@@ -125,22 +123,25 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <div>
             {product.salePrice ? (
               <>
-                <span className="text-xl font-bold text-green-600 mr-2">
+                <span className="text-xl font-bold text-[#1E282A] mr-2">
                   RM{Number(product.salePrice).toFixed(2)}
                 </span>
-                <span className="text-lg text-gray-500 line-through">
+                <span className="text-lg text-[#1E282A] line-through">
                   RM{Number(product.price).toFixed(2)}
                 </span>
               </>
             ) : (
-              <span className="text-xl font-bold text-green-600">
+              <span className="text-xl font-bold text-[#1E282A]">
                 RM{Number(product.price).toFixed(2)}
               </span>
             )}
           </div>
-          <button className="bg-lime-400 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-lime-500 transition-colors">
+          <Button
+            className="bg-[#B9DF01] text-white px-3 py-2 rounded-full text-sm font-semibold hover:bg-lime-500 transition-colors"
+            onClick={handleClick}
+          >
             {productText?.buttonText as string}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

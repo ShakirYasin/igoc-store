@@ -1,0 +1,27 @@
+mutation UpdateProductById($input: UpdateProductByIdInput!) {
+  updateProductById(input: $input) {
+    _id
+  }
+}
+
+mutation CreateProduct($input: CreateProductInput!) {
+  createProduct(input: $input) {
+    _id
+  }
+}
+
+mutation DeleteAllProducts {
+  deleteAllProducts
+}
+
+mutation DeleteProductById($input: DeleteProductByIdInput!) {
+  deleteProductById(input: $input) {
+    _id
+  }
+}
+
+mutation DeleteProductBySlug($input: DeleteProductBySlugInput!) {
+  deleteProductBySlug(input: $input) {
+    _id
+  }
+}

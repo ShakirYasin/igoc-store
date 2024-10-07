@@ -4,6 +4,7 @@ import { i18n } from "i18n-config";
 
 
 
+
 export function middleware(request: NextRequest) {
   // Check if there is any supported locale in the pathname
   const { pathname } = request.nextUrl;
@@ -42,9 +43,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Skip all internal paths (_next)
-    "/((?!_next|favicon.ico|robots.txt|public|images).*)",
-    // Optional: only run on root (/) URL
-    // '/'
+    // Skip all internal paths (_next/static and its subdirectories), and other specific files/directories
+    "/((?!api|_next/static|favicon.ico|robots.txt|public|images).*)",
   ],
 };

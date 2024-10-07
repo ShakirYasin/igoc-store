@@ -9,10 +9,12 @@ const WarningSection = ({
   warningSection: ConvertMultilingualToString<Section>;
 }) => {
   return (
-    <div className="max-w-[1276px] mx-auto py-20">
-      <h2 className="text-6xl font-bold mb-4">{warningSection.heading}</h2>
+    <div className="max-w-[1276px] mx-auto py-10 md:py-20 px-10 md:px-0">
+      <h2 className="text-3xl md:text-6xl font-bold mb-4">
+        {warningSection.heading}
+      </h2>
       <p className="mt-5 text-[#1E282A]">{warningSection?.subheading}</p>
-      <div className="flex items-start gap-10 mt-6">
+      <div className="flex flex-col md:flex-row items-start gap-10 mt-6">
         <Image
           src={warningSection?.images?.[0] as string}
           alt="warning"
