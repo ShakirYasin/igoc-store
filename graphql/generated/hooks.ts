@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from '@tanstack/react-query';
 import { axiosGraphQL } from '@/utils/axios.fetcher';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -44,6 +44,14 @@ export type CustomerInput = {
   name: Scalars['String']['input'];
 };
 
+export type DeleteProductByIdInput = {
+  id: Scalars['ID']['input'];
+};
+
+export type DeleteProductBySlugInput = {
+  slug: Scalars['String']['input'];
+};
+
 export type Faq = {
   __typename?: 'FAQ';
   answer?: Maybe<MultilingualString>;
@@ -84,11 +92,30 @@ export type MultilingualStringInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createProduct?: Maybe<Product>;
+  deleteAllProducts?: Maybe<Scalars['Int']['output']>;
+  deleteProductById?: Maybe<Product>;
+  deleteProductBySlug?: Maybe<Product>;
+  updateProductById?: Maybe<Product>;
 };
 
 
 export type MutationCreateProductArgs = {
   input: CreateProductInput;
+};
+
+
+export type MutationDeleteProductByIdArgs = {
+  input: DeleteProductByIdInput;
+};
+
+
+export type MutationDeleteProductBySlugArgs = {
+  input: DeleteProductBySlugInput;
+};
+
+
+export type MutationUpdateProductByIdArgs = {
+  input: UpdateProductByIdInput;
 };
 
 export type Product = {
@@ -162,6 +189,55 @@ export enum SectionType {
   Warning = 'WARNING'
 }
 
+export type UpdateProductByIdInput = {
+  data: UpdateProductInput;
+  id: Scalars['ID']['input'];
+};
+
+export type UpdateProductInput = {
+  faqs?: InputMaybe<Array<FaqInput>>;
+  feedback?: InputMaybe<Array<FeedbackInput>>;
+  images?: InputMaybe<Array<Scalars['String']['input']>>;
+  name?: InputMaybe<MultilingualStringInput>;
+  price?: InputMaybe<Scalars['Float']['input']>;
+  salePrice?: InputMaybe<Scalars['Float']['input']>;
+  sections?: InputMaybe<Array<SectionInput>>;
+  totalUnits?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type UpdateProductByIdMutationVariables = Exact<{
+  input: UpdateProductByIdInput;
+}>;
+
+
+export type UpdateProductByIdMutation = { __typename?: 'Mutation', updateProductById?: { __typename?: 'Product', _id?: string | null } | null };
+
+export type CreateProductMutationVariables = Exact<{
+  input: CreateProductInput;
+}>;
+
+
+export type CreateProductMutation = { __typename?: 'Mutation', createProduct?: { __typename?: 'Product', _id?: string | null } | null };
+
+export type DeleteAllProductsMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DeleteAllProductsMutation = { __typename?: 'Mutation', deleteAllProducts?: number | null };
+
+export type DeleteProductByIdMutationVariables = Exact<{
+  input: DeleteProductByIdInput;
+}>;
+
+
+export type DeleteProductByIdMutation = { __typename?: 'Mutation', deleteProductById?: { __typename?: 'Product', _id?: string | null } | null };
+
+export type DeleteProductBySlugMutationVariables = Exact<{
+  input: DeleteProductBySlugInput;
+}>;
+
+
+export type DeleteProductBySlugMutation = { __typename?: 'Mutation', deleteProductBySlug?: { __typename?: 'Product', _id?: string | null } | null };
+
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -187,6 +263,109 @@ export type ProductByIdQueryVariables = Exact<{
 export type ProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', _id?: string | null, slug?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
 
 
+
+export const UpdateProductByIdDocument = `
+    mutation UpdateProductById($input: UpdateProductByIdInput!) {
+  updateProductById(input: $input) {
+    _id
+  }
+}
+    `;
+
+export const useUpdateProductByIdMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateProductByIdMutation, TError, UpdateProductByIdMutationVariables, TContext>) => {
+    
+    return useMutation<UpdateProductByIdMutation, TError, UpdateProductByIdMutationVariables, TContext>(
+      {
+    mutationKey: ['UpdateProductById'],
+    mutationFn: (variables?: UpdateProductByIdMutationVariables) => axiosGraphQL<UpdateProductByIdMutation, UpdateProductByIdMutationVariables>(UpdateProductByIdDocument, variables)(),
+    ...options
+  }
+    )};
+
+export const CreateProductDocument = `
+    mutation CreateProduct($input: CreateProductInput!) {
+  createProduct(input: $input) {
+    _id
+  }
+}
+    `;
+
+export const useCreateProductMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<CreateProductMutation, TError, CreateProductMutationVariables, TContext>) => {
+    
+    return useMutation<CreateProductMutation, TError, CreateProductMutationVariables, TContext>(
+      {
+    mutationKey: ['CreateProduct'],
+    mutationFn: (variables?: CreateProductMutationVariables) => axiosGraphQL<CreateProductMutation, CreateProductMutationVariables>(CreateProductDocument, variables)(),
+    ...options
+  }
+    )};
+
+export const DeleteAllProductsDocument = `
+    mutation DeleteAllProducts {
+  deleteAllProducts
+}
+    `;
+
+export const useDeleteAllProductsMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteAllProductsMutation, TError, DeleteAllProductsMutationVariables, TContext>) => {
+    
+    return useMutation<DeleteAllProductsMutation, TError, DeleteAllProductsMutationVariables, TContext>(
+      {
+    mutationKey: ['DeleteAllProducts'],
+    mutationFn: (variables?: DeleteAllProductsMutationVariables) => axiosGraphQL<DeleteAllProductsMutation, DeleteAllProductsMutationVariables>(DeleteAllProductsDocument, variables)(),
+    ...options
+  }
+    )};
+
+export const DeleteProductByIdDocument = `
+    mutation DeleteProductById($input: DeleteProductByIdInput!) {
+  deleteProductById(input: $input) {
+    _id
+  }
+}
+    `;
+
+export const useDeleteProductByIdMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteProductByIdMutation, TError, DeleteProductByIdMutationVariables, TContext>) => {
+    
+    return useMutation<DeleteProductByIdMutation, TError, DeleteProductByIdMutationVariables, TContext>(
+      {
+    mutationKey: ['DeleteProductById'],
+    mutationFn: (variables?: DeleteProductByIdMutationVariables) => axiosGraphQL<DeleteProductByIdMutation, DeleteProductByIdMutationVariables>(DeleteProductByIdDocument, variables)(),
+    ...options
+  }
+    )};
+
+export const DeleteProductBySlugDocument = `
+    mutation DeleteProductBySlug($input: DeleteProductBySlugInput!) {
+  deleteProductBySlug(input: $input) {
+    _id
+  }
+}
+    `;
+
+export const useDeleteProductBySlugMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteProductBySlugMutation, TError, DeleteProductBySlugMutationVariables, TContext>) => {
+    
+    return useMutation<DeleteProductBySlugMutation, TError, DeleteProductBySlugMutationVariables, TContext>(
+      {
+    mutationKey: ['DeleteProductBySlug'],
+    mutationFn: (variables?: DeleteProductBySlugMutationVariables) => axiosGraphQL<DeleteProductBySlugMutation, DeleteProductBySlugMutationVariables>(DeleteProductBySlugDocument, variables)(),
+    ...options
+  }
+    )};
 
 export const ProductsDocument = `
     query Products {

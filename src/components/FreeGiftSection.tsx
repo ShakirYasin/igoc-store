@@ -4,24 +4,6 @@ import { useParams } from "next/navigation";
 import { GiftItem } from "./GiftItem";
 import StylizedHeading from "./StylizedHeading";
 
-// const gifts = [
-//   {
-//     icon: "/images/icons/freegift1.svg",
-//     title: "FREE PENINSULA",
-//     subtitle: "SHIPPING COST",
-//   },
-//   {
-//     icon: "/images/icons/freegift3.svg",
-//     title: "FREE PAIR",
-//     subtitle: "OF GLOVES",
-//   },
-//   {
-//     icon: "/images/icons/freegift2.svg",
-//     title: "FREE UNIT OF PESNAI",
-//     subtitle: "BY PACKAGE",
-//   },
-// ];
-
 export type TGiftSection = {
   text: string;
   icon: string;
