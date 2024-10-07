@@ -53,7 +53,7 @@ const HeroSection = ({ product }: HeroSectionProps) => {
         </div>
         <div className="py-4">
           <StylizedHeading
-            className="text-3xl md:text-6xl font-bold inline-flex gap-3 flex-wrap"
+            className="md:text-4xl font-bold inline-flex gap-3 flex-wrap"
             text1={product?.name?.split(" ")[0] || ""}
             text2={product?.name?.split(" ")[1] || ""}
             text3={product?.name?.split(" ")[2] || ""}
@@ -61,7 +61,7 @@ const HeroSection = ({ product }: HeroSectionProps) => {
           />
           <div className="flex items-center justify-between mt-10 ">
             <div className="flex flex-col justify-between min-h-[131px]">
-              <p className="text-black text-3xl md:text-6xl font-bold">
+              <p className="text-black text-3xl font-bold">
                 {heroSectionHeading.text1 as string}
               </p>
               <p className="text-3xl font-bold text-lime-400">
