@@ -78,9 +78,8 @@ const MainSection = ({
 }: {
   sectionData: ConvertMultilingualToString<Section>[];
 }) => {
-
   return (
-    <div className="bg-[#1E282A] py-20 max-w-[1920px] mx-auto">
+    <div className="bg-[#1E282A] py-20 px-10 md:px-0 max-w-[1920px] mx-auto">
       <div className="max-w-[1276px] mx-auto">
         {sectionData?.map((section, index) => (
           <div key={index} className="mb-20">

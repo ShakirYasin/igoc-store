@@ -20,13 +20,12 @@ const Faqs = ({
   faqSection: ConvertMultilingualToString<Faq>[];
   faqHeading: TFAQHeading;
 }) => {
-
   return (
-    <div className="max-w-screen-xl mx-auto py-16">
+    <div className="max-w-screen-xl mx-auto py-10 md:py-20 px-10 md:px-0">
       <StylizedHeading
         text1={faqHeading?.text1}
         text2={faqHeading?.text2}
-        className="text-center text-6xl font-bold mb-8"
+        className="text-center text-3xl md:text-6xl font-bold mb-8"
       />
       <Accordion type="single" collapsible className="w-full">
         {faqSection?.map((faq, index) => (

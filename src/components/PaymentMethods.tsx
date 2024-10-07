@@ -35,9 +35,9 @@ const PaymentMethods = () => {
   const lang = params.lang as string;
   const paymentMethodsHeading = localizeObject(localizedData.payment, lang);
   return (
-    <div className="py-16 bg-lime-400">
+    <div className="py-10 md:py-20 px-10 md:px-0 bg-lime-400">
       <div className="max-w-screen-xl mx-auto">
-        <h2 className="text-6xl font-bold mb-4 text-center">
+        <h2 className="text-3xl md:text-6xl font-bold mb-4 text-center">
           <span className="text-white">
             {paymentMethodsHeading.text1 as string}{" "}
           </span>

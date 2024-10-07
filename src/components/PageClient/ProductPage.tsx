@@ -17,9 +17,9 @@ const ProductPage = ({ lang }: { lang: string }) => {
 
   const headings = localizeObject(localizedData.home, lang);
   return (
-    <div className="max-w-[1440px] mx-auto bg-background py-24">
+    <div className="max-w-[1440px] mx-auto bg-background py-10 md:py-24">
       <h1
-        className={`text-center text-6xl ${
+        className={`text-center text-3xl md:text-6xl ${
           lang === "ms" ? "max-w-[770px]" : "max-w-[870px]"
         }  mx-auto font-semibold leading-tight`}
       >
