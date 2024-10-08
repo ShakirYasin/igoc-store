@@ -3,7 +3,7 @@ export const locales = [
   { locale: "ms" }
 ];
 
-export const defaultLocale = "en";
+export const defaultLocale = "ms";
 
 
 export const localizedData = {

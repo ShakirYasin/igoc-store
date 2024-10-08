@@ -11,13 +11,13 @@ import { usePathname, useRouter } from "next/navigation";
 
 export default function LanguageSelectInput() {
   const languages = [
-    { value: "en", label: "English" },
     { value: "ms", label: "Malay" },
+    { value: "en", label: "English" },
   ];
   const router = useRouter();
 
   const pathname = usePathname();
-  const currentLanguage = pathname.split("/")[1] === "ms" ? "ms" : "en";
+  const currentLanguage = pathname.split("/")[1] === "en" ? "en" : "ms";
 
   const handleLanguageChange = (newLanguage: string) => {
     const newPathname = pathname.replace(`/${currentLanguage}`, "");
