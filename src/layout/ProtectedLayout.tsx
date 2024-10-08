@@ -1,20 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import AdminFallback from "@/components/fallbacks/AdminFallback";
+import { Button } from "@/components/ui/button";
+import { AUTH_KEY } from "@/constants/locales";
+import { useCurrentUserQuery } from "graphql/generated/hooks";
 import {
   Bug,
-  Shield,
-  ChevronRight,
   ChevronLeft,
+  ChevronRight,
+  LogOut,
   Menu,
-  Bell,
-  Search,
+  Shield,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
+  const { data, isLoading } = useCurrentUserQuery();
+
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [activeNavItem, setActiveNavItem] = useState("Dashboard");
@@ -31,7 +34,16 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     setIsMobileSidebarOpen(false);
     router.push(link);
   };
-
+  if (isLoading) {
+    return <AdminFallback />;
+  }
+  if (!data?.currentUser) {
+    router.push("/admin/login");
+  }
+  const handleLogout = () => {
+    localStorage.removeItem(AUTH_KEY);
+    router.push("/admin/login");
+  };
   return (
     <div className="flex min-h-screen bg-gray-900 text-white">
       {/* Sidebar */}
@@ -123,24 +135,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="relative">
-                <Input
-                  type="text"
-                  placeholder="Search..."
-                  className="pl-10 pr-4 py-2 rounded-full bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-lime-400 focus:ring focus:ring-lime-400 focus:ring-opacity-50"
-                />
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="relative text-lime-400"
-              >
-                <Bell className="h-6 w-6" />
-                <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
-              </Button>
               <div className="w-10 h-10 bg-lime-400 rounded-full flex items-center justify-center">
                 <span className="text-sm font-medium text-black">AA</span>
+              </div>
+              <div
+                onClick={handleLogout}
+                className="flex items-center space-x-2"
+              >
+                <LogOut />
               </div>
             </div>
           </div>
@@ -151,4 +153,4 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default Layout;
+export default ProtectedLayout;

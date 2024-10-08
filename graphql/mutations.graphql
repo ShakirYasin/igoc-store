@@ -25,3 +25,7 @@ mutation DeleteProductBySlug($input: DeleteProductBySlugInput!) {
     _id
   }
 }
+
+mutation Login($input: LoginInput!) {
+  login(input: $input)
+}

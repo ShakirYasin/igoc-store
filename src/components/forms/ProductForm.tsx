@@ -105,7 +105,7 @@ const ProductForm = ({
     resolver: zodResolver(productSchema),
     values: initialData,
   });
-  console.log({ formErrors: form.formState.errors });
+
   const router = useRouter();
   const { mutate: createProduct } = useCreateProductMutation({
     onSuccess: () => {
@@ -128,7 +128,7 @@ const ProductForm = ({
 
   const onSubmit = (data: ProductFormValues) => {
     const { _id, slug, ...payload } = data;
-    console.log({ data });
+
     if (type === "create") {
       createProduct({ input: { ...payload, slug } as CreateProductInput });
     } else if (_id) {

@@ -3,7 +3,7 @@ import axios from "axios";
 export const authenticator = async () => {
     try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/image-kit` as string);
-      console.log(response.data)
+
       const { signature, expire, token } = response.data;
       return { signature, expire, token };
     } catch (error) {

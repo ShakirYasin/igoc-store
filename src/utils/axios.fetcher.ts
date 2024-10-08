@@ -1,3 +1,4 @@
+import { AUTH_KEY } from "@/constants/locales";
 import globalAxios from "axios";
 
 export const getAPIEndpointGraphql = (): string => {
@@ -43,6 +44,20 @@ export function axiosGraphQL<TData, TVariables>(
     return data;
   };
 }
+axiosGraphQLInstance.interceptors.request.use(
+  function (config) {
+    const token = localStorage.getItem(AUTH_KEY);
+
+    if (token) {
+      config.headers["authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
 
 const axiosRestApi = globalAxios.create({
   baseURL: getAPIEndpointRestApi(),

@@ -238,3 +238,12 @@ query ProductById($productId: ID!) {
     }
   }
 }
+
+
+query CurrentUser {
+  currentUser {
+    id
+    isAdmin
+    username
+  }
+}

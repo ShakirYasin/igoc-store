@@ -33,6 +33,11 @@ export type CreateProductInput = {
   totalUnits: Scalars['Int']['input'];
 };
 
+export type CreateUserInput = {
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
 export type Customer = {
   __typename?: 'Customer';
   image?: Maybe<Scalars['String']['output']>;
@@ -80,6 +85,11 @@ export type FeedbackInput = {
   rating: Scalars['Float']['input'];
 };
 
+export type LoginInput = {
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
 export type MultilingualString = {
   __typename?: 'MultilingualString';
   en?: Maybe<Scalars['String']['output']>;
@@ -94,15 +104,22 @@ export type MultilingualStringInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createProduct?: Maybe<Product>;
+  createUser?: Maybe<User>;
   deleteAllProducts?: Maybe<Scalars['Int']['output']>;
   deleteProductById?: Maybe<Product>;
   deleteProductBySlug?: Maybe<Product>;
+  login?: Maybe<Scalars['String']['output']>;
   updateProductById?: Maybe<Product>;
 };
 
 
 export type MutationCreateProductArgs = {
   input: CreateProductInput;
+};
+
+
+export type MutationCreateUserArgs = {
+  input: CreateUserInput;
 };
 
 
@@ -113,6 +130,11 @@ export type MutationDeleteProductByIdArgs = {
 
 export type MutationDeleteProductBySlugArgs = {
   input: DeleteProductBySlugInput;
+};
+
+
+export type MutationLoginArgs = {
+  input: LoginInput;
 };
 
 
@@ -168,6 +190,7 @@ export type ProductPageInfo = {
 
 export type Query = {
   __typename?: 'Query';
+  currentUser?: Maybe<User>;
   product?: Maybe<Product>;
   productBySlug?: Maybe<Product>;
   products?: Maybe<Array<Product>>;
@@ -247,6 +270,13 @@ export type UpdateProductInput = {
   totalUnits?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type User = {
+  __typename?: 'User';
+  id?: Maybe<Scalars['ID']['output']>;
+  isAdmin?: Maybe<Scalars['Boolean']['output']>;
+  username?: Maybe<Scalars['String']['output']>;
+};
+
 export type UpdateProductByIdMutationVariables = Exact<{
   input: UpdateProductByIdInput;
 }>;
@@ -280,6 +310,13 @@ export type DeleteProductBySlugMutationVariables = Exact<{
 
 export type DeleteProductBySlugMutation = { __typename?: 'Mutation', deleteProductBySlug?: { __typename?: 'Product', _id?: string | null } | null };
 
+export type LoginMutationVariables = Exact<{
+  input: LoginInput;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login?: string | null };
+
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -303,6 +340,11 @@ export type ProductByIdQueryVariables = Exact<{
 
 
 export type ProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
+
+export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id?: string | null, isAdmin?: boolean | null, username?: string | null } | null };
 
 
 
@@ -405,6 +447,25 @@ export const useDeleteProductBySlugMutation = <
       {
     mutationKey: ['DeleteProductBySlug'],
     mutationFn: (variables?: DeleteProductBySlugMutationVariables) => axiosGraphQL<DeleteProductBySlugMutation, DeleteProductBySlugMutationVariables>(DeleteProductBySlugDocument, variables)(),
+    ...options
+  }
+    )};
+
+export const LoginDocument = `
+    mutation Login($input: LoginInput!) {
+  login(input: $input)
+}
+    `;
+
+export const useLoginMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<LoginMutation, TError, LoginMutationVariables, TContext>) => {
+    
+    return useMutation<LoginMutation, TError, LoginMutationVariables, TContext>(
+      {
+    mutationKey: ['Login'],
+    mutationFn: (variables?: LoginMutationVariables) => axiosGraphQL<LoginMutation, LoginMutationVariables>(LoginDocument, variables)(),
     ...options
   }
     )};
@@ -720,6 +781,32 @@ export const useProductByIdQuery = <
       {
     queryKey: ['ProductById', variables],
     queryFn: axiosGraphQL<ProductByIdQuery, ProductByIdQueryVariables>(ProductByIdDocument, variables),
+    ...options
+  }
+    )};
+
+export const CurrentUserDocument = `
+    query CurrentUser {
+  currentUser {
+    id
+    isAdmin
+    username
+  }
+}
+    `;
+
+export const useCurrentUserQuery = <
+      TData = CurrentUserQuery,
+      TError = unknown
+    >(
+      variables?: CurrentUserQueryVariables,
+      options?: Omit<UseQueryOptions<CurrentUserQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<CurrentUserQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<CurrentUserQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['CurrentUser'] : ['CurrentUser', variables],
+    queryFn: axiosGraphQL<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, variables),
     ...options
   }
     )};

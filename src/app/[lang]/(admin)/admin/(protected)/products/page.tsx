@@ -53,7 +53,7 @@ export default function ProductListingPage() {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto bg-gray-900">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-lime-400">Product Listing</h2>
         <div className="space-x-2">

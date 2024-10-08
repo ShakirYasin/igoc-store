@@ -5,8 +5,11 @@ export const locales = [
 
 export const defaultLocale = "ms";
 
+export const AUTH_KEY = "igocAdminToken";
 
-export const localizedData = {
+
+
+ export const localizedData = {
   header: {
     heading: { ms: "JUALAN KILAT!", en: "FLASH SALE!" },
     buttonText: { ms: "BELI SEKARANG", en: "SHOP NOW" },
