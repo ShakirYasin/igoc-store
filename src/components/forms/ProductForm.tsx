@@ -1,72 +1,94 @@
 "use client";
 
+import { ColorPicker } from "@/components/ui/color-picker";
+import {
+  productInitialValues,
+  TSectionColors,
+} from "@/constants/initialValues";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  CreateProductInput,
+  UpdateProductByIdInput,
+  useCreateProductMutation,
+  useUpdateProductByIdMutation,
+} from "graphql/generated/hooks";
 import { Plus, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z } from "zod";
 import DynamicFieldArray from "../DynamicFieldArray";
 import ImageUploadField from "../ImageUploadField";
 import { Button } from "../ui/button";
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Form,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CreateProductInput,
-  CustomerInput,
-  FeedbackInput,
-  UpdateProductByIdInput,
-  useCreateProductMutation,
-  useUpdateProductByIdMutation,
-} from "graphql/generated/hooks";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 
-const productSchema = z.object({
-  _id: z.string().optional(),
-  name: z.object({
-    en: z.string().min(1, "English name is required"),
-    ms: z.string().min(1, "Malay name is required"),
-  }),
-  price: z.number().min(0, "Price must be non-negative"),
-  salePrice: z.number().min(0, "Sale price must be non-negative"),
-  totalUnits: z.number().min(0, "Total units must be non-negative"),
-  images: z.any(),
-  sections: z.array(
-    z.object({
-      type: z.enum(["NORMAL", "WARNING"]),
-      heading: z.object({ en: z.string(), ms: z.string() }),
-      subheading: z.object({ en: z.string(), ms: z.string() }),
-      description: z.object({ en: z.string(), ms: z.string() }),
-      images: z.array(z.any()),
-      orderIndex: z.number().min(1, "Order index must be non-negative"),
-    })
-  ),
-  faqs: z.array(
-    z.object({
-      question: z.object({ en: z.string(), ms: z.string() }),
-      answer: z.object({ en: z.string(), ms: z.string() }),
-    })
-  ),
-  feedback: z.array(
-    z.object({
-      rating: z.number().min(1, "Rating must be 1-5").max(5),
-      comment: z.string(),
-      customer: z.object({
-        name: z.string(),
-        image: z.any(),
-        location: z.string(),
-      }),
-      isGoogleReview: z.boolean(),
-    })
-  ),
-  slug: z.string().min(1, "Slug is required"),
-});
+const productSchema = z
+  .object({
+    _id: z.string().optional(),
+    name: z.object({
+      en: z.string().min(1, "English name is required"),
+      ms: z.string().min(1, "Malay name is required"),
+    }),
+    price: z.number().min(0, "Price must be non-negative"),
+    salePrice: z.number().min(0, "Sale price must be non-negative"),
+    totalUnits: z.number().min(0, "Total units must be non-negative"),
+    images: z.any(),
+    sections: z.array(
+      z.object({
+        type: z.enum(["NORMAL", "WARNING"]),
+        heading: z.object({ en: z.string(), ms: z.string() }),
+        subheading: z.object({ en: z.string(), ms: z.string() }),
+        description: z.object({ en: z.string(), ms: z.string() }),
+        images: z.array(z.any()),
+        sectionColor: z.string(),
+        orderIndex: z.number().min(1, "Order index must be non-negative"),
+      })
+    ),
+    faqs: z.array(
+      z.object({
+        question: z.object({ en: z.string(), ms: z.string() }),
+        answer: z.object({ en: z.string(), ms: z.string() }),
+      })
+    ),
+    feedback: z.array(
+      z.object({
+        rating: z.number().min(1, "Rating must be 1-5").max(5),
+        comment: z.string(),
+        customer: z.object({
+          name: z.string(),
+          image: z.any(),
+          location: z.string(),
+        }),
+        isGoogleReview: z.boolean(),
+      })
+    ),
+    slug: z.string().optional(),
+    sectionColors: z.object({
+      faqSection: z.string(),
+      feedbackSection: z.string(),
+      freeGiftSection: z.string(),
+      packageSection: z.string(),
+      paymentSection: z.string(),
+      productSection: z.string(),
+    }),
+  })
+  .superRefine((data, ctx) => {
+    if (!data._id && !data.slug) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Slug is required",
+        path: ["slug"],
+      });
+    }
+  });
 
 export type ProductFormValues = z.infer<typeof productSchema>;
 
@@ -74,51 +96,16 @@ interface IProductFormProps {
   initialData?: ProductFormValues;
   type: "create" | "update";
 }
-export const initializeValues: ProductFormValues = {
-  name: { en: "", ms: "" },
-  price: 0,
-  salePrice: 0,
-  totalUnits: 0,
-  images: [],
-  sections: [
-    {
-      type: "NORMAL",
-      heading: { en: "", ms: "" },
-      subheading: { en: "", ms: "" },
-      description: { en: "", ms: "" },
-      images: [],
-      orderIndex: 0,
-    },
-  ],
-  faqs: [
-    {
-      question: { en: "", ms: "" },
-      answer: { en: "", ms: "" },
-    },
-  ],
-  feedback: [
-    {
-      rating: 0,
-      comment: "",
-      customer: {
-        name: "",
-        image: "",
-        location: "",
-      } as CustomerInput,
-      isGoogleReview: false,
-    },
-  ] as FeedbackInput[],
-  slug: "",
-};
 
 const ProductForm = ({
-  initialData = initializeValues,
+  initialData = productInitialValues,
   type,
 }: IProductFormProps) => {
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     values: initialData,
   });
+  console.log({ formErrors: form.formState.errors });
   const router = useRouter();
   const { mutate: createProduct } = useCreateProductMutation({
     onSuccess: () => {
@@ -140,13 +127,14 @@ const ProductForm = ({
   });
 
   const onSubmit = (data: ProductFormValues) => {
-    console.log({ data });
     const { _id, slug, ...payload } = data;
-
+    console.log({ data });
     if (type === "create") {
       createProduct({ input: { ...payload, slug } as CreateProductInput });
     } else if (_id) {
-      updateProduct({ input: { data: payload, id: _id } as UpdateProductByIdInput });
+      updateProduct({
+        input: { data: payload, id: _id } as UpdateProductByIdInput,
+      });
     } else {
       toast.error("Cannot update product without an ID");
     }
@@ -275,11 +263,11 @@ const ProductForm = ({
             <FormItem>
               <FormLabel>Images</FormLabel>
               <FormControl>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 items-center md:grid-cols-3 gap-6">
                   {field.value.map((image: string, imgIndex: number) => (
                     <div
                       key={imgIndex}
-                      className=" flex gap-6 items-center space-x-2 mb-2"
+                      className=" flex gap-6 items-center  space-x-2 mb-2"
                     >
                       <ImageUploadField
                         value={image}
@@ -366,6 +354,7 @@ const ProductForm = ({
               type: "textarea",
             },
             { name: "images", label: "Images", type: "image-array" },
+            { name: "sectionColor", label: "Section Color", type: "color" },
           ]}
         />
 
@@ -421,6 +410,70 @@ const ProductForm = ({
             },
           ]}
         />
+        <DynamicFieldArray
+          name="packages"
+          label="Packages"
+          form={form}
+          fields={[
+            {
+              name: "name.en",
+              label: "Name (English)",
+              type: "text",
+            },
+            {
+              name: "name.ms",
+              label: "Name (Malay)",
+              type: "text",
+            },
+            {
+              name: "description.en",
+              label: "Description (English)",
+              type: "textarea",
+            },
+            {
+              name: "description.ms",
+              label: "Description (Malay)",
+              type: "textarea",
+            },
+            {
+              name: "price",
+              label: "Price",
+              type: "number",
+            },
+          ]}
+        />
+
+        <div className="bg-gray-800 p-4 rounded-lg mb-4 space-y-6">
+          <h3 className="text-lg font-semibold">Section Colors</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {Object.keys(productInitialValues.sectionColors).map((key) => {
+              return (
+                <FormField
+                  key={key}
+                  control={form.control}
+                  name={`sectionColors.${key as keyof TSectionColors}`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{key} Color: </FormLabel>
+                      <FormControl>
+                        <ColorPicker
+                          value={field.value}
+                          onChange={(color: string) => {
+                            form.setValue(
+                              `sectionColors.${key as keyof TSectionColors}`,
+                              color
+                            );
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              );
+            })}
+          </div>
+        </div>
 
         <Button
           type="submit"

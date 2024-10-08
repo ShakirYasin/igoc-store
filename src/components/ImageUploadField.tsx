@@ -27,10 +27,11 @@ const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
         <div className="relative group">
           <Image
             src={value}
-            alt="Alt text"
-            width={500}
-            height={500}
-            className="min-w-20 min-h-20  object-cover rounded-md"
+            alt="Uploaded image"
+            width={0}
+            height={0}
+            sizes="100vw"
+            className="w-auto h-auto max-w-full max-h-[500px] object-contain rounded-md"
           />
 
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">

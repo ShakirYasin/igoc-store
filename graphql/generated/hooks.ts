@@ -24,8 +24,10 @@ export type CreateProductInput = {
   feedback?: InputMaybe<Array<FeedbackInput>>;
   images: Array<Scalars['String']['input']>;
   name: MultilingualStringInput;
+  packages?: InputMaybe<Array<PackageInput>>;
   price: Scalars['Float']['input'];
   salePrice?: InputMaybe<Scalars['Float']['input']>;
+  sectionColors?: InputMaybe<SectionColorsInput>;
   sections: Array<SectionInput>;
   slug: Scalars['String']['input'];
   totalUnits: Scalars['Int']['input'];
@@ -118,6 +120,21 @@ export type MutationUpdateProductByIdArgs = {
   input: UpdateProductByIdInput;
 };
 
+export type Package = {
+  __typename?: 'Package';
+  description?: Maybe<MultilingualString>;
+  image?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<MultilingualString>;
+  price?: Maybe<Scalars['Float']['output']>;
+};
+
+export type PackageInput = {
+  description: MultilingualStringInput;
+  image: Scalars['String']['input'];
+  name: MultilingualStringInput;
+  price: Scalars['Float']['input'];
+};
+
 export type Product = {
   __typename?: 'Product';
   _id?: Maybe<Scalars['ID']['output']>;
@@ -126,9 +143,11 @@ export type Product = {
   feedback?: Maybe<Array<Feedback>>;
   images?: Maybe<Array<Scalars['String']['output']>>;
   name?: Maybe<MultilingualString>;
+  packages?: Maybe<Array<Package>>;
   price?: Maybe<Scalars['Float']['output']>;
   salePrice?: Maybe<Scalars['Float']['output']>;
   satisfiedCustomers?: Maybe<Scalars['Int']['output']>;
+  sectionColors?: Maybe<SectionColors>;
   sections?: Maybe<Array<Section>>;
   slug?: Maybe<Scalars['String']['output']>;
   totalUnits?: Maybe<Scalars['Int']['output']>;
@@ -171,8 +190,28 @@ export type Section = {
   heading?: Maybe<MultilingualString>;
   images?: Maybe<Array<Scalars['String']['output']>>;
   orderIndex?: Maybe<Scalars['Int']['output']>;
+  sectionColor?: Maybe<Scalars['String']['output']>;
   subheading?: Maybe<MultilingualString>;
   type?: Maybe<Scalars['String']['output']>;
+};
+
+export type SectionColors = {
+  __typename?: 'SectionColors';
+  faqSection?: Maybe<Scalars['String']['output']>;
+  feedbackSection?: Maybe<Scalars['String']['output']>;
+  freeGiftSection?: Maybe<Scalars['String']['output']>;
+  packageSection?: Maybe<Scalars['String']['output']>;
+  paymentSection?: Maybe<Scalars['String']['output']>;
+  productSection?: Maybe<Scalars['String']['output']>;
+};
+
+export type SectionColorsInput = {
+  faqSection?: InputMaybe<Scalars['String']['input']>;
+  feedbackSection?: InputMaybe<Scalars['String']['input']>;
+  freeGiftSection?: InputMaybe<Scalars['String']['input']>;
+  packageSection?: InputMaybe<Scalars['String']['input']>;
+  paymentSection?: InputMaybe<Scalars['String']['input']>;
+  productSection?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type SectionInput = {
@@ -180,6 +219,7 @@ export type SectionInput = {
   heading: MultilingualStringInput;
   images: Array<Scalars['String']['input']>;
   orderIndex: Scalars['Int']['input'];
+  sectionColor?: InputMaybe<Scalars['String']['input']>;
   subheading: MultilingualStringInput;
   type: SectionType;
 };
@@ -199,8 +239,10 @@ export type UpdateProductInput = {
   feedback?: InputMaybe<Array<FeedbackInput>>;
   images?: InputMaybe<Array<Scalars['String']['input']>>;
   name?: InputMaybe<MultilingualStringInput>;
+  packages?: InputMaybe<Array<PackageInput>>;
   price?: InputMaybe<Scalars['Float']['input']>;
   salePrice?: InputMaybe<Scalars['Float']['input']>;
+  sectionColors?: InputMaybe<SectionColorsInput>;
   sections?: InputMaybe<Array<SectionInput>>;
   totalUnits?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -241,7 +283,7 @@ export type DeleteProductBySlugMutation = { __typename?: 'Mutation', deleteProdu
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null }> | null };
+export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null }> | null };
 
 export type ProductsForPageQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -253,14 +295,14 @@ export type ProductBySlugQueryVariables = Exact<{
 }>;
 
 
-export type ProductBySlugQuery = { __typename?: 'Query', productBySlug?: { __typename?: 'Product', _id?: string | null, slug?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
+export type ProductBySlugQuery = { __typename?: 'Query', productBySlug?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
 
 export type ProductByIdQueryVariables = Exact<{
   productId: Scalars['ID']['input'];
 }>;
 
 
-export type ProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', _id?: string | null, slug?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
+export type ProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
 
 
 
@@ -382,6 +424,14 @@ export const ProductsDocument = `
         ms
       }
     }
+    sectionColors {
+      faqSection
+      feedbackSection
+      freeGiftSection
+      packageSection
+      paymentSection
+      productSection
+    }
     feedback {
       comment
       rating
@@ -391,6 +441,18 @@ export const ProductsDocument = `
         image
         location
       }
+    }
+    packages {
+      description {
+        en
+        ms
+      }
+      image
+      name {
+        en
+        ms
+      }
+      price
     }
     images
     name {
@@ -404,6 +466,7 @@ export const ProductsDocument = `
     unitsSold
     updatedAt
     sections {
+      sectionColor
       description {
         ms
         en
@@ -477,7 +540,6 @@ export const ProductBySlugDocument = `
     query ProductBySlug($slug: String!) {
   productBySlug(slug: $slug) {
     _id
-    slug
     createdAt
     faqs {
       answer {
@@ -489,6 +551,14 @@ export const ProductBySlugDocument = `
         ms
       }
     }
+    sectionColors {
+      faqSection
+      feedbackSection
+      freeGiftSection
+      packageSection
+      paymentSection
+      productSection
+    }
     feedback {
       comment
       rating
@@ -498,6 +568,18 @@ export const ProductBySlugDocument = `
         image
         location
       }
+    }
+    packages {
+      description {
+        en
+        ms
+      }
+      image
+      name {
+        en
+        ms
+      }
+      price
     }
     images
     name {
@@ -511,6 +593,7 @@ export const ProductBySlugDocument = `
     unitsSold
     updatedAt
     sections {
+      sectionColor
       description {
         ms
         en
@@ -551,7 +634,6 @@ export const ProductByIdDocument = `
     query ProductById($productId: ID!) {
   product(productId: $productId) {
     _id
-    slug
     createdAt
     faqs {
       answer {
@@ -563,6 +645,14 @@ export const ProductByIdDocument = `
         ms
       }
     }
+    sectionColors {
+      faqSection
+      feedbackSection
+      freeGiftSection
+      packageSection
+      paymentSection
+      productSection
+    }
     feedback {
       comment
       rating
@@ -572,6 +662,18 @@ export const ProductByIdDocument = `
         image
         location
       }
+    }
+    packages {
+      description {
+        en
+        ms
+      }
+      image
+      name {
+        en
+        ms
+      }
+      price
     }
     images
     name {
@@ -585,6 +687,7 @@ export const ProductByIdDocument = `
     unitsSold
     updatedAt
     sections {
+      sectionColor
       description {
         ms
         en

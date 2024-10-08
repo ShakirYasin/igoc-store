@@ -8,12 +8,17 @@ import { Feedback } from "graphql/generated/hooks";
 const FeedbackSection = ({
   feedbackSection,
   feebackHeading,
+  color,
 }: {
   feedbackSection: ConvertMultilingualToString<Feedback>[];
   feebackHeading: TFeedbackHeading;
+  color: string;
 }) => {
   return (
-    <div className="py-10 md:py-20 px-10 md:px-0">
+    <div
+      className="py-10 md:py-20 px-10 md:px-0  "
+      style={{ backgroundColor: color ? color : "white" }}
+    >
       <div className="max-w-screen-xl mx-auto">
         <StylizedHeading
           text1={feebackHeading.text1}

@@ -22,7 +22,8 @@ import {
 } from "@/components/ui/select";
 import { Plus, Trash } from "lucide-react";
 import ImageUploadField from "@/components/ImageUploadField";
-import { initializeValues } from "./forms/ProductForm";
+import { productInitialValues } from "@/constants/initialValues";
+import { ColorPicker } from "@/components/ui/color-picker";
 
 interface FieldConfig {
   name: string;
@@ -34,7 +35,8 @@ interface FieldConfig {
     | "select"
     | "switch"
     | "image"
-    | "image-array";
+    | "image-array"
+    | "color";
   options?: string[];
   min?: number;
   max?: number;
@@ -78,7 +80,11 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
         name={fieldName}
         render={({ field: formField }) => (
           <FormItem
-            className={field.type === "image-array" ? "col-span-2" : ""}
+            className={
+              field.type === "image-array" || field.type === "color"
+                ? "col-span-2"
+                : ""
+            }
           >
             <FormLabel>{field.label}</FormLabel>
             {field.type === "text" && (
@@ -208,6 +214,16 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                 </div>
               </FormControl>
             )}
+            {field.type === "color" && (
+              <FormControl>
+                <ColorPicker
+                  value={formField.value}
+                  onChange={(color: string) => {
+                    form.setValue(fieldName, color);
+                  }}
+                />
+              </FormControl>
+            )}
             <FormMessage />
           </FormItem>
         )}
@@ -237,7 +253,9 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
         type="button"
         variant="outline"
         onClick={() =>
-          append(initializeValues[name as keyof typeof initializeValues])
+          append(
+            productInitialValues[name as keyof typeof productInitialValues]
+          )
         }
         className="mt-2 text-black"
       >

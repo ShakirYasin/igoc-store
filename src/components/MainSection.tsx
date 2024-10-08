@@ -79,10 +79,20 @@ const MainSection = ({
   sectionData: ConvertMultilingualToString<Section>[];
 }) => {
   return (
-    <div className="bg-[#1E282A] py-20 px-10 md:px-0 max-w-[1920px] mx-auto">
-      <div className="max-w-[1276px] mx-auto">
-        {sectionData?.map((section, index) => (
-          <div key={index} className="mb-20">
+    <>
+      {sectionData?.map((section, index) => (
+        <div
+          key={index}
+          className={` pt-16 px-10 md:px-0   ${
+            index === sectionData.length - 1 ? "pb-20" : ""
+          } `}
+          style={{
+            backgroundColor: section?.sectionColor
+              ? section?.sectionColor
+              : "white",
+          }}
+        >
+          <div className="  max-w-[1276px] mx-auto">
             <StylizedHeading
               text1={(() => {
                 const words = section?.heading?.split(" ") || [];
@@ -101,7 +111,7 @@ const MainSection = ({
               {section.subheading}
             </h3>
             <p className="text-white mb-6">{section.description}</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 bg-[#1E282A]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
               {section?.images?.map((image, i) => (
                 <div
                   key={i}
@@ -125,9 +135,9 @@ const MainSection = ({
               ))}
             </div>
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+      ))}
+    </>
   );
 };
 

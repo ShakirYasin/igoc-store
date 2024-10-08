@@ -3,6 +3,10 @@ import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import { localizeObject } from "@/utils/site.utils";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import "swiper/css";
+import "swiper/css/autoplay";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const montserrat = Montserrat({
   subsets: ["latin"],

@@ -8,9 +8,10 @@ import {
 import {
   Faq,
   Feedback,
+  Package,
   Product,
   Section,
-  useProductBySlugQuery
+  useProductBySlugQuery,
 } from "graphql/generated/hooks";
 import Faqs, { TFAQHeading } from "./Faqs";
 import FeedbackSection from "./feedback";
@@ -19,6 +20,7 @@ import HeroSection from "./HeroSection";
 import MainSection from "./MainSection";
 import PaymentMethods from "./PaymentMethods";
 import WarningSection from "./WarningSection";
+import PackageSliderSection from "./PackageSliderSection";
 
 export type TFeedbackHeading = {
   text1: string;
@@ -51,9 +53,15 @@ const ProductDetailComponent = ({
     localizedData.feedback,
     lang
   ) as TFeedbackHeading;
+
+  const packages = productData?.packages;
+  const colors = productData?.sectionColors;
   return (
     <>
-      <HeroSection product={productData} />
+      <HeroSection
+        product={productData}
+        color={colors?.productSection as string}
+      />
 
       <MainSection
         sectionData={sectionData as ConvertMultilingualToString<Section>[]}
@@ -65,17 +73,27 @@ const ProductDetailComponent = ({
           }
         />
       )}
-      <FreeGiftSection />
+      <PackageSliderSection
+        packages={packages as Package[]}
+        color={colors?.packageSection as string}
+      />
+
+      <FreeGiftSection color={colors?.freeGiftSection as string} />
       <FeedbackSection
         feedbackSection={
           feedbackSection as ConvertMultilingualToString<Feedback>[]
         }
         feebackHeading={feebackHeading}
+        color={colors?.feedbackSection as string}
       />
-      <PaymentMethods />
+      <PaymentMethods
+        packages={packages as Package[]}
+        color={colors?.paymentSection as string}
+      />
       <Faqs
         faqSection={faqSection as ConvertMultilingualToString<Faq>[]}
         faqHeading={localizeObject(localizedData.faq, lang) as TFAQHeading}
+        color={colors?.faqSection as string}
       />
     </>
   );

@@ -14,15 +14,19 @@ import { localizedData } from "@/constants/locales";
 
 interface HeroSectionProps {
   product: ConvertMultilingualToString<Product>;
+  color: string;
 }
 
-const HeroSection = ({ product }: HeroSectionProps) => {
+const HeroSection = ({ product, color }: HeroSectionProps) => {
   const [selectedImage, setSelectedImage] = useState(product?.images?.[0]);
   const { lang } = useParams();
   const heroSectionHeading = localizeObject(localizedData.hero, lang as string);
   return (
-    <div className="max-w-[1276px] mx-auto py-10 md:py-32 px-10 md:px-0">
-      <div className="grid grid-cols-1 md:grid-cols-2">
+    <div
+      className="  py-10 md:py-32 px-10 md:px-0"
+      style={{ backgroundColor: color ? color : "white" }}
+    >
+      <div className="max-w-[1276px] mx-auto grid grid-cols-1 md:grid-cols-2">
         <div className="flex items-center justify-center gap-7">
           <div className="flex flex-col space-y-2 max-h-[320px] overflow-y-auto scrollbar-hide">
             {product?.images?.map((image, index) => (

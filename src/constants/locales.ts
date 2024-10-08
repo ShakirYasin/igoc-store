@@ -85,6 +85,12 @@ export const localizedData = {
         ms: "Temui rangkaian produk kawalan anai-anai IGOC yang komprehensif. Dari rawatan pencegahan hingga penyelesaian pembasmian, kami mempunyai semua yang anda perlukan untuk melindungi harta benda anda.",
         en: "Discover IGOC's comprehensive range of termite control products. From preventive treatments to eradication solutions, we have everything you need to protect your property."
       }
+    },
+    packageSlider: {
+      heading: {
+        ms: "Pakej Produk",
+        en: "Product Packages"
+      }
     }
   },
 };

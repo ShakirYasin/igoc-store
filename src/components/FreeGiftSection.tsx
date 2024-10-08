@@ -13,13 +13,16 @@ export type TGiftData = {
   heading2: string;
   sections: TGiftSection[];
 };
-const FreeGiftSection = () => {
+const FreeGiftSection = ({ color }: { color: string }) => {
   const params = useParams();
   const lang = params.lang;
   const gifts = localizeObject(localizedData.gift, lang as string) as TGiftData;
 
   return (
-    <div className="bg-black text-white py-8 px-10 md:px-0">
+    <div
+      className="py-8 px-10 md:px-0"
+      style={{ backgroundColor: color ? color : "black" }}
+    >
       <div className="max-w-[1276px] mx-auto">
         <StylizedHeading
           text1={gifts.heading1}

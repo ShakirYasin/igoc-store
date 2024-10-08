@@ -3,10 +3,6 @@
 import { Heart, Star } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
-import "swiper/css";
-import "swiper/css/autoplay";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {

@@ -12,6 +12,14 @@ query Products {
         ms
       }
     }
+    sectionColors {
+      faqSection
+      feedbackSection
+      freeGiftSection
+      packageSection
+      paymentSection
+      productSection
+    }
     feedback {
       comment
       rating
@@ -21,6 +29,18 @@ query Products {
         image
         location
       }
+    }
+    packages {
+      description {
+        en
+        ms
+      }
+      image
+      name {
+        en
+        ms
+      }
+      price
     }
     images
     name {
@@ -34,6 +54,7 @@ query Products {
     unitsSold
     updatedAt
     sections {
+      sectionColor
       description {
         ms
         en
@@ -70,7 +91,6 @@ query ProductsForPage {
 query ProductBySlug($slug: String!) {
   productBySlug(slug: $slug) {
     _id
-    slug
     createdAt
     faqs {
       answer {
@@ -82,6 +102,14 @@ query ProductBySlug($slug: String!) {
         ms
       }
     }
+    sectionColors {
+      faqSection
+      feedbackSection
+      freeGiftSection
+      packageSection
+      paymentSection
+      productSection
+    }
     feedback {
       comment
       rating
@@ -91,6 +119,18 @@ query ProductBySlug($slug: String!) {
         image
         location
       }
+    }
+    packages {
+      description {
+        en
+        ms
+      }
+      image
+      name {
+        en
+        ms
+      }
+      price
     }
     images
     name {
@@ -104,6 +144,7 @@ query ProductBySlug($slug: String!) {
     unitsSold
     updatedAt
     sections {
+      sectionColor
       description {
         ms
         en
@@ -125,7 +166,6 @@ query ProductBySlug($slug: String!) {
 query ProductById($productId: ID!) {
   product(productId: $productId) {
     _id
-    slug
     createdAt
     faqs {
       answer {
@@ -137,6 +177,14 @@ query ProductById($productId: ID!) {
         ms
       }
     }
+    sectionColors {
+      faqSection
+      feedbackSection
+      freeGiftSection
+      packageSection
+      paymentSection
+      productSection
+    }
     feedback {
       comment
       rating
@@ -146,6 +194,18 @@ query ProductById($productId: ID!) {
         image
         location
       }
+    }
+    packages {
+      description {
+        en
+        ms
+      }
+      image
+      name {
+        en
+        ms
+      }
+      price
     }
     images
     name {
@@ -159,6 +219,7 @@ query ProductById($productId: ID!) {
     unitsSold
     updatedAt
     sections {
+      sectionColor
       description {
         ms
         en

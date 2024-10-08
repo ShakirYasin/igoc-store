@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { useParams } from "next/navigation";
 import { localizedData } from "@/constants/locales";
 import { localizeObject } from "@/utils/site.utils";
+import { Package } from "graphql/generated/hooks";
 export type TPaymentMethodsHeading = {
   text1: string;
   text2: string;
@@ -29,13 +30,22 @@ export type TPaymentMethodsHeading = {
   city: string;
   state: string;
 };
-const PaymentMethods = () => {
+const PaymentMethods = ({
+  packages,
+  color,
+}: {
+  packages: Package[];
+  color: string;
+}) => {
   const form = useForm();
   const params = useParams();
   const lang = params.lang as string;
   const paymentMethodsHeading = localizeObject(localizedData.payment, lang);
   return (
-    <div className="py-10 md:py-20 px-10 md:px-0 bg-lime-400">
+    <div
+      className="py-10 md:py-20 px-10 md:px-0"
+      style={{ backgroundColor: color ? color : "lime" }}
+    >
       <div className="max-w-screen-xl mx-auto">
         <h2 className="text-3xl md:text-6xl font-bold mb-4 text-center">
           <span className="text-white">
@@ -62,8 +72,11 @@ const PaymentMethods = () => {
                       />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="option1">Option 1</SelectItem>
-                      <SelectItem value="option2">Option 2</SelectItem>
+                      {packages?.map((pkg, index) => (
+                        <SelectItem key={index} value={pkg.name as string}>
+                          {pkg.name as string}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
