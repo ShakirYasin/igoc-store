@@ -99,6 +99,9 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
               <FormControl>
                 <Input
                   {...formField}
+                  onChange={(e) => {
+                    formField.onChange(e.target.valueAsNumber);
+                  }}
                   type="number"
                   min={field.min}
                   max={field.max}

@@ -1,10 +1,11 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import AdminFallback from "@/components/fallbacks/AdminFallback";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,9 +18,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { AUTH_KEY } from "@/constants/locales";
+import { useAuthCheck } from "@/hooks/useAuthCheck";
 import { useLoginMutation } from "graphql/generated/hooks";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 // Define the form schema
 const formSchema = z.object({
@@ -39,17 +41,8 @@ const AdminLoginPage: React.FC = () => {
       password: "",
     },
   });
+  const { loading } = useAuthCheck("/admin/products");
   const router = useRouter();
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem(AUTH_KEY);
-      if (token) {
-        router.replace("/admin/products");
-      }
-    }
-  }, [router]);
-
   const { mutate } = useLoginMutation({
     onSuccess: (data) => {
       toast.success("Login Success");
@@ -66,6 +59,9 @@ const AdminLoginPage: React.FC = () => {
   // Handle form submission
   function onSubmit(values: z.infer<typeof formSchema>) {
     mutate({ input: { username: values.username, password: values.password } });
+  }
+  if (loading) {
+    return <AdminFallback />;
   }
 
   return (

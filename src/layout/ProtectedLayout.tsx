@@ -3,6 +3,7 @@
 import AdminFallback from "@/components/fallbacks/AdminFallback";
 import { Button } from "@/components/ui/button";
 import { AUTH_KEY } from "@/constants/locales";
+import { AxiosError } from "axios";
 import { useCurrentUserQuery } from "graphql/generated/hooks";
 import {
   Bug,
@@ -16,11 +17,11 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
-  const { data, isLoading } = useCurrentUserQuery();
+  const { data, isLoading, error, isError } = useCurrentUserQuery();
 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const [activeNavItem, setActiveNavItem] = useState("Dashboard");
+  const [activeNavItem, setActiveNavItem] = useState("Products");
   const toggleSidebar = () => setIsSidebarCollapsed(!isSidebarCollapsed);
   const toggleMobileSidebar = () =>
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
@@ -37,9 +38,16 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   if (isLoading) {
     return <AdminFallback />;
   }
-  if (!data?.currentUser) {
-    router.push("/admin/login");
+  if (isError) {
+    if ((error as Error[])?.[0].message.includes("Not authorized")) {
+      if (localStorage.getItem(AUTH_KEY)) {
+        localStorage.removeItem(AUTH_KEY);
+      }
+      router.push("/admin/login");
+    }
+    return <AdminFallback />;
   }
+
   const handleLogout = () => {
     localStorage.removeItem(AUTH_KEY);
     router.push("/admin/login");

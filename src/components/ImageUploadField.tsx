@@ -24,7 +24,7 @@ const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
   return (
     <div className="flex-grow">
       {value ? (
-        <div className="relative group">
+        <div className="relative inline-block group">
           <Image
             src={value}
             alt="Uploaded image"
@@ -34,7 +34,7 @@ const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
             className="w-auto h-auto max-w-full max-h-[500px] object-contain rounded-md"
           />
 
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <div className="absolute inset-0  bg-black bg-opacity-50 rounded-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <Button
               type="button"
               variant="destructive"

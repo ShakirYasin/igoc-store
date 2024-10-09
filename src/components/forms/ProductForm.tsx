@@ -70,6 +70,20 @@ const productSchema = z
         isGoogleReview: z.boolean(),
       })
     ),
+    packages: z.array(
+      z.object({
+        name: z.object({
+          en: z.string(),
+          ms: z.string(),
+        }),
+        description: z.object({
+          en: z.string(),
+          ms: z.string(),
+        }),
+        price: z.number().min(0, "Price must be non-negative"),
+        image: z.any(),
+      })
+    ),
     slug: z.string().optional(),
     sectionColors: z.object({
       faqSection: z.string(),
@@ -439,6 +453,11 @@ const ProductForm = ({
               name: "price",
               label: "Price",
               type: "number",
+            },
+            {
+              name: "image",
+              label: "Image",
+              type: "image",
             },
           ]}
         />
