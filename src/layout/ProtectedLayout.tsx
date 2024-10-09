@@ -3,7 +3,6 @@
 import AdminFallback from "@/components/fallbacks/AdminFallback";
 import { Button } from "@/components/ui/button";
 import { AUTH_KEY } from "@/constants/locales";
-import { AxiosError } from "axios";
 import { useCurrentUserQuery } from "graphql/generated/hooks";
 import {
   Bug,
@@ -17,7 +16,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
-  const { data, isLoading, error, isError } = useCurrentUserQuery();
+  const { isLoading, error, isError } = useCurrentUserQuery();
 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);

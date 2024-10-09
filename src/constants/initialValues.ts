@@ -33,6 +33,12 @@ export const productInitialValues: ProductFormValues = {
         answer: { en: "", ms: "" },
       },
     ],
+    packages: [{
+      name: { en: "", ms: "" },
+      price: 0,
+      description: { en: "", ms: "" },
+      image: "",
+    }],
     feedback: [
       {
         rating: 0,
