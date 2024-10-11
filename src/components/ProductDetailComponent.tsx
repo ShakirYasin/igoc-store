@@ -18,9 +18,9 @@ import FeedbackSection from "./feedback";
 import FreeGiftSection from "./FreeGiftSection";
 import HeroSection from "./HeroSection";
 import MainSection from "./MainSection";
+import PackageSliderSection from "./PackageSliderSection";
 import PaymentMethods from "./PaymentMethods";
 import WarningSection from "./WarningSection";
-import PackageSliderSection from "./PackageSliderSection";
 
 export type TFeedbackHeading = {
   text1: string;
@@ -33,8 +33,10 @@ const ProductDetailComponent = ({
   slug: string;
   lang: string;
 }) => {
+  const encodedSlug = decodeURIComponent(slug);
+
   const { data } = useProductBySlugQuery({
-    slug,
+    slug: encodedSlug,
   });
   const productData = localizeObject(
     data?.productBySlug as Product,
