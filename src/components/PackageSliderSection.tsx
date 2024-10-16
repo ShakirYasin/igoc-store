@@ -123,7 +123,7 @@ const PackageSliderSection: React.FC<{
                 </SwiperSlide>
               ))}
           </Swiper>
-          <div
+          {/* <div
             className="flex items-center justify-center absolute w-14 h-14 -left-20 top-1/2 transform -translate-y-1/2 z-10 border-[#D9D9D9] border text-[#040514] bg-white disabled:bg-[#D9D9D9]  rounded-full cursor-pointer"
             onClick={() => swiperRef.current?.slidePrev()}
           >
@@ -134,7 +134,7 @@ const PackageSliderSection: React.FC<{
             onClick={() => swiperRef.current?.slideNext()}
           >
             <ChevronRightIcon className="w-5 h-5" />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

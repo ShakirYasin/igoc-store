@@ -83,9 +83,7 @@ const MainSection = ({
       {sectionData?.map((section, index) => (
         <div
           key={index}
-          className={` pt-16 px-10 md:px-0   ${
-            index === sectionData.length - 1 ? "pb-20" : ""
-          } `}
+          className={` pt-16 px-10 md:px-0 pb-20`}
           style={{
             backgroundColor: section?.sectionColor
               ? section?.sectionColor
