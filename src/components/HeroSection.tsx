@@ -27,7 +27,7 @@ const HeroSection = ({ product, color }: HeroSectionProps) => {
       style={{ backgroundColor: color ? color : "white" }}
     >
       <div className="max-w-[1276px] mx-auto grid grid-cols-1 md:grid-cols-2">
-        <div className="flex items-center justify-center gap-7">
+        <div className="flex items-center justify-center md:gap-7 gap-0">
           <div className="flex flex-col space-y-2 max-h-[320px] overflow-y-auto scrollbar-hide">
             {product?.images?.map((image, index) => (
               <div
@@ -55,7 +55,7 @@ const HeroSection = ({ product, color }: HeroSectionProps) => {
             className="object-cover rounded-xl"
           />
         </div>
-        <div className="py-4">
+        <div className="py-4  md:block flex flex-col justify-center">
           <StylizedHeading
             className="md:text-4xl flex md:justify-start  justify-center text-2xl font-bold md:inline-flex gap-3 flex-wrap"
             text1={product?.name?.split(" ")[0] || ""}
@@ -63,17 +63,17 @@ const HeroSection = ({ product, color }: HeroSectionProps) => {
             text3={product?.name?.split(" ")[2] || ""}
             text4={product?.name?.split(" ")[3] || ""}
           />
-          <div className="flex items-center  justify-between mt-10 md:gap-0 gap-10 ">
-            <div className="flex flex-col gap-5 min-h-[131px]">
-              <p className="text-black text-xl md:text-3xl font-bold">
+          <div className="flex items-center  justify-between mt-10  ">
+            <div className="flex flex-col gap-5 min-h-[131px] items-center md:items-start ">
+              <p className="text-black text-xl md:text-3xl font-bold md:text-start text-center">
                 {heroSectionHeading.text1 as string}
               </p>
               <p className="text-3xl font-bold text-lime-400">
                 {product?.totalUnits}
               </p>
             </div>
-            <div className="flex flex-col gap-5 min-h-[131px]">
-              <p className="text-black text-xl md:text-3xl font-bold">
+            <div className="flex flex-col gap-5 min-h-[131px] items-center md:items-start">
+              <p className="text-black text-xl md:text-3xl font-bold md:text-start text-center">
                 {heroSectionHeading.text2 as string}
               </p>
               <p className="text-3xl font-bold text-lime-400">

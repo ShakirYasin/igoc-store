@@ -65,7 +65,7 @@ const PackageSliderSection: React.FC<{
 
   return (
     <div
-      className="px-10 md:px-0 pb-32 py-20"
+      className="px-10 md:px-0 md:pb-32 pb-10 py-20"
       style={{ backgroundColor: color ? color : "white" }}
     >
       <div className="max-w-[1276px] mx-auto  ">
@@ -110,30 +110,20 @@ const PackageSliderSection: React.FC<{
                       className=" rounded-t-lg"
                     />
                     <div className="p-4 text-center">
-                      <h3 className="text-5xl font-bold ">
+                      <h3 className="text-3xl md:text-6xl font-bold ">
                         {pkg.name as string}
                       </h3>
-                      <p className="text-[#1E282A] text-xl font-normal mt-3 mb-3 line-through">
+                      <p className="text-[#1E282A] text-xl md:text-2xl font-normal mt-3 mb-3 line-through">
                         {pkg.description as string}
                       </p>
-                      <p className="text-5xl font-bold ">RM{pkg.price}</p>
+                      <p className="text-3xl md:text-6xl font-bold ">
+                        RM{pkg.price}
+                      </p>
                     </div>
                   </div>
                 </SwiperSlide>
               ))}
           </Swiper>
-          {/* <div
-            className="flex items-center justify-center absolute w-14 h-14 -left-20 top-1/2 transform -translate-y-1/2 z-10 border-[#D9D9D9] border text-[#040514] bg-white disabled:bg-[#D9D9D9]  rounded-full cursor-pointer"
-            onClick={() => swiperRef.current?.slidePrev()}
-          >
-            <ChevronLeftIcon className="w-5 h-5 " />
-          </div>
-          <div
-            className="flex items-center justify-center absolute w-14 h-14 -right-20 top-1/2 transform -translate-y-1/2 z-10 border-[#D9D9D9] border text-[#040514] bg-white disabled:bg-[#D9D9D9]  rounded-full cursor-pointer"
-            onClick={() => swiperRef.current?.slideNext()}
-          >
-            <ChevronRightIcon className="w-5 h-5" />
-          </div> */}
         </div>
       </div>
     </div>
