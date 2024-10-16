@@ -1,7 +1,6 @@
 import { localizedData } from "@/constants/locales";
 import { localizeObject } from "@/utils/site.utils";
 import { Package } from "graphql/generated/hooks";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useRef } from "react";
