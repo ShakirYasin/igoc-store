@@ -5,7 +5,7 @@ import { localizeObject } from "@/utils/site.utils";
 import { Search, X } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import LanguageSelectInput from "./LanguageSelectInput";
 
 export default function Header() {
@@ -59,7 +59,9 @@ export default function Header() {
           <Button className="bg-limeGreen hover:bg-limeGreen text-black font-semibold">
             {headerData.buttonText as string}
           </Button>
-          <LanguageSelectInput />
+          <Suspense fallback={<div>Loading...</div>}>
+            <LanguageSelectInput />
+          </Suspense>
         </div>
       </div>
     </header>

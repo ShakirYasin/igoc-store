@@ -17,12 +17,12 @@ export default function LanguageSelectInput() {
   const router = useRouter();
 
   const pathname = usePathname();
-  const search = useSearchParams().toString();
+  const search = useSearchParams();
   const currentLanguage = pathname.split("/")[1] === "en" ? "en" : "ms";
 
   const handleLanguageChange = (newLanguage: string) => {
     const newPathname = pathname.replace(`${currentLanguage}`, "");
-    router.push(`/${newLanguage}${newPathname}?${search}`);
+    router.push(`/${newLanguage}${newPathname}?${search.toString()}`);
   };
 
   return (

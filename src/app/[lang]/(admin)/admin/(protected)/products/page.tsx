@@ -2,7 +2,7 @@
 
 import DeleteConfirmationDialog from "@/components/DeleteConfirmationDialog";
 import AdminListingFallback from "@/components/fallbacks/AdminListingFallback";
-import { Button } from "@/components/ui/button";
+import { LabeledButton } from "@/components/LabeledButton";
 import {
   useDeleteAllProductsMutation,
   useDeleteProductByIdMutation,
@@ -14,14 +14,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { LabeledButton } from "@/components/LabeledButton";
-import { useRouter } from "next/navigation";
 
 export default function ProductListingPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -73,7 +65,6 @@ export default function ProductListingPage() {
   const handleTogglePublish = (id: string) => {
     togglePublish({ input: id });
   };
-  const router = useRouter();
 
   return (
     <div className="p-6 max-w-7xl mx-auto bg-gray-900">

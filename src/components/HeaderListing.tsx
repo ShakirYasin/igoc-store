@@ -1,5 +1,6 @@
 import Image from "next/image";
 import LanguageSelectInput from "./LanguageSelectInput";
+import { Suspense } from "react";
 
 const HeaderListing = ({
   className = "",
@@ -21,7 +22,11 @@ const HeaderListing = ({
         height={100}
       />
       <div className="flex-1 flex justify-end">
-        {!isFooter && <LanguageSelectInput />}
+        {!isFooter && (
+          <Suspense fallback={<div>Loading...</div>}>
+            <LanguageSelectInput />
+          </Suspense>
+        )}
       </div>
     </div>
   );

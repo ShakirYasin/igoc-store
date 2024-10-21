@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-import { Check, CheckIcon, ChevronDown, X, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,8 +16,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { CheckIcon, ChevronDown, X } from "lucide-react";
+import * as React from "react";
 
 type Option = {
   label: string;
