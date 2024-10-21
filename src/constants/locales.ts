@@ -1,15 +1,10 @@
-export const locales = [
-  { locale: "en" },
-  { locale: "ms" }
-];
+export const locales = [{ locale: "en" }, { locale: "ms" }];
 
 export const defaultLocale = "ms";
 
 export const AUTH_KEY = "igocAdminToken";
 
-
-
- export const localizedData = {
+export const localizedData = {
   header: {
     heading: { ms: "JUALAN KILAT!", en: "FLASH SALE!" },
     buttonText: { ms: "BELI SEKARANG", en: "SHOP NOW" },
@@ -37,28 +32,43 @@ export const AUTH_KEY = "igocAdminToken";
     heading2: { ms: "HADIAH", en: "GIFT" },
     sections: [
       {
-        text: { ms: "PENGHANTARAN PERCUMA KE SEMENANJUNG", en: "FREE SHIPPING TO PENINSULA" },
+        text: {
+          ms: "PENGHANTARAN PERCUMA KE SEMENANJUNG",
+          en: "FREE SHIPPING TO PENINSULA",
+        },
         icon: "/images/icons/freegift1.svg",
       },
       {
-        text: { ms: "SEPASANG SARUNG TANGAN PERCUMA", en: "FREE PAIR OF GLOVES" },
+        text: {
+          ms: "SEPASANG SARUNG TANGAN PERCUMA",
+          en: "FREE PAIR OF GLOVES",
+        },
         icon: "/images/icons/freegift3.svg",
       },
       {
-        text: { ms: "SATU UNIT PESNAI PERCUMA MENGIKUT PAKEJ", en: "FREE UNIT OF PESNAI ACCORDING TO PACKAGE" },
+        text: {
+          ms: "SATU UNIT PESNAI PERCUMA MENGIKUT PAKEJ",
+          en: "FREE UNIT OF PESNAI ACCORDING TO PACKAGE",
+        },
         icon: "/images/icons/freegift2.svg",
       },
     ],
   },
-  feedback:{
+  feedback: {
     text1: { ms: "MAKLUM", en: "FEED" },
     text2: { ms: "BALAS", en: "BACK" },
   },
   payment: {
-    text1:  { ms: "Kaedah", en: "Payment" },
-    text2:  { ms: "Pembayaran", en: "Methods" },
-    selectionText: { ms: "BSP - Bayaran Semasa Penghantaran", en: "COD - Cash On Delivery" },
-    selectionText2: { ms: "Pembayaran Dalam Talian / Kad Kredit", en: "Online Payment / Credit Card" },
+    text1: { ms: "Kaedah", en: "Payment" },
+    text2: { ms: "Pembayaran", en: "Methods" },
+    selectionText: {
+      ms: "BSP - Bayaran Semasa Penghantaran",
+      en: "COD - Cash On Delivery",
+    },
+    selectionText2: {
+      ms: "Pembayaran Dalam Talian / Kad Kredit",
+      en: "Online Payment / Credit Card",
+    },
     buttonText: { ms: "Beli Sekarang", en: "Buy Now" },
     package: { ms: "Pakej", en: "Package" },
     name: { ms: "NAMA", en: "NAME" },
@@ -72,28 +82,49 @@ export const AUTH_KEY = "igocAdminToken";
     home: {
       title: {
         ms: "IGOC - Penyelesaian Kawalan Anai-anai Terbaik di Malaysia",
-        en: "IGOC - Best Termite Control Solutions in Malaysia"
+        en: "IGOC - Best Termite Control Solutions in Malaysia",
       },
       description: {
         ms: "IGOC menawarkan penyelesaian kawalan anai-anai terkemuka untuk melindungi rumah dan bangunan anda. Dapatkan perkhidmatan profesional dan produk berkualiti tinggi untuk mengatasi masalah anai-anai.",
-        en: "IGOC offers leading termite control solutions to protect your home and buildings. Get professional services and high-quality products to overcome termite problems."
-      }
+        en: "IGOC offers leading termite control solutions to protect your home and buildings. Get professional services and high-quality products to overcome termite problems.",
+      },
     },
     productListing: {
       title: {
         ms: "Produk Kawalan Anai-anai IGOC - Perlindungan Terbaik untuk Rumah Anda",
-        en: "IGOC Termite Control Products - Best Protection for Your Home"
+        en: "IGOC Termite Control Products - Best Protection for Your Home",
       },
       description: {
         ms: "Temui rangkaian produk kawalan anai-anai IGOC yang komprehensif. Dari rawatan pencegahan hingga penyelesaian pembasmian, kami mempunyai semua yang anda perlukan untuk melindungi harta benda anda.",
-        en: "Discover IGOC's comprehensive range of termite control products. From preventive treatments to eradication solutions, we have everything you need to protect your property."
-      }
+        en: "Discover IGOC's comprehensive range of termite control products. From preventive treatments to eradication solutions, we have everything you need to protect your property.",
+      },
     },
     packageSlider: {
       heading: {
         ms: "Pakej Produk",
-        en: "Product Packages"
-      }
+        en: "Product Packages",
+      },
+    },
+  },
+  thankyouPage: {
+    title: {
+      en: "Thank you for your order!",
+      ms: "Terima Kasih Atas Pesanan Anda!",
+    },
+    description: {
+      en: "Your order has been confirmed and is being processed.",
+      ms: "Pesanan Anda telah dikonfirmasi dan sedang diproses.",
+    },
+    heading1: {
+      en: "Order Details",
+      ms: "Maklumat Pesanan",
+    },
+    heading2: { en: "Order Number:", ms: "Nomor Pesanan:" },
+    date: { en: "Date:", ms: "Tanggal:" },
+    totalHeading: {en:"Total:",ms:"Jumlah:"},
+    buttonText:{en:"Back to Home Page",ms:"Kembali ke Beranda"},
+    paymentOption: {
+        en:"Payment Status",ms:"Status Pembayaran"
     }
   },
 };

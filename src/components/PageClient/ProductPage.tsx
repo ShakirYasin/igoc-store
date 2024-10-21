@@ -13,7 +13,7 @@ import ProductsLoading from "../Loading/ProductsLoading";
 import ProductCard from "../ProductCard";
 
 const ProductPage = ({ lang }: { lang: string }) => {
-  const { data, isLoading } = useProductsForPageQuery();
+  const { data, isLoading } = useProductsForPageQuery({ published: true });
 
   const headings = localizeObject(localizedData.home, lang);
   return (

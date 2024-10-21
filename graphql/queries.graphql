@@ -2,6 +2,7 @@ query Products {
   products {
     _id
     createdAt
+    published
     faqs {
       answer {
         en
@@ -31,6 +32,7 @@ query Products {
       }
     }
     packages {
+      _id
       description {
         en
         ms
@@ -53,6 +55,15 @@ query Products {
     totalUnits
     unitsSold
     updatedAt
+    facebookPixel {
+      enabled
+      settings {
+        accessToken
+        codeTestEvent
+        events
+        pixelId
+      }
+    }
     sections {
       sectionColor
       description {
@@ -63,6 +74,7 @@ query Products {
         en
         ms
       }
+
       images
       orderIndex
       subheading {
@@ -74,8 +86,8 @@ query Products {
   }
 }
 
-query ProductsForPage {
-  productsForPage {
+query ProductsForPage($published: Boolean) {
+  productsForPage(published: $published) {
     _id
     slug
     avgRating
@@ -102,6 +114,7 @@ query ProductBySlug($slug: String!) {
         ms
       }
     }
+    published
     sectionColors {
       faqSection
       feedbackSection
@@ -109,6 +122,15 @@ query ProductBySlug($slug: String!) {
       packageSection
       paymentSection
       productSection
+    }
+    facebookPixel {
+      enabled
+      settings {
+        accessToken
+        codeTestEvent
+        events
+        pixelId
+      }
     }
     feedback {
       comment
@@ -121,6 +143,7 @@ query ProductBySlug($slug: String!) {
       }
     }
     packages {
+      _id
       description {
         en
         ms
@@ -177,6 +200,7 @@ query ProductById($productId: ID!) {
         ms
       }
     }
+    published
     sectionColors {
       faqSection
       feedbackSection
@@ -184,6 +208,15 @@ query ProductById($productId: ID!) {
       packageSection
       paymentSection
       productSection
+    }
+    facebookPixel {
+      enabled
+      settings {
+        accessToken
+        codeTestEvent
+        events
+        pixelId
+      }
     }
     feedback {
       comment
@@ -196,6 +229,7 @@ query ProductById($productId: ID!) {
       }
     }
     packages {
+      _id
       description {
         en
         ms
@@ -239,11 +273,68 @@ query ProductById($productId: ID!) {
   }
 }
 
-
 query CurrentUser {
   currentUser {
     id
     isAdmin
     username
+  }
+}
+
+
+query allStates {
+  allStates {
+    id
+    name
+  }
+}
+
+
+query getCitiesByState($stateName: String!) {
+  getCitiesByState(stateName: $stateName) {
+    id
+    name
+  }
+}
+
+
+
+
+query Orders {
+  orders {
+    _id
+    city
+    createdAt
+    fullAddress
+    name
+    orderPrice
+    packageId
+    paymentOption
+    paymentStatus
+    phoneNumber
+    postcode
+    productId
+    state
+    updatedAt
+  }
+}
+
+
+query OrderById($id: ID!) {
+  orderById(id: $id) {
+    _id
+    city
+    createdAt
+    fullAddress
+    name
+    orderPrice
+    packageId
+    paymentOption
+    paymentStatus
+    phoneNumber
+    postcode
+    productId
+    state
+    updatedAt
   }
 }

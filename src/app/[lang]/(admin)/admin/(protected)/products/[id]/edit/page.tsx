@@ -1,6 +1,7 @@
 "use client";
 
-import ProductForm, { ProductFormValues } from "@/components/forms/ProductForm";
+import ProductForm from "@/components/forms/ProductForm";
+import { ProductFormValues } from "@/components/forms/productSchema";
 import { useProductByIdQuery } from "graphql/generated/hooks";
 import { useParams } from "next/navigation";
 

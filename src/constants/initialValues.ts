@@ -1,6 +1,9 @@
-import { ProductFormValues } from "@/components/forms/ProductForm";
-import { CustomerInput, FeedbackInput } from "graphql/generated/hooks";
 
+import { ProductFormValues } from "@/components/forms/productSchema";
+import {
+  CustomerInput,
+  FeedbackInput
+} from "graphql/generated/hooks";
 
 export type TSectionColors = {
   faqSection: string;
@@ -12,47 +15,58 @@ export type TSectionColors = {
 };
 export const productInitialValues: ProductFormValues = {
   name: { en: "", ms: "" },
-    price: 0,
-    salePrice: 0,
-    totalUnits: 0,
-    images: [],
-    sections: [
-      {
-        type: "NORMAL",
-        heading: { en: "", ms: "" },
-        subheading: { en: "", ms: "" },
-        description: { en: "", ms: "" },
-        sectionColor: "#000000",
-        images: [],
-        orderIndex: 0,
-      },
-    ],
-    faqs: [
-      {
-        question: { en: "", ms: "" },
-        answer: { en: "", ms: "" },
-      },
-    ],
-    packages: [{
+  price: 0,
+  salePrice: 0,
+  totalUnits: 0,
+  images: [],
+  sections: [
+    {
+      type: "NORMAL",
+      heading: { en: "", ms: "" },
+      subheading: { en: "", ms: "" },
+      description: { en: "", ms: "" },
+      sectionColor: "#000000",
+      images: [],
+      orderIndex: 0,
+    },
+  ],
+  faqs: [
+    {
+      question: { en: "", ms: "" },
+      answer: { en: "", ms: "" },
+    },
+  ],
+  packages: [
+    {
       name: { en: "", ms: "" },
       price: 0,
       description: { en: "", ms: "" },
       image: "",
-    }],
-    feedback: [
-      {
-        rating: 0,
-        comment: "",
-        customer: {
-          name: "",
-          image: "",
-          location: "",
-        } as CustomerInput,
-        isGoogleReview: false,
-      },
-    ] as FeedbackInput[],
-    slug: "",
-    sectionColors: {
+    },
+  ],
+  feedback: [
+    {
+      rating: 0,
+      comment: "",
+      customer: {
+        name: "",
+        image: "",
+        location: "",
+      } as CustomerInput,
+      isGoogleReview: false,
+    },
+  ] as FeedbackInput[],
+  facebookPixel: {
+    enabled: false,
+    settings: {
+      pixelId: "",
+      events: [],
+      accessToken: "",
+      codeTestEvent: "",
+    },
+  },
+  slug: "",
+  sectionColors: {
     faqSection: "#000000",
     feedbackSection: "#000000",
     freeGiftSection: "#000000",

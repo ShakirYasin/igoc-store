@@ -7,7 +7,7 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import { Globe } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function LanguageSelectInput() {
   const languages = [
@@ -17,11 +17,12 @@ export default function LanguageSelectInput() {
   const router = useRouter();
 
   const pathname = usePathname();
+  const search = useSearchParams().toString();
   const currentLanguage = pathname.split("/")[1] === "en" ? "en" : "ms";
 
   const handleLanguageChange = (newLanguage: string) => {
-    const newPathname = pathname.replace(`/${currentLanguage}`, "");
-    router.push(`/${newLanguage}${newPathname}`);
+    const newPathname = pathname.replace(`${currentLanguage}`, "");
+    router.push(`/${newLanguage}${newPathname}?${search}`);
   };
 
   return (

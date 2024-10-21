@@ -29,3 +29,24 @@ mutation DeleteProductBySlug($input: DeleteProductBySlugInput!) {
 mutation Login($input: LoginInput!) {
   login(input: $input)
 }
+
+mutation TogglePublish($input: ID!) {
+  togglePublish(input: $input) {
+    message
+    status
+  }
+}
+
+
+
+mutation CreateOrder($input: CreateOrderInput!) {
+  createOrder(input: $input) {
+    _id
+  }
+}
+
+mutation DeleteOrder($deleteOrderId: ID!) {
+  deleteOrder(id: $deleteOrderId) {
+    _id
+  }
+}

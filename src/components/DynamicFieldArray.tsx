@@ -24,6 +24,13 @@ import { Plus, Trash } from "lucide-react";
 import ImageUploadField from "@/components/ImageUploadField";
 import { productInitialValues } from "@/constants/initialValues";
 import { ColorPicker } from "@/components/ui/color-picker";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { useState, useEffect } from "react";
 
 interface FieldConfig {
   name: string;
@@ -66,6 +73,12 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
     name,
   });
 
+  const [openItems, setOpenItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    setOpenItems(arrayFields.map((_, index) => `${name}-${index}`));
+  }, [arrayFields, name]);
+
   const renderField = (
     field: FieldConfig,
     index: number,
@@ -82,7 +95,7 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
           <FormItem
             className={
               field.type === "image-array" || field.type === "color"
-                ? "col-span-2"
+                ? "md:col-span-2 col-span-1"
                 : ""
             }
           >
@@ -204,6 +217,7 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                       )}
                     </div>
                   ))}
+
                   <Button
                     type="button"
                     variant="outline"
@@ -236,30 +250,46 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
 
   return (
     <div>
-      <FormLabel>{label}</FormLabel>
-      {arrayFields.map((item, index) => (
-        <div key={item.id} className="bg-gray-800 p-4 rounded-lg mb-4">
-          <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 `}>
-            {fields.map((field) => renderField(field, index, name))}
-          </div>
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={() => remove(index)}
-            className="mt-4"
-          >
-            Remove {label}
-          </Button>
-        </div>
-      ))}
+      <Accordion
+        type="multiple"
+        className="w-full"
+        defaultValue={openItems}
+        value={openItems}
+        onValueChange={setOpenItems}
+      >
+        {arrayFields.map((item, index) => (
+          <AccordionItem key={item.id} value={`${name}-${index}`}>
+            <AccordionTrigger className="p-4">{`${label} ${
+              index + 1
+            }`}</AccordionTrigger>
+            <AccordionContent className="p-4">
+              <div className="bg-gray-800 p-4 rounded-lg mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  {fields.map((field) => renderField(field, index, name))}
+                </div>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => remove(index)}
+                  className="mt-4"
+                >
+                  Remove {label}
+                </Button>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
       <Button
         type="button"
         variant="outline"
-        onClick={() =>
+        onClick={() => {
           append(
             productInitialValues[name as keyof typeof productInitialValues]
-          )
-        }
+          );
+          // Open the newly added item
+          setOpenItems((prev) => [...prev, `${name}-${arrayFields.length}`]);
+        }}
         className="mt-2 text-black"
       >
         <Plus className="h-4 w-4 mr-2" /> Add {label}

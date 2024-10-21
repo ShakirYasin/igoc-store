@@ -147,9 +147,12 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
               </div>
               <div
                 onClick={handleLogout}
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-2 cursor-pointer group"
               >
-                <LogOut />
+                <LogOut className="transition-transform duration-200 group-hover:scale-110 group-hover:text-lime-400" />
+                <span className="hidden sm:inline-block transition-colors duration-200 group-hover:text-lime-400">
+                  Logout
+                </span>
               </div>
             </div>
           </div>

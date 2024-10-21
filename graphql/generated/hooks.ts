@@ -19,7 +19,27 @@ export type Scalars = {
   Email: { input: any; output: any; }
 };
 
+export type City = {
+  __typename?: 'City';
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+export type CreateOrderInput = {
+  city: Scalars['String']['input'];
+  fullAddress: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  orderPrice: Scalars['Float']['input'];
+  packageId: Scalars['String']['input'];
+  paymentOption: OrderPaymentOption;
+  phoneNumber: Scalars['String']['input'];
+  postcode: Scalars['String']['input'];
+  productId: Scalars['ID']['input'];
+  state: Scalars['String']['input'];
+};
+
 export type CreateProductInput = {
+  facebookPixel?: InputMaybe<FacebookPixelInput>;
   faqs?: InputMaybe<Array<FaqInput>>;
   feedback?: InputMaybe<Array<FeedbackInput>>;
   images: Array<Scalars['String']['input']>;
@@ -28,7 +48,7 @@ export type CreateProductInput = {
   price: Scalars['Float']['input'];
   salePrice?: InputMaybe<Scalars['Float']['input']>;
   sectionColors?: InputMaybe<SectionColorsInput>;
-  sections: Array<SectionInput>;
+  sections?: InputMaybe<Array<SectionInput>>;
   slug: Scalars['String']['input'];
   totalUnits: Scalars['Int']['input'];
 };
@@ -70,6 +90,37 @@ export type FaqInput = {
   question: MultilingualStringInput;
 };
 
+export type FacebookPixel = {
+  __typename?: 'FacebookPixel';
+  enabled?: Maybe<Scalars['Boolean']['output']>;
+  settings?: Maybe<FacebookPixelSettings>;
+};
+
+export enum FacebookPixelEvents {
+  Order = 'ORDER',
+  Purchase = 'PURCHASE'
+}
+
+export type FacebookPixelInput = {
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  settings?: InputMaybe<FacebookPixelSettingsInput>;
+};
+
+export type FacebookPixelSettings = {
+  __typename?: 'FacebookPixelSettings';
+  accessToken?: Maybe<Scalars['String']['output']>;
+  codeTestEvent?: Maybe<Scalars['String']['output']>;
+  events?: Maybe<Array<Scalars['String']['output']>>;
+  pixelId?: Maybe<Scalars['String']['output']>;
+};
+
+export type FacebookPixelSettingsInput = {
+  accessToken: Scalars['String']['input'];
+  codeTestEvent: Scalars['String']['input'];
+  events: Array<FacebookPixelEvents>;
+  pixelId: Scalars['String']['input'];
+};
+
 export type Feedback = {
   __typename?: 'Feedback';
   comment?: Maybe<Scalars['String']['output']>;
@@ -90,6 +141,12 @@ export type LoginInput = {
   username: Scalars['String']['input'];
 };
 
+export type Message = {
+  __typename?: 'Message';
+  message?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<Scalars['Int']['output']>;
+};
+
 export type MultilingualString = {
   __typename?: 'MultilingualString';
   en?: Maybe<Scalars['String']['output']>;
@@ -103,13 +160,21 @@ export type MultilingualStringInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createOrder?: Maybe<Order>;
   createProduct?: Maybe<Product>;
   createUser?: Maybe<User>;
   deleteAllProducts?: Maybe<Scalars['Int']['output']>;
+  deleteOrder?: Maybe<Order>;
   deleteProductById?: Maybe<Product>;
   deleteProductBySlug?: Maybe<Product>;
   login?: Maybe<Scalars['String']['output']>;
+  togglePublish?: Maybe<Message>;
   updateProductById?: Maybe<Product>;
+};
+
+
+export type MutationCreateOrderArgs = {
+  input: CreateOrderInput;
 };
 
 
@@ -120,6 +185,11 @@ export type MutationCreateProductArgs = {
 
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
+};
+
+
+export type MutationDeleteOrderArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -138,12 +208,47 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationTogglePublishArgs = {
+  input: Scalars['ID']['input'];
+};
+
+
 export type MutationUpdateProductByIdArgs = {
   input: UpdateProductByIdInput;
 };
 
+export type Order = {
+  __typename?: 'Order';
+  _id?: Maybe<Scalars['ID']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  fullAddress?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  orderPrice?: Maybe<Scalars['Float']['output']>;
+  packageId?: Maybe<Scalars['ID']['output']>;
+  paymentOption?: Maybe<OrderPaymentOption>;
+  paymentStatus?: Maybe<OrderPaymentStatus>;
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  postcode?: Maybe<Scalars['String']['output']>;
+  productId?: Maybe<Scalars['ID']['output']>;
+  state?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export enum OrderPaymentOption {
+  Cod = 'COD',
+  Online = 'ONLINE'
+}
+
+export enum OrderPaymentStatus {
+  Failed = 'FAILED',
+  Paid = 'PAID',
+  Pending = 'PENDING'
+}
+
 export type Package = {
   __typename?: 'Package';
+  _id?: Maybe<Scalars['ID']['output']>;
   description?: Maybe<MultilingualString>;
   image?: Maybe<Scalars['String']['output']>;
   name?: Maybe<MultilingualString>;
@@ -161,12 +266,14 @@ export type Product = {
   __typename?: 'Product';
   _id?: Maybe<Scalars['ID']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  facebookPixel?: Maybe<FacebookPixel>;
   faqs?: Maybe<Array<Faq>>;
   feedback?: Maybe<Array<Feedback>>;
   images?: Maybe<Array<Scalars['String']['output']>>;
   name?: Maybe<MultilingualString>;
   packages?: Maybe<Array<Package>>;
   price?: Maybe<Scalars['Float']['output']>;
+  published?: Maybe<Scalars['Boolean']['output']>;
   salePrice?: Maybe<Scalars['Float']['output']>;
   satisfiedCustomers?: Maybe<Scalars['Int']['output']>;
   sectionColors?: Maybe<SectionColors>;
@@ -190,11 +297,25 @@ export type ProductPageInfo = {
 
 export type Query = {
   __typename?: 'Query';
+  allStates?: Maybe<Array<State>>;
   currentUser?: Maybe<User>;
+  getCitiesByState?: Maybe<Array<City>>;
+  orderById?: Maybe<Order>;
+  orders?: Maybe<Array<Order>>;
   product?: Maybe<Product>;
   productBySlug?: Maybe<Product>;
   products?: Maybe<Array<Product>>;
   productsForPage?: Maybe<Array<ProductPageInfo>>;
+};
+
+
+export type QueryGetCitiesByStateArgs = {
+  stateName: Scalars['String']['input'];
+};
+
+
+export type QueryOrderByIdArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -205,6 +326,11 @@ export type QueryProductArgs = {
 
 export type QueryProductBySlugArgs = {
   slug: Scalars['String']['input'];
+};
+
+
+export type QueryProductsForPageArgs = {
+  published?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type Section = {
@@ -242,7 +368,7 @@ export type SectionInput = {
   heading: MultilingualStringInput;
   images: Array<Scalars['String']['input']>;
   orderIndex: Scalars['Int']['input'];
-  sectionColor?: InputMaybe<Scalars['String']['input']>;
+  sectionColor: Scalars['String']['input'];
   subheading: MultilingualStringInput;
   type: SectionType;
 };
@@ -252,12 +378,19 @@ export enum SectionType {
   Warning = 'WARNING'
 }
 
+export type State = {
+  __typename?: 'State';
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
 export type UpdateProductByIdInput = {
   data: UpdateProductInput;
   id: Scalars['ID']['input'];
 };
 
 export type UpdateProductInput = {
+  facebookPixel?: InputMaybe<FacebookPixelInput>;
   faqs?: InputMaybe<Array<FaqInput>>;
   feedback?: InputMaybe<Array<FeedbackInput>>;
   images?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -317,12 +450,35 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login?: string | null };
 
+export type TogglePublishMutationVariables = Exact<{
+  input: Scalars['ID']['input'];
+}>;
+
+
+export type TogglePublishMutation = { __typename?: 'Mutation', togglePublish?: { __typename?: 'Message', message?: string | null, status?: number | null } | null };
+
+export type CreateOrderMutationVariables = Exact<{
+  input: CreateOrderInput;
+}>;
+
+
+export type CreateOrderMutation = { __typename?: 'Mutation', createOrder?: { __typename?: 'Order', _id?: string | null } | null };
+
+export type DeleteOrderMutationVariables = Exact<{
+  deleteOrderId: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteOrderMutation = { __typename?: 'Mutation', deleteOrder?: { __typename?: 'Order', _id?: string | null } | null };
+
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null }> | null };
+export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', _id?: string | null, createdAt?: any | null, published?: boolean | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', _id?: string | null, image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null }> | null };
 
-export type ProductsForPageQueryVariables = Exact<{ [key: string]: never; }>;
+export type ProductsForPageQueryVariables = Exact<{
+  published?: InputMaybe<Scalars['Boolean']['input']>;
+}>;
 
 
 export type ProductsForPageQuery = { __typename?: 'Query', productsForPage?: Array<{ __typename?: 'ProductPageInfo', _id?: string | null, slug?: string | null, avgRating?: number | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null };
@@ -332,19 +488,43 @@ export type ProductBySlugQueryVariables = Exact<{
 }>;
 
 
-export type ProductBySlugQuery = { __typename?: 'Query', productBySlug?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
+export type ProductBySlugQuery = { __typename?: 'Query', productBySlug?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, published?: boolean | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', _id?: string | null, image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
 
 export type ProductByIdQueryVariables = Exact<{
   productId: Scalars['ID']['input'];
 }>;
 
 
-export type ProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
+export type ProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, published?: boolean | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, totalUnits?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', _id?: string | null, image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id?: string | null, isAdmin?: boolean | null, username?: string | null } | null };
+
+export type AllStatesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllStatesQuery = { __typename?: 'Query', allStates?: Array<{ __typename?: 'State', id?: number | null, name?: string | null }> | null };
+
+export type GetCitiesByStateQueryVariables = Exact<{
+  stateName: Scalars['String']['input'];
+}>;
+
+
+export type GetCitiesByStateQuery = { __typename?: 'Query', getCitiesByState?: Array<{ __typename?: 'City', id?: number | null, name?: string | null }> | null };
+
+export type OrdersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OrdersQuery = { __typename?: 'Query', orders?: Array<{ __typename?: 'Order', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, orderPrice?: number | null, packageId?: string | null, paymentOption?: OrderPaymentOption | null, paymentStatus?: OrderPaymentStatus | null, phoneNumber?: string | null, postcode?: string | null, productId?: string | null, state?: string | null, updatedAt?: any | null }> | null };
+
+export type OrderByIdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type OrderByIdQuery = { __typename?: 'Query', orderById?: { __typename?: 'Order', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, orderPrice?: number | null, packageId?: string | null, paymentOption?: OrderPaymentOption | null, paymentStatus?: OrderPaymentStatus | null, phoneNumber?: string | null, postcode?: string | null, productId?: string | null, state?: string | null, updatedAt?: any | null } | null };
 
 
 
@@ -470,11 +650,76 @@ export const useLoginMutation = <
   }
     )};
 
+export const TogglePublishDocument = `
+    mutation TogglePublish($input: ID!) {
+  togglePublish(input: $input) {
+    message
+    status
+  }
+}
+    `;
+
+export const useTogglePublishMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<TogglePublishMutation, TError, TogglePublishMutationVariables, TContext>) => {
+    
+    return useMutation<TogglePublishMutation, TError, TogglePublishMutationVariables, TContext>(
+      {
+    mutationKey: ['TogglePublish'],
+    mutationFn: (variables?: TogglePublishMutationVariables) => axiosGraphQL<TogglePublishMutation, TogglePublishMutationVariables>(TogglePublishDocument, variables)(),
+    ...options
+  }
+    )};
+
+export const CreateOrderDocument = `
+    mutation CreateOrder($input: CreateOrderInput!) {
+  createOrder(input: $input) {
+    _id
+  }
+}
+    `;
+
+export const useCreateOrderMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<CreateOrderMutation, TError, CreateOrderMutationVariables, TContext>) => {
+    
+    return useMutation<CreateOrderMutation, TError, CreateOrderMutationVariables, TContext>(
+      {
+    mutationKey: ['CreateOrder'],
+    mutationFn: (variables?: CreateOrderMutationVariables) => axiosGraphQL<CreateOrderMutation, CreateOrderMutationVariables>(CreateOrderDocument, variables)(),
+    ...options
+  }
+    )};
+
+export const DeleteOrderDocument = `
+    mutation DeleteOrder($deleteOrderId: ID!) {
+  deleteOrder(id: $deleteOrderId) {
+    _id
+  }
+}
+    `;
+
+export const useDeleteOrderMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteOrderMutation, TError, DeleteOrderMutationVariables, TContext>) => {
+    
+    return useMutation<DeleteOrderMutation, TError, DeleteOrderMutationVariables, TContext>(
+      {
+    mutationKey: ['DeleteOrder'],
+    mutationFn: (variables?: DeleteOrderMutationVariables) => axiosGraphQL<DeleteOrderMutation, DeleteOrderMutationVariables>(DeleteOrderDocument, variables)(),
+    ...options
+  }
+    )};
+
 export const ProductsDocument = `
     query Products {
   products {
     _id
     createdAt
+    published
     faqs {
       answer {
         en
@@ -504,6 +749,7 @@ export const ProductsDocument = `
       }
     }
     packages {
+      _id
       description {
         en
         ms
@@ -526,6 +772,15 @@ export const ProductsDocument = `
     totalUnits
     unitsSold
     updatedAt
+    facebookPixel {
+      enabled
+      settings {
+        accessToken
+        codeTestEvent
+        events
+        pixelId
+      }
+    }
     sections {
       sectionColor
       description {
@@ -565,8 +820,8 @@ export const useProductsQuery = <
     )};
 
 export const ProductsForPageDocument = `
-    query ProductsForPage {
-  productsForPage {
+    query ProductsForPage($published: Boolean) {
+  productsForPage(published: $published) {
     _id
     slug
     avgRating
@@ -612,6 +867,7 @@ export const ProductBySlugDocument = `
         ms
       }
     }
+    published
     sectionColors {
       faqSection
       feedbackSection
@@ -619,6 +875,15 @@ export const ProductBySlugDocument = `
       packageSection
       paymentSection
       productSection
+    }
+    facebookPixel {
+      enabled
+      settings {
+        accessToken
+        codeTestEvent
+        events
+        pixelId
+      }
     }
     feedback {
       comment
@@ -631,6 +896,7 @@ export const ProductBySlugDocument = `
       }
     }
     packages {
+      _id
       description {
         en
         ms
@@ -706,6 +972,7 @@ export const ProductByIdDocument = `
         ms
       }
     }
+    published
     sectionColors {
       faqSection
       feedbackSection
@@ -713,6 +980,15 @@ export const ProductByIdDocument = `
       packageSection
       paymentSection
       productSection
+    }
+    facebookPixel {
+      enabled
+      settings {
+        accessToken
+        codeTestEvent
+        events
+        pixelId
+      }
     }
     feedback {
       comment
@@ -725,6 +1001,7 @@ export const ProductByIdDocument = `
       }
     }
     packages {
+      _id
       description {
         en
         ms
@@ -807,6 +1084,130 @@ export const useCurrentUserQuery = <
       {
     queryKey: variables === undefined ? ['CurrentUser'] : ['CurrentUser', variables],
     queryFn: axiosGraphQL<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, variables),
+    ...options
+  }
+    )};
+
+export const AllStatesDocument = `
+    query allStates {
+  allStates {
+    id
+    name
+  }
+}
+    `;
+
+export const useAllStatesQuery = <
+      TData = AllStatesQuery,
+      TError = unknown
+    >(
+      variables?: AllStatesQueryVariables,
+      options?: Omit<UseQueryOptions<AllStatesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<AllStatesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<AllStatesQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['allStates'] : ['allStates', variables],
+    queryFn: axiosGraphQL<AllStatesQuery, AllStatesQueryVariables>(AllStatesDocument, variables),
+    ...options
+  }
+    )};
+
+export const GetCitiesByStateDocument = `
+    query getCitiesByState($stateName: String!) {
+  getCitiesByState(stateName: $stateName) {
+    id
+    name
+  }
+}
+    `;
+
+export const useGetCitiesByStateQuery = <
+      TData = GetCitiesByStateQuery,
+      TError = unknown
+    >(
+      variables: GetCitiesByStateQueryVariables,
+      options?: Omit<UseQueryOptions<GetCitiesByStateQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<GetCitiesByStateQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<GetCitiesByStateQuery, TError, TData>(
+      {
+    queryKey: ['getCitiesByState', variables],
+    queryFn: axiosGraphQL<GetCitiesByStateQuery, GetCitiesByStateQueryVariables>(GetCitiesByStateDocument, variables),
+    ...options
+  }
+    )};
+
+export const OrdersDocument = `
+    query Orders {
+  orders {
+    _id
+    city
+    createdAt
+    fullAddress
+    name
+    orderPrice
+    packageId
+    paymentOption
+    paymentStatus
+    phoneNumber
+    postcode
+    productId
+    state
+    updatedAt
+  }
+}
+    `;
+
+export const useOrdersQuery = <
+      TData = OrdersQuery,
+      TError = unknown
+    >(
+      variables?: OrdersQueryVariables,
+      options?: Omit<UseQueryOptions<OrdersQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<OrdersQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<OrdersQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['Orders'] : ['Orders', variables],
+    queryFn: axiosGraphQL<OrdersQuery, OrdersQueryVariables>(OrdersDocument, variables),
+    ...options
+  }
+    )};
+
+export const OrderByIdDocument = `
+    query OrderById($id: ID!) {
+  orderById(id: $id) {
+    _id
+    city
+    createdAt
+    fullAddress
+    name
+    orderPrice
+    packageId
+    paymentOption
+    paymentStatus
+    phoneNumber
+    postcode
+    productId
+    state
+    updatedAt
+  }
+}
+    `;
+
+export const useOrderByIdQuery = <
+      TData = OrderByIdQuery,
+      TError = unknown
+    >(
+      variables: OrderByIdQueryVariables,
+      options?: Omit<UseQueryOptions<OrderByIdQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<OrderByIdQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<OrderByIdQuery, TError, TData>(
+      {
+    queryKey: ['OrderById', variables],
+    queryFn: axiosGraphQL<OrderByIdQuery, OrderByIdQueryVariables>(OrderByIdDocument, variables),
     ...options
   }
     )};

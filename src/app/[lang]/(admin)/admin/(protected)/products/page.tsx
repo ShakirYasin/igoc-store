@@ -7,17 +7,35 @@ import {
   useDeleteAllProductsMutation,
   useDeleteProductByIdMutation,
   useProductsQuery,
+  useTogglePublishMutation,
 } from "graphql/generated/hooks";
-import { Edit, Plus, Trash } from "lucide-react";
+import { Edit, Plus, Trash, Upload } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { LabeledButton } from "@/components/LabeledButton";
+import { useRouter } from "next/navigation";
 
 export default function ProductListingPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
   const { data, isLoading, refetch } = useProductsQuery();
+  const { mutate: togglePublish } = useTogglePublishMutation({
+    onSuccess: (data) => {
+      toast.success(data?.togglePublish?.message as string);
+      refetch();
+    },
+    onError: (error) => {
+      toast.error((error as Error).message);
+    },
+  });
 
   const { mutate: deleteProduct } = useDeleteProductByIdMutation({
     onSuccess: () => {
@@ -52,68 +70,101 @@ export default function ProductListingPage() {
     setIsDeleteModalOpen(false);
   };
 
+  const handleTogglePublish = (id: string) => {
+    togglePublish({ input: id });
+  };
+  const router = useRouter();
+
   return (
     <div className="p-6 max-w-7xl mx-auto bg-gray-900">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
         <h2 className="text-3xl font-bold text-lime-400">Product Listing</h2>
-        <div className="space-x-2">
-          <Link href="/admin/products/new">
-            <Button
-              variant="default"
-              className="bg-green-500 hover:bg-green-600"
-            >
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
+          <LabeledButton
+            label="Add a new product"
+            variant="default"
+            className="bg-transparent text-green-400 hover:text-green-300 hover:bg-transparent w-full sm:w-auto"
+            asChild
+          >
+            <Link href="/admin/products/new">
               <Plus className="mr-2 h-4 w-4" /> Add New Product
-            </Button>
-          </Link>
-          <Button
-            variant="destructive"
+            </Link>
+          </LabeledButton>
+          <LabeledButton
+            label="Delete all products"
+            variant="ghost"
+            className="text-red-400 hover:text-red-300 hover:bg-transparent w-full sm:w-auto"
             onClick={() => {
               setProductToDelete(null);
               setIsDeleteModalOpen(true);
             }}
           >
             <Trash className="mr-2 h-4 w-4" /> Delete All Products
-          </Button>
+          </LabeledButton>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {data?.products?.map((product) => (
           <div
             key={product?._id}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
+            className="bg-gray-800 rounded-lg overflow-hidden transition-all duration-300 hover:bg-gray-700"
           >
-            <Image
-              src={product?.images?.[0] as string}
-              alt={product?.name?.en as string}
-              width={200}
-              height={200}
-              className="w-full h-48 object-cover"
-            />
+            <div className="relative h-48">
+              <Image
+                src={product?.images?.[0] as string}
+                alt={product?.name?.en as string}
+                layout="fill"
+                objectFit="cover"
+                className="transition-opacity duration-300"
+              />
+            </div>
             <div className="p-4">
-              <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">
+              <h3 className="text-lg font-semibold mb-1 text-lime-400 truncate">
                 {product?.name?.en}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                Price: ${product?.price}
+              <p className="text-gray-400 mb-3">
+                ${product?.price?.toFixed(2)}
               </p>
-              <div className="flex space-x-2">
-                <Link
-                  href={`/admin/products/${product?._id}/edit`}
-                  className="flex-1"
-                >
-                  <Button variant="default" className="w-full">
-                    <Edit className="mr-2 h-4 w-4" /> Edit
-                  </Button>
+              <div className="flex justify-between items-center">
+                <Link href={`/admin/products/${product?._id}/edit`}>
+                  <LabeledButton
+                    label="Edit Product"
+                    variant="ghost"
+                    className="text-blue-400 hover:text-blue-300 p-2"
+                  >
+                    <Edit className="h-5 w-5" />
+                  </LabeledButton>
                 </Link>
-                <Button
-                  variant="destructive"
+                {product?.published ? (
+                  <LabeledButton
+                    label="Unpublish Product"
+                    variant="ghost"
+                    className="text-red-400 hover:text-red-300 p-2"
+                    onClick={() => handleTogglePublish(product?._id as string)}
+                  >
+                    <Upload className="h-5 w-5" />
+                  </LabeledButton>
+                ) : (
+                  <LabeledButton
+                    label="Publish Product"
+                    variant="ghost"
+                    className="text-green-400 hover:text-green-300 p-2"
+                    onClick={() => handleTogglePublish(product?._id as string)}
+                  >
+                    <Upload className="h-5 w-5" />
+                  </LabeledButton>
+                )}
+                <LabeledButton
+                  label="Delete Product"
+                  variant="ghost"
+                  className="text-red-400 hover:text-red-300 p-2"
                   onClick={() => {
                     setProductToDelete(product?._id as string);
                     setIsDeleteModalOpen(true);
                   }}
                 >
-                  <Trash className="h-4 w-4" />
-                </Button>
+                  <Trash className="h-5 w-5" />
+                </LabeledButton>
               </div>
             </div>
           </div>

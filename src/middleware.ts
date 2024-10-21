@@ -7,19 +7,18 @@ import { i18n } from "i18n-config";
 
 export function middleware(request: NextRequest) {
   // Check if there is any supported locale in the pathname
-  const { pathname } = request.nextUrl;
+  const { pathname,search } = request.nextUrl;
 
   if (
     pathname.startsWith(`/${defaultLocale}/`) ||
     pathname === `/${defaultLocale}`
   ) {
-    // The incoming request is for /en/whatever, so we'll reDIRECT to /whatever
     return NextResponse.redirect(
       new URL(
-        pathname.replace(
+       `${ pathname.replace(
           `/${defaultLocale}`,
           pathname === `/${defaultLocale}` ? "/" : ""
-        ),
+        )}${search}`,
         request.url
       )
     );
@@ -30,11 +29,12 @@ export function middleware(request: NextRequest) {
   );
 
   if (pathnameIsMissingLocale) {
+    
     // Now for EITHER /en or /nl (for example) we're going to tell Next.js that the request is for /en/whatever
     // or /nl/whatever, and then reWRITE the request to that it is handled properly.
     return NextResponse.rewrite(
       new URL(
-        `/${defaultLocale}${pathname}${request.nextUrl.search}`,
+        `/${defaultLocale}${pathname}${search}`,
         request.nextUrl.href
       )
     );
