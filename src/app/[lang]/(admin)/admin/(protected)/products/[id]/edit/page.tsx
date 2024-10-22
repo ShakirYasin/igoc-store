@@ -11,6 +11,7 @@ export default function UpdateProductPage() {
   const { data, isLoading } = useProductByIdQuery({
     productId: id as string,
   });
+  console.log({ data });
   if (isLoading) {
     return <div className="p-6 text-center">Loading...</div>;
   }
