@@ -7,6 +7,12 @@ const nextConfig = {
         hostname: "ik.imagekit.io",
         pathname: "/**",
       },
+      // Add Facebook domain
+      {
+        protocol: "https",
+        hostname: "www.facebook.com",
+        pathname: "/tr",
+      },
     ],
   },
 };

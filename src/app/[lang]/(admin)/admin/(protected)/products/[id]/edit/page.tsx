@@ -11,18 +11,23 @@ export default function UpdateProductPage() {
   const { data, isLoading } = useProductByIdQuery({
     productId: id as string,
   });
-  console.log({ data });
+
   if (isLoading) {
     return <div className="p-6 text-center">Loading...</div>;
   }
-
+  const product = data?.product
+    ? {
+        ...data.product,
+        facebookPixel: data.product.facebookPixel ?? {
+          enabled: false,
+          settings: null,
+        },
+      }
+    : undefined;
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <h2 className="text-2xl font-bold text-lime-400 mb-6">Update Product</h2>
-      <ProductForm
-        initialData={data?.product as ProductFormValues}
-        type="update"
-      />
+      <ProductForm initialData={product as ProductFormValues} type="update" />
     </div>
   );
 }

@@ -65,12 +65,14 @@ export const productSchema = z
     }),
     facebookPixel: z.object({
       enabled: z.boolean(),
-      settings: z.object({
-        pixelId: z.string(),
-        events: z.array(z.string()),
-        accessToken: z.string(),
-        codeTestEvent: z.string(),
-      }),
+      settings: z
+        .object({
+          pixelId: z.string(),
+          events: z.array(z.string()),
+          accessToken: z.string(),
+          codeTestEvent: z.string(),
+        })
+        .nullable(),
     }),
   })
   .superRefine((data, ctx) => {

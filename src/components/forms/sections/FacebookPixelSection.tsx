@@ -22,7 +22,6 @@ const facebookPixelEvents = [
 ];
 
 const FacebookPixelSection = ({ form }: FacebookPixelSectionProps) => {
-  
   return (
     <div className="bg-gray-800 p-4 rounded-lg mb-4 space-y-6">
       <FormField
@@ -37,7 +36,15 @@ const FacebookPixelSection = ({ form }: FacebookPixelSectionProps) => {
               </FormDescription>
             </div>
             <FormControl>
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
+              <Switch
+                checked={field.value}
+                onCheckedChange={(e) => {
+                  if (!e.valueOf()) {
+                    form.setValue("facebookPixel.settings", null);
+                  }
+                  field.onChange(e);
+                }}
+              />
             </FormControl>
           </FormItem>
         )}
