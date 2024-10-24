@@ -77,7 +77,7 @@ const PaymentMethods = ({
     },
   });
   const params = useParams();
-  const {lang,slug} = params as {lang:string,slug:string};
+  const { lang, slug } = params as { lang: string; slug: string };
   const paymentMethodsHeading = localizeObject(localizedData.payment, lang);
   const { data: states } = useAllStatesQuery();
   const { data: cities } = useGetCitiesByStateQuery(
@@ -86,11 +86,11 @@ const PaymentMethods = ({
     },
     { enabled: !!form.getValues("state") }
   );
-  const router = useRouter()
+  const router = useRouter();
   const { mutate } = useCreateOrderMutation({
     onSuccess(data) {
       toast.success("Order created successfully");
-      router.replace(`/thank-you?id=${data.createOrder?._id}`)
+      router.replace(`/thank-you?id=${data.createOrder?._id}`);
     },
     onError(error) {
       toast.error((error as Error[])?.[0].message);
@@ -99,15 +99,55 @@ const PaymentMethods = ({
 
   const encodedSlug = decodeURIComponent(slug);
 
-  const { data:product } = useProductBySlugQuery({
+  const { data: product } = useProductBySlugQuery({
     slug: encodedSlug,
   });
-  const productData= product?.productBySlug
+  const productData = product?.productBySlug;
   const onSubmit = (data: OrderFormValues) => {
-    const orderPrice = productData?.salePrice ?? productData?.price ?? 0
-    mutate({input:{...data,productId:String(productData?._id),orderPrice} as CreateOrderInput})
+    const orderPrice = productData?.salePrice ?? productData?.price ?? 0;
 
+    // Track the InitiateCheckout event
+    // trackCustomEvent("InitiateCheckout", {
+    //   content_name: productData?.name,
+    //   content_ids: [productData?._id],
+    //   content_type: 'product',
+    //   value: orderPrice,
+    //   currency: 'USD', // Replace with your currency
+    //   package: data.packageId,
+    //   payment_method: data.paymentOption
+    // });
+
+    mutate({
+      input: {
+        ...data,
+        productId: String(productData?._id),
+        orderPrice,
+      } as CreateOrderInput,
+    });
   };
+
+  // const handleTest = (data: OrderFormValues) => {
+  //   const orderPrice = productData?.salePrice ?? productData?.price ?? 0;
+
+  //   // Track the InitiateCheckout event
+  //   trackCustomEvent("InitiateCheckout", {
+  //     content_name: productData?.name,
+  //     content_ids: [productData?._id],
+  //     content_type: "product",
+  //     value: orderPrice,
+  //     currency: "USD", // Replace with your currency
+  //     package: data.packageId,
+  //     payment_method: data.paymentOption,
+  //   });
+
+  //   // mutate({
+  //   //   input: {
+  //   //     ...data,
+  //   //     productId: String(productData?._id),
+  //   //     orderPrice,
+  //   //   } as CreateOrderInput,
+  //   // });
+  // };
 
   return (
     <div
@@ -340,6 +380,13 @@ const PaymentMethods = ({
             >
               {paymentMethodsHeading.buttonText as string}
             </Button>
+            {/* <Button
+              type="button"
+              className="bg-white text-lime-400 rounded-full px-14"
+              onClick={() => handleTest(form.getValues())}
+            >
+              tesst
+            </Button> */}
           </form>
         </Form>
       </div>

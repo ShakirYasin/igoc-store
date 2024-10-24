@@ -2,12 +2,11 @@ import { localizedData } from "@/constants/locales";
 import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import { localizeObject } from "@/utils/site.utils";
 import { Montserrat } from "next/font/google";
-import "./globals.css";
 import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import FacebookPixelProvider from "@/provider/FacebookPixelProvider";
+import "./globals.css";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -46,7 +45,7 @@ export default function RootLayout({ children, params: { lang } }: Props) {
       </head>
       <body className={`${montserrat.variable} font-sans antialiased`}>
         <ReactQueryProvider>
-          <FacebookPixelProvider>{children}</FacebookPixelProvider>
+         {children}
         </ReactQueryProvider>
       </body>
     </html>

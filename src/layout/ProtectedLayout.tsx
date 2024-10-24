@@ -1,6 +1,6 @@
 "use client";
 
-import AdminFallback from "@/components/fallbacks/AdminFallback";
+import AdminFallback from "@/components/fallbacks/Fallback";
 import { Button } from "@/components/ui/button";
 import { AUTH_KEY } from "@/constants/locales";
 import { useCurrentUserQuery } from "graphql/generated/hooks";

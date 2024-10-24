@@ -281,7 +281,6 @@ query CurrentUser {
   }
 }
 
-
 query allStates {
   allStates {
     id
@@ -289,16 +288,12 @@ query allStates {
   }
 }
 
-
 query getCitiesByState($stateName: String!) {
   getCitiesByState(stateName: $stateName) {
     id
     name
   }
 }
-
-
-
 
 query Orders {
   orders {
@@ -319,7 +314,6 @@ query Orders {
   }
 }
 
-
 query OrderById($id: ID!) {
   orderById(id: $id) {
     _id
@@ -333,7 +327,18 @@ query OrderById($id: ID!) {
     paymentStatus
     phoneNumber
     postcode
-    productId
+    productId {
+      _id
+      facebookPixel {
+        enabled
+        settings {
+          accessToken
+          codeTestEvent
+          events
+          pixelId
+        }
+      }
+    }
     state
     updatedAt
   }

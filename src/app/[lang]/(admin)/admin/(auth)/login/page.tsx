@@ -5,7 +5,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import AdminFallback from "@/components/fallbacks/AdminFallback";
+import AdminFallback from "@/components/fallbacks/Fallback";
 import { Button } from "@/components/ui/button";
 import {
   Form,

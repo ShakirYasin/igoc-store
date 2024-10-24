@@ -1,11 +1,13 @@
 "use client";
 
 import { localizedData } from "@/constants/locales";
+import FacebookPixelProvider from "@/provider/FacebookPixelProvider";
 import {
   ConvertMultilingualToString,
   localizeObject,
 } from "@/utils/site.utils";
 import {
+  FacebookPixel,
   Faq,
   Feedback,
   Package,
@@ -13,6 +15,7 @@ import {
   Section,
   useProductBySlugQuery,
 } from "graphql/generated/hooks";
+import Fallback from "./fallbacks/Fallback";
 import Faqs, { TFAQHeading } from "./Faqs";
 import FeedbackSection from "./feedback";
 import FreeGiftSection from "./FreeGiftSection";
@@ -35,7 +38,7 @@ const ProductDetailComponent = ({
 }) => {
   const encodedSlug = decodeURIComponent(slug);
 
-  const { data } = useProductBySlugQuery({
+  const { data, isLoading } = useProductBySlugQuery({
     slug: encodedSlug,
   });
   const productData = localizeObject(
@@ -58,8 +61,15 @@ const ProductDetailComponent = ({
 
   const packages = productData?.packages;
   const colors = productData?.sectionColors;
+
+  if (isLoading) {
+    return <Fallback text="Page" />;
+  }
   return (
-    <>
+    <FacebookPixelProvider
+      facebookPixel={productData?.facebookPixel as FacebookPixel}
+      event="ORDER"
+    >
       <HeroSection
         product={productData}
         color={colors?.productSection as string}
@@ -97,7 +107,7 @@ const ProductDetailComponent = ({
         faqHeading={localizeObject(localizedData.faq, lang) as TFAQHeading}
         color={colors?.faqSection as string}
       />
-    </>
+    </FacebookPixelProvider>
   );
 };
 

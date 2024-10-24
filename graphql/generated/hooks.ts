@@ -19,6 +19,22 @@ export type Scalars = {
   Email: { input: any; output: any; }
 };
 
+export type BaseOrder = {
+  _id?: Maybe<Scalars['ID']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  fullAddress?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  orderPrice?: Maybe<Scalars['Float']['output']>;
+  packageId?: Maybe<Scalars['ID']['output']>;
+  paymentOption?: Maybe<OrderPaymentOption>;
+  paymentStatus?: Maybe<OrderPaymentStatus>;
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  postcode?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
 export type City = {
   __typename?: 'City';
   id?: Maybe<Scalars['Int']['output']>;
@@ -160,6 +176,7 @@ export type MultilingualStringInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addIdToAllPackages?: Maybe<Message>;
   createOrder?: Maybe<Order>;
   createProduct?: Maybe<Product>;
   createUser?: Maybe<User>;
@@ -217,7 +234,7 @@ export type MutationUpdateProductByIdArgs = {
   input: UpdateProductByIdInput;
 };
 
-export type Order = {
+export type Order = BaseOrder & {
   __typename?: 'Order';
   _id?: Maybe<Scalars['ID']['output']>;
   city?: Maybe<Scalars['String']['output']>;
@@ -262,6 +279,24 @@ export type PackageInput = {
   price: Scalars['Float']['input'];
 };
 
+export type PopulatedOrder = BaseOrder & {
+  __typename?: 'PopulatedOrder';
+  _id?: Maybe<Scalars['ID']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  fullAddress?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  orderPrice?: Maybe<Scalars['Float']['output']>;
+  packageId?: Maybe<Scalars['ID']['output']>;
+  paymentOption?: Maybe<OrderPaymentOption>;
+  paymentStatus?: Maybe<OrderPaymentStatus>;
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  postcode?: Maybe<Scalars['String']['output']>;
+  productId?: Maybe<Product>;
+  state?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
 export type Product = {
   __typename?: 'Product';
   _id?: Maybe<Scalars['ID']['output']>;
@@ -300,7 +335,7 @@ export type Query = {
   allStates?: Maybe<Array<State>>;
   currentUser?: Maybe<User>;
   getCitiesByState?: Maybe<Array<City>>;
-  orderById?: Maybe<Order>;
+  orderById?: Maybe<PopulatedOrder>;
   orders?: Maybe<Array<Order>>;
   product?: Maybe<Product>;
   productBySlug?: Maybe<Product>;
@@ -524,7 +559,7 @@ export type OrderByIdQueryVariables = Exact<{
 }>;
 
 
-export type OrderByIdQuery = { __typename?: 'Query', orderById?: { __typename?: 'Order', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, orderPrice?: number | null, packageId?: string | null, paymentOption?: OrderPaymentOption | null, paymentStatus?: OrderPaymentStatus | null, phoneNumber?: string | null, postcode?: string | null, productId?: string | null, state?: string | null, updatedAt?: any | null } | null };
+export type OrderByIdQuery = { __typename?: 'Query', orderById?: { __typename?: 'PopulatedOrder', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, orderPrice?: number | null, packageId?: string | null, paymentOption?: OrderPaymentOption | null, paymentStatus?: OrderPaymentStatus | null, phoneNumber?: string | null, postcode?: string | null, state?: string | null, updatedAt?: any | null, productId?: { __typename?: 'Product', _id?: string | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null } | null } | null };
 
 
 
@@ -1189,7 +1224,18 @@ export const OrderByIdDocument = `
     paymentStatus
     phoneNumber
     postcode
-    productId
+    productId {
+      _id
+      facebookPixel {
+        enabled
+        settings {
+          accessToken
+          codeTestEvent
+          events
+          pixelId
+        }
+      }
+    }
     state
     updatedAt
   }
