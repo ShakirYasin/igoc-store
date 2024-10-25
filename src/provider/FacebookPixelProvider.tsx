@@ -39,13 +39,13 @@ const FacebookPixelProvider = ({
 }) => {
   useEffect(() => {
     // Initialize Facebook Pixel
-    if (typeof window !== "undefined" && facebookPixel.enabled) {
+    if (typeof window !== "undefined" && facebookPixel?.enabled) {
       ReactPixel.init(facebookPixel.settings?.pixelId as string);
       if (facebookPixel.settings?.events?.includes(event)) {
         eventHandler(facebookPixel, event);
       }
     }
-  }, [facebookPixel.enabled, event]);
+  }, [facebookPixel, event]);
 
   return <>{children}</>;
 };
