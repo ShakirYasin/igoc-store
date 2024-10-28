@@ -22,6 +22,7 @@ export default function ThankYouPage({
 }) {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [confettiRunning, setConfettiRunning] = useState(true);
+
   useEffect(() => {
     const { innerWidth: width, innerHeight: height } = window;
     setDimensions({ width, height });
@@ -36,6 +37,7 @@ export default function ThankYouPage({
     { id: orderId },
     { enabled: !!orderId }
   );
+
   if (isLoading) {
     return <Fallback text="Success" />;
   }
@@ -93,7 +95,7 @@ export default function ThankYouPage({
                   <p>
                     <strong>{pageMetaData.paymentOption as string}</strong>
                   </p>
-                  <p>{order?.orderById?.paymentStatus}</p>
+                  <p>{order?.orderById?.paymentDetails?.status}</p>
                 </div>
               </div>
             </div>

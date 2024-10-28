@@ -1,10 +1,11 @@
+import { Switch } from "@/components/ui/switch";
 import { UseFormReturn } from "react-hook-form";
 import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "../../ui/form";
 import { Input } from "../../ui/input";
 import { ProductFormValues } from "../productSchema";
@@ -15,7 +16,7 @@ interface BasicInfoSectionProps {
 }
 
 const BasicInfoSection = ({ form, type }: BasicInfoSectionProps) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div className="bg-gray-800 p-4 rounded-lg grid grid-cols-1 md:grid-cols-2 gap-6">
     <FormField
       control={form.control}
       name="name.en"
@@ -120,6 +121,28 @@ const BasicInfoSection = ({ form, type }: BasicInfoSectionProps) => (
         )}
       />
     )}
+    <FormField
+      control={form.control}
+      name="allowShipment"
+      render={({ field }) => (
+        <FormItem className="flex flex-row items-center justify-between rounded-lg border border-gray-700 p-4 space-x-3 space-y-0">
+          <div className="space-y-0.5">
+            <FormLabel className="text-base">Allow Shipment</FormLabel>
+            <div className="text-sm text-gray-400">
+              Enable shipping for this product
+            </div>
+          </div>
+          <FormControl>
+            <Switch
+              checked={field.value}
+              onCheckedChange={field.onChange}
+              className="data-[state=checked]:bg-black"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   </div>
 );
 

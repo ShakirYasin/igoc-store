@@ -3,6 +3,7 @@ query Products {
     _id
     createdAt
     published
+    allowShipment
     faqs {
       answer {
         en
@@ -115,6 +116,7 @@ query ProductBySlug($slug: String!) {
       }
     }
     published
+    allowShipment
     sectionColors {
       faqSection
       feedbackSection
@@ -201,6 +203,7 @@ query ProductById($productId: ID!) {
       }
     }
     published
+    allowShipment
     sectionColors {
       faqSection
       feedbackSection
@@ -302,13 +305,25 @@ query Orders {
     createdAt
     fullAddress
     name
+    email
     orderPrice
     packageId
+    productId {
+      _id
+      name {
+        en
+        ms
+      }
+    }
     paymentOption
-    paymentStatus
+    shippingRegion
+    paymentDetails {
+      billId
+      billUrl
+      status
+    }
     phoneNumber
     postcode
-    productId
     state
     updatedAt
   }
@@ -321,10 +336,15 @@ query OrderById($id: ID!) {
     createdAt
     fullAddress
     name
+    email
     orderPrice
     packageId
     paymentOption
-    paymentStatus
+    paymentDetails {
+      billId
+      billUrl
+      status
+    }
     phoneNumber
     postcode
     productId {

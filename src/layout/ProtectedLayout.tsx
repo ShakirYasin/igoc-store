@@ -11,6 +11,7 @@ import {
   LogOut,
   Menu,
   Shield,
+  ShoppingCart,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -27,6 +28,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const navItems = [
     { name: "Products", icon: Shield, link: "/admin/products" },
+    { name: "Orders", icon: ShoppingCart, link: "/admin/orders" },
   ];
 
   const handleNavItemClick = (item: string, link: string) => {

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreateOrderInput,
   Package,
+  Product,
   useAllStatesQuery,
   useCreateOrderMutation,
   useGetCitiesByStateQuery,
@@ -16,8 +17,7 @@ import * as z from "zod";
 import { Button } from "./ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { RadioCardGroup } from "./ui/radio-card-group";
 import {
   Select,
   SelectContent,
@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { Separator } from "./ui/separator";
 
 export type TPaymentMethodsHeading = {
   text1: string;
@@ -44,6 +45,7 @@ export type TPaymentMethodsHeading = {
 const orderSchema = z.object({
   packageId: z.string().min(1, "Package is required"),
   name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email").min(1, "Email is required"),
   postcode: z.string().min(1, "Postcode is required"),
   fullAddress: z.string().min(1, "Full address is required"),
   phoneNumber: z.string().min(1, "Phone number is required"),
@@ -51,6 +53,9 @@ const orderSchema = z.object({
   state: z.string().min(1, "State is required"),
   paymentOption: z.enum(["COD", "ONLINE"], {
     required_error: "Payment method is required",
+  }),
+  shippingRegion: z.enum(["WEST", "EAST"], {
+    required_error: "Shipping region is required",
   }),
 });
 
@@ -69,11 +74,13 @@ const PaymentMethods = ({
       packageId: "",
       name: "",
       postcode: "",
+      email: "",
       fullAddress: "",
       phoneNumber: "",
       city: "",
       state: "",
       paymentOption: "COD",
+      shippingRegion: "WEST",
     },
   });
   const params = useParams();
@@ -90,7 +97,11 @@ const PaymentMethods = ({
   const { mutate } = useCreateOrderMutation({
     onSuccess(data) {
       toast.success("Order created successfully");
-      router.replace(`/thank-you?id=${data.createOrder?._id}`);
+      if (data.createOrder?.paymentUrl) {
+        window.location.href = data.createOrder.paymentUrl;
+      } else {
+        router.replace(`/thank-you?id=${data.createOrder?._id}`);
+      }
     },
     onError(error) {
       toast.error((error as Error[])?.[0].message);
@@ -102,19 +113,24 @@ const PaymentMethods = ({
   const { data: product } = useProductBySlugQuery({
     slug: encodedSlug,
   });
-  const productData = product?.productBySlug;
+  const productData = localizeObject(product?.productBySlug as Product, lang);
   const onSubmit = (data: OrderFormValues) => {
-    const orderPrice = productData?.salePrice ?? productData?.price ?? 0;
+    const orderPrice =
+      (productData?.packages?.find((pkg) => pkg._id === data.packageId)
+        ?.price ??
+        productData?.price ??
+        productData?.salePrice ??
+        0) + (data.shippingRegion === "EAST" ? 15 : 10);
 
-    // Track the InitiateCheckout event
+    // // Track the InitiateCheckout event
     // trackCustomEvent("InitiateCheckout", {
-    //   content_name: productData?.name,
+    //   content_name: productData?.name as string,
     //   content_ids: [productData?._id],
-    //   content_type: 'product',
+    //   content_type: "product",
     //   value: orderPrice,
-    //   currency: 'USD', // Replace with your currency
+    //   currency: "RM // Replace with your currency
     //   package: data.packageId,
-    //   payment_method: data.paymentOption
+    //   payment_method: data.paymentOption,
     // });
 
     mutate({
@@ -149,13 +165,43 @@ const PaymentMethods = ({
   //   // });
   // };
 
+  const paymentOptions = [
+    {
+      value: "COD",
+      title: "Cash On Delivery",
+      subtitle: "Pay when you receive",
+      badge: "COD",
+    },
+    {
+      value: "ONLINE",
+      title: "Online Payment",
+      subtitle: "Credit/Debit Card",
+      badge: "Card",
+    },
+  ];
+
+  const shippingOptions = [
+    {
+      value: "WEST",
+      title: "Semenanjung",
+      subtitle: "West Malaysia",
+      badge: "RM10",
+    },
+    {
+      value: "EAST",
+      title: "Sarawak & Labuan",
+      subtitle: "East Malaysia",
+      badge: "RM15",
+    },
+  ];
+
   return (
     <div
       className="py-10 md:py-20 px-10 md:px-0 "
-      style={{ backgroundColor: color ? color : "lime" }}
+      style={{ backgroundColor: color || "lime" }}
     >
-      <div className="max-w-screen-xl mx-auto md:block flex flex-col justify-center">
-        <h2 className="text-3xl md:text-6xl font-bold mb-4 text-center">
+      <div className="max-w-screen-xl mx-auto">
+        <h2 className="text-3xl md:text-6xl font-bold  text-center">
           <span className="text-white">
             {paymentMethodsHeading.text1 as string}{" "}
           </span>
@@ -204,6 +250,22 @@ const PaymentMethods = ({
                         <Input
                           {...field}
                           placeholder={paymentMethodsHeading.name as string}
+                          className="h-[75px] text-xl font-medium px-8"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder={paymentMethodsHeading.email as string}
                           className="h-[75px] text-xl font-medium px-8"
                         />
                       </FormControl>
@@ -331,62 +393,41 @@ const PaymentMethods = ({
                 />
               </div>
             </div>
-            <FormField
-              control={form.control}
-              name="paymentOption"
-              render={({ field }) => (
-                <FormItem className="py-7">
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={"COD"}
-                      className="space-y-2"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem
-                          value="COD"
-                          id="cod"
-                          className="text-white border-white"
-                        />
-                        <Label
-                          htmlFor="COD"
-                          className="text-black text-xl font-medium"
-                        >
-                          {paymentMethodsHeading.selectionText as string}
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem
-                          value="ONLINE"
-                          id="online"
-                          className="text-white border-white"
-                        />
-                        <Label
-                          htmlFor="ONLINE"
-                          className="text-black text-xl font-medium"
-                        >
-                          {paymentMethodsHeading.selectionText2 as string}
-                        </Label>
-                      </div>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+            <div className="space-y-8 md:space-y-0 md:grid md:grid-cols-[1fr_auto_1fr] md:gap-8 mb-12 md:mt-6">
+              <RadioCardGroup
+                name="paymentOption"
+                control={form.control}
+                label="Select Payment Method"
+                options={paymentOptions}
+              />
+
+              {!!productData?.allowShipment && (
+                <>
+                  <div className="hidden md:flex items-stretch">
+                    <Separator
+                      orientation="vertical"
+                      className="mx-4 bg-gray-200"
+                    />
+                  </div>
+
+                  <RadioCardGroup
+                    name="shippingRegion"
+                    control={form.control}
+                    label="Select Shipping Region"
+                    options={shippingOptions}
+                  />
+                </>
               )}
-            />
-            <Button
-              type="submit"
-              className="bg-white text-lime-400 rounded-full px-14"
-            >
-              {paymentMethodsHeading.buttonText as string}
-            </Button>
-            {/* <Button
-              type="button"
-              className="bg-white text-lime-400 rounded-full px-14"
-              onClick={() => handleTest(form.getValues())}
-            >
-              tesst
-            </Button> */}
+            </div>
+
+            <div className="flex justify-center">
+              <Button
+                type="submit"
+                className="bg-white text-lime-400 rounded-full px-14 py-6 text-lg font-medium hover:bg-gray-50"
+              >
+                {paymentMethodsHeading.buttonText as string}
+              </Button>
+            </div>
           </form>
         </Form>
       </div>

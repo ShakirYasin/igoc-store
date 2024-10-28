@@ -1,9 +1,5 @@
-
 import { ProductFormValues } from "@/components/forms/productSchema";
-import {
-  CustomerInput,
-  FeedbackInput
-} from "graphql/generated/hooks";
+import { CustomerInput, FeedbackInput } from "graphql/generated/hooks";
 
 export type TSectionColors = {
   faqSection: string;
@@ -19,6 +15,7 @@ export const productInitialValues: ProductFormValues = {
   salePrice: 0,
   totalUnits: 0,
   images: [],
+  allowShipment: false,
   sections: [
     {
       type: "NORMAL",

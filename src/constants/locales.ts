@@ -5,6 +5,32 @@ export const defaultLocale = "ms";
 export const AUTH_KEY = "igocAdminToken";
 
 export const localizedData = {
+  paymentError: {
+    title: {
+      en: "Payment Error",
+      ms: "Ralat Pembayaran",
+    },
+    description: {
+      en: "Payment verification failed. Please contact support if you believe this is a mistake.",
+      ms: "Pengesahan pembayaran gagal. Sila hubungi sokongan jika anda percaya ini adalah kesilapan.",
+    },
+    invalid_signature: {
+      en: "Payment verification failed. Please contact support if you believe this is a mistake.",
+      ms: "Pengesahan pembayaran gagal. Sila hubungi sokongan jika anda percaya ini adalah kesilapan.",
+    },
+    order_not_found: {
+      en: "We couldn't find your order. Please try again or contact support if the problem persists.",
+      ms: "Kami tidak dapat mencari pesanan anda. Sila cuba lagi atau hubungi sokongan jika masalah berterusan.",
+    },
+    server_error: {
+      en: "An unexpected error occurred. Please try again later or contact support.",
+      ms: "Ralat tidak dijangka telah berlaku. Sila cuba lagi kemudian atau hubungi sokongan.",
+    },
+    buttonText: {
+      en: "Back to Home",
+      ms: "Kembali ke Halaman Utama",
+    },
+  },
   header: {
     heading: { ms: "JUALAN KILAT!", en: "FLASH SALE!" },
     buttonText: { ms: "BELI SEKARANG", en: "SHOP NOW" },
@@ -72,6 +98,7 @@ export const localizedData = {
     buttonText: { ms: "Beli Sekarang", en: "Buy Now" },
     package: { ms: "Pakej", en: "Package" },
     name: { ms: "NAMA", en: "NAME" },
+    email: { ms: "EMAIL", en: "EMAIL" },
     postcode: { ms: "POSKOD", en: "POSTCODE" },
     fullAddress: { ms: "ALAMAT PENUH", en: "FULL ADDRESS" },
     phoneNumber: { ms: "NOMBOR TELEFON", en: "PHONE NUMBER" },
@@ -121,10 +148,49 @@ export const localizedData = {
     },
     heading2: { en: "Order Number:", ms: "Nomor Pesanan:" },
     date: { en: "Date:", ms: "Tanggal:" },
-    totalHeading: {en:"Total:",ms:"Jumlah:"},
-    buttonText:{en:"Back to Home Page",ms:"Kembali ke Beranda"},
+    totalHeading: { en: "Total:", ms: "Jumlah:" },
+    buttonText: { en: "Back to Home Page", ms: "Kembali ke Beranda" },
     paymentOption: {
-        en:"Payment Status",ms:"Status Pembayaran"
-    }
+      en: "Payment Status",
+      ms: "Status Pembayaran",
+    },
+  },
+  paymentFailed: {
+    title: {
+      en: "Payment Failed",
+      ms: "Pembayaran Gagal",
+    },
+    description: {
+      en: "Your payment was unsuccessful. Please try again or choose a different payment method.",
+      ms: "Pembayaran anda tidak berjaya. Sila cuba lagi atau pilih kaedah pembayaran yang lain.",
+    },
+    heading1: {
+      en: "Order Details",
+      ms: "Maklumat Pesanan",
+    },
+    heading2: { 
+      en: "Order Number:", 
+      ms: "Nomor Pesanan:" 
+    },
+    date: { 
+      en: "Date:", 
+      ms: "Tanggal:" 
+    },
+    totalHeading: { 
+      en: "Total:", 
+      ms: "Jumlah:" 
+    },
+    paymentOption: {
+      en: "Payment Status",
+      ms: "Status Pembayaran",
+    },
+    homeButton: {
+      en: "Back to Home",
+      ms: "Kembali ke Halaman Utama",
+    },
+    retryButton: {
+      en: "Try Again",
+      ms: "Cuba Lagi",
+    },
   },
 };
