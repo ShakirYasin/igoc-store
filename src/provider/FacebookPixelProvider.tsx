@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateOrderInput, FacebookPixel } from "graphql/generated/hooks";
+import { FacebookPixel } from "graphql/generated/hooks";
 import React, { useEffect } from "react";
 import ReactPixel from "react-facebook-pixel";
 export type FacebookPixelEventData = {
