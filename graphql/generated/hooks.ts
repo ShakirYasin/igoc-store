@@ -54,6 +54,7 @@ export type CreateOrderInput = {
   phoneNumber: Scalars['String']['input'];
   postcode: Scalars['String']['input'];
   productId: Scalars['ID']['input'];
+  shippingRegion?: InputMaybe<ShippingRegion>;
   state: Scalars['String']['input'];
 };
 

@@ -19,7 +19,6 @@ interface Option {
 interface RadioCardGroupProps {
   name: "paymentOption" | "shippingRegion";
   control: Control<{
-    paymentOption: "COD" | "ONLINE";
     packageId: string;
     name: string;
     email: string;
@@ -28,7 +27,8 @@ interface RadioCardGroupProps {
     phoneNumber: string;
     city: string;
     state: string;
-    shippingRegion: "WEST" | "EAST";
+    paymentOption: "COD" | "ONLINE";
+    shippingRegion?: "WEST" | "EAST";
   }>;
   label: string;
   options: Option[];

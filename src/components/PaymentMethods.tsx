@@ -54,9 +54,11 @@ const orderSchema = z.object({
   paymentOption: z.enum(["COD", "ONLINE"], {
     required_error: "Payment method is required",
   }),
-  shippingRegion: z.enum(["WEST", "EAST"], {
-    required_error: "Shipping region is required",
-  }),
+  shippingRegion: z
+    .enum(["WEST", "EAST"], {
+      required_error: "Shipping region is required",
+    })
+    .optional(),
 });
 
 type OrderFormValues = z.infer<typeof orderSchema>;
@@ -83,6 +85,7 @@ const PaymentMethods = ({
       shippingRegion: "WEST",
     },
   });
+
   const params = useParams();
   const { lang, slug } = params as { lang: string; slug: string };
   const paymentMethodsHeading = localizeObject(localizedData.payment, lang);
