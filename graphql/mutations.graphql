@@ -37,12 +37,13 @@ mutation TogglePublish($input: ID!) {
   }
 }
 
-
-
 mutation CreateOrder($input: CreateOrderInput!) {
   createOrder(input: $input) {
     _id
     paymentUrl
+    orderPrice
+    packageId
+    paymentOption
   }
 }
 

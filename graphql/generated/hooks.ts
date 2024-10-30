@@ -527,7 +527,7 @@ export type CreateOrderMutationVariables = Exact<{
 }>;
 
 
-export type CreateOrderMutation = { __typename?: 'Mutation', createOrder?: { __typename?: 'Order', _id?: string | null, paymentUrl?: string | null } | null };
+export type CreateOrderMutation = { __typename?: 'Mutation', createOrder?: { __typename?: 'Order', _id?: string | null, paymentUrl?: string | null, orderPrice?: number | null, packageId?: string | null, paymentOption?: OrderPaymentOption | null } | null };
 
 export type DeleteOrderMutationVariables = Exact<{
   deleteOrderId: Scalars['ID']['input'];
@@ -742,6 +742,9 @@ export const CreateOrderDocument = `
   createOrder(input: $input) {
     _id
     paymentUrl
+    orderPrice
+    packageId
+    paymentOption
   }
 }
     `;

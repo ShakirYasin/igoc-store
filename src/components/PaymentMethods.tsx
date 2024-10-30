@@ -1,4 +1,5 @@
 import { localizedData } from "@/constants/locales";
+
 import { localizeObject } from "@/utils/site.utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -26,6 +27,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Separator } from "./ui/separator";
+import { trackCustomEvent } from "@/provider/FacebookPixelProvider";
 
 export type TPaymentMethodsHeading = {
   text1: string;
@@ -99,6 +101,17 @@ const PaymentMethods = ({
   const router = useRouter();
   const { mutate } = useCreateOrderMutation({
     onSuccess(data) {
+      if (productData?.facebookPixel?.enabled) {
+        trackCustomEvent("InitiateCheckout", {
+          content_name: productData?.name as string,
+          content_ids: [String(productData?._id)],
+          content_type: "product",
+          value: data.createOrder?.orderPrice ?? 0,
+          currency: "RM", // Replace with your currency
+          package: String(data.createOrder?.packageId),
+          payment_method: String(data.createOrder?.paymentOption),
+        });
+      }
       toast.success("Order created successfully");
       if (data.createOrder?.paymentUrl) {
         window.location.href = data.createOrder.paymentUrl;
@@ -125,17 +138,6 @@ const PaymentMethods = ({
         productData?.salePrice ??
         0) + (data.shippingRegion === "EAST" ? 15 : 10);
 
-    // // Track the InitiateCheckout event
-    // trackCustomEvent("InitiateCheckout", {
-    //   content_name: productData?.name as string,
-    //   content_ids: [productData?._id],
-    //   content_type: "product",
-    //   value: orderPrice,
-    //   currency: "RM // Replace with your currency
-    //   package: data.packageId,
-    //   payment_method: data.paymentOption,
-    // });
-
     mutate({
       input: {
         ...data,
@@ -144,29 +146,6 @@ const PaymentMethods = ({
       } as CreateOrderInput,
     });
   };
-
-  // const handleTest = (data: OrderFormValues) => {
-  //   const orderPrice = productData?.salePrice ?? productData?.price ?? 0;
-
-  //   // Track the InitiateCheckout event
-  //   trackCustomEvent("InitiateCheckout", {
-  //     content_name: productData?.name,
-  //     content_ids: [productData?._id],
-  //     content_type: "product",
-  //     value: orderPrice,
-  //     currency: "USD", // Replace with your currency
-  //     package: data.packageId,
-  //     payment_method: data.paymentOption,
-  //   });
-
-  //   // mutate({
-  //   //   input: {
-  //   //     ...data,
-  //   //     productId: String(productData?._id),
-  //   //     orderPrice,
-  //   //   } as CreateOrderInput,
-  //   // });
-  // };
 
   const paymentOptions = [
     {

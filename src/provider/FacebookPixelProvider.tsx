@@ -3,10 +3,19 @@
 import { CreateOrderInput, FacebookPixel } from "graphql/generated/hooks";
 import React, { useEffect } from "react";
 import ReactPixel from "react-facebook-pixel";
+export type FacebookPixelEventData = {
+  content_name?: string;
+  content_ids?: string[];
+  content_type: string;
+  value: number;
+  currency: string;
+  package?: string;
+  payment_method?: string;
+};
 
 export const trackCustomEvent = (
   eventName: string,
-  data?: CreateOrderInput
+  data?: FacebookPixelEventData
 ) => {
   if (typeof window !== "undefined") {
     ReactPixel.track(eventName, data);
