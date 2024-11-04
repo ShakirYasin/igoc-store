@@ -1,19 +1,35 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 
-
 import dayjs from "dayjs";
-import { useOrdersQuery } from "graphql/generated/hooks";
+import {
+  useOrdersQuery,
+  useUpdateStatusToPaidMutation,
+} from "graphql/generated/hooks";
+import { CheckCircle } from "lucide-react";
+import { toast } from "react-toastify";
 import OrdersLoading from "../Loading/OrdersLoading";
+import { Button } from "../ui/button";
 
 const OrdersPage = () => {
   const { data: orders, isLoading } = useOrdersQuery();
@@ -29,6 +45,19 @@ const OrdersPage = () => {
     text: "text-lime-500",
     mutedText: "text-gray-400",
     border: "border-[#2a3241]",
+  };
+  const { mutate: updateStatusToPaid } = useUpdateStatusToPaidMutation({
+    onSuccess: (data) => {
+      toast.success(data.UpdateStatusToPaid?.message);
+    },
+    onError: (error) => {
+      toast.error((error as Error[])?.[0]?.message);
+    },
+  });
+  const handlePaymentConfirmation = (orderId: string) => {
+    updateStatusToPaid({
+      updateStatusToPaidId: orderId,
+    });
   };
 
   if (isLoading) {
@@ -81,11 +110,11 @@ const OrdersPage = () => {
                 <TableHead className={`font-semibold ${colors.text}`}>
                   Payment Status
                 </TableHead>
-                {/* <TableHead
+                <TableHead
                   className={`font-semibold ${colors.text} text-right`}
                 >
                   Actions
-                </TableHead> */}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -143,17 +172,45 @@ const OrdersPage = () => {
                       {order?.paymentDetails?.status}
                     </Badge>
                   </TableCell>
-                  {/* <TableCell className="text-right">
-                    <Link href={`/orders/${order._id}`}>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className={`${colors.primary} border-none hover:${colors.primary} hover:text-black transition-colors`}
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </TableCell> */}
+                  {/* -- make this as a accept payment button */}
+
+                  {order.paymentDetails?.status === "PENDING" && (
+                    <TableCell className="text-right">
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={`${colors.primary} border-none hover:${colors.primary} hover:text-black transition-colors`}
+                          >
+                            <CheckCircle className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Confirm Payment</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to mark this order (#
+                              {order?._id?.slice(-8)}) as paid? This action
+                              cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel className="border-gray-700">
+                              Cancel
+                            </AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() =>
+                                handlePaymentConfirmation(order._id as string)
+                              }
+                              className={`${colors.primary} border-none hover:opacity-90`}
+                            >
+                              Confirm Payment
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>

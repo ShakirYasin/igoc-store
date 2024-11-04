@@ -68,7 +68,6 @@ const ProductDetailComponent = ({
   return (
     <FacebookPixelProvider
       facebookPixel={productData?.facebookPixel as FacebookPixel}
-      event="ORDER"
     >
       <HeroSection
         product={productData}

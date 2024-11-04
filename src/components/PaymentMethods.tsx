@@ -4,6 +4,7 @@ import { localizeObject } from "@/utils/site.utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreateOrderInput,
+  CreateOrderMutation,
   Package,
   Product,
   useAllStatesQuery,
@@ -27,7 +28,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Separator } from "./ui/separator";
-import { trackCustomEvent } from "@/provider/FacebookPixelProvider";
+import { trackInitiateCheckout } from "@/provider/FacebookPixelProvider";
 
 export type TPaymentMethodsHeading = {
   text1: string;
@@ -101,23 +102,7 @@ const PaymentMethods = ({
   const router = useRouter();
   const { mutate } = useCreateOrderMutation({
     onSuccess(data) {
-      if (productData?.facebookPixel?.enabled) {
-        trackCustomEvent("InitiateCheckout", {
-          content_name: productData?.name as string,
-          content_ids: [String(productData?._id)],
-          content_type: "product",
-          value: data.createOrder?.orderPrice ?? 0,
-          currency: "RM", // Replace with your currency
-          package: String(data.createOrder?.packageId),
-          payment_method: String(data.createOrder?.paymentOption),
-        });
-      }
-      toast.success("Order created successfully");
-      if (data.createOrder?.paymentUrl) {
-        window.location.href = data.createOrder.paymentUrl;
-      } else {
-        router.replace(`/thank-you?id=${data.createOrder?._id}`);
-      }
+      handlePaymentSuccess(data);
     },
     onError(error) {
       toast.error((error as Error[])?.[0].message);
@@ -176,6 +161,34 @@ const PaymentMethods = ({
       badge: "RM15",
     },
   ];
+
+  const handlePaymentSuccess = async (data: CreateOrderMutation) => {
+    const { createOrder } = data;
+    if (!createOrder) return;
+
+    const { enabled, settings } = productData.facebookPixel ?? {};
+    if (enabled && settings?.events?.includes("ORDER")) {
+      trackInitiateCheckout({
+        content_name: productData.name as string,
+        content_ids: [productData._id as string],
+        content_type: "product",
+        value: createOrder.orderPrice as number,
+        currency: "MYR",
+        package: form.getValues("packageId"),
+        payment_method: form.getValues("paymentOption"),
+      });
+    }
+
+    toast.success("Order created successfully");
+
+    const redirectPath =
+      createOrder.paymentUrl || `/thank-you?id=${createOrder._id}`;
+    if (createOrder.paymentUrl) {
+      window.location.href = redirectPath;
+    } else {
+      router.replace(redirectPath);
+    }
+  };
 
   return (
     <div

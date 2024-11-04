@@ -52,3 +52,10 @@ mutation DeleteOrder($deleteOrderId: ID!) {
     _id
   }
 }
+
+mutation UpdateStatusToPaid($updateStatusToPaidId: ID!) {
+  UpdateStatusToPaid(id: $updateStatusToPaidId) {
+    message
+    status
+  }
+}

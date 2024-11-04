@@ -22,39 +22,45 @@ export const trackCustomEvent = (
   }
 };
 
-export const eventHandler = (facebookPixel: FacebookPixel, event: string) => {
-  switch (event) {
-    case "ORDER":
-      if (facebookPixel?.settings?.events?.includes("ORDER")) {
-        ReactPixel.pageView();
-      }
-      break;
-    case "PURCHASE":
-      if (facebookPixel?.settings?.events?.includes("PURCHASE")) {
-        ReactPixel.fbq("track", "Purchase");
-      }
-      break;
+export type FacebookPixelPurchaseData = {
+  content_name?: string;
+  content_ids?: string[];
+  content_type: "product";
+  value: number;
+  currency: string;
+  order_id?: string;
+  package?: string;
+  payment_method?: string;
+};
+
+export const trackPurchase = (data: FacebookPixelPurchaseData) => {
+  if (typeof window !== "undefined") {
+    ReactPixel.track("Purchase", data);
+  }
+};
+
+export const trackInitiateCheckout = (
+  data: Omit<FacebookPixelPurchaseData, "order_id">
+) => {
+  if (typeof window !== "undefined") {
+    ReactPixel.track("InitiateCheckout", data);
   }
 };
 
 const FacebookPixelProvider = ({
   facebookPixel,
-  event,
+
   children,
 }: {
   facebookPixel: FacebookPixel;
-  event: string;
   children: React.ReactNode;
 }) => {
   useEffect(() => {
-    // Initialize Facebook Pixel
-    if (typeof window !== "undefined" && facebookPixel?.enabled) {
+    if (window && typeof window !== "undefined" && facebookPixel?.enabled) {
       ReactPixel.init(facebookPixel.settings?.pixelId as string);
-      if (facebookPixel.settings?.events?.includes(event)) {
-        eventHandler(facebookPixel, event);
-      }
+      ReactPixel.pageView();
     }
-  }, [facebookPixel, event]);
+  }, [facebookPixel]);
 
   return <>{children}</>;
 };

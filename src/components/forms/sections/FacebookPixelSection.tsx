@@ -11,6 +11,7 @@ import { Input } from "../../ui/input";
 import { MultiSelect } from "../../ui/multi-select";
 import { UseFormReturn } from "react-hook-form";
 import { ProductFormValues } from "../productSchema";
+import { PasswordInput } from "../../ui/password-input";
 
 interface FacebookPixelSectionProps {
   form: UseFormReturn<ProductFormValues>;
@@ -97,9 +98,8 @@ const FacebookPixelSection = ({ form }: FacebookPixelSectionProps) => {
               <FormItem>
                 <FormLabel>Access Token</FormLabel>
                 <FormControl>
-                  <Input
+                  <PasswordInput
                     {...field}
-                    type="password"
                     className="bg-gray-700 border-gray-600 text-white"
                   />
                 </FormControl>

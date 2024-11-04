@@ -181,6 +181,7 @@ export type MultilingualStringInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  UpdateStatusToPaid?: Maybe<Message>;
   addCollectionIdToAllProducts?: Maybe<Message>;
   addIdToAllPackages?: Maybe<Message>;
   createOrder?: Maybe<Order>;
@@ -193,6 +194,11 @@ export type Mutation = {
   login?: Maybe<Scalars['String']['output']>;
   togglePublish?: Maybe<Message>;
   updateProductById?: Maybe<Product>;
+};
+
+
+export type MutationUpdateStatusToPaidArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -536,6 +542,13 @@ export type DeleteOrderMutationVariables = Exact<{
 
 export type DeleteOrderMutation = { __typename?: 'Mutation', deleteOrder?: { __typename?: 'Order', _id?: string | null } | null };
 
+export type UpdateStatusToPaidMutationVariables = Exact<{
+  updateStatusToPaidId: Scalars['ID']['input'];
+}>;
+
+
+export type UpdateStatusToPaidMutation = { __typename?: 'Mutation', UpdateStatusToPaid?: { __typename?: 'Message', message?: string | null, status?: number | null } | null };
+
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -589,7 +602,7 @@ export type OrderByIdQueryVariables = Exact<{
 }>;
 
 
-export type OrderByIdQuery = { __typename?: 'Query', orderById?: { __typename?: 'PopulatedOrder', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, email?: string | null, orderPrice?: number | null, packageId?: string | null, paymentOption?: OrderPaymentOption | null, phoneNumber?: string | null, postcode?: string | null, state?: string | null, updatedAt?: any | null, paymentDetails?: { __typename?: 'PaymentDetails', billId?: string | null, billUrl?: string | null, status?: OrderPaymentStatus | null } | null, productId?: { __typename?: 'Product', _id?: string | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null } | null } | null };
+export type OrderByIdQuery = { __typename?: 'Query', orderById?: { __typename?: 'PopulatedOrder', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, email?: string | null, orderPrice?: number | null, packageId?: string | null, paymentOption?: OrderPaymentOption | null, phoneNumber?: string | null, postcode?: string | null, state?: string | null, updatedAt?: any | null, paymentDetails?: { __typename?: 'PaymentDetails', billId?: string | null, billUrl?: string | null, status?: OrderPaymentStatus | null } | null, productId?: { __typename?: 'Product', _id?: string | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null } | null } | null };
 
 
 
@@ -779,6 +792,28 @@ export const useDeleteOrderMutation = <
       {
     mutationKey: ['DeleteOrder'],
     mutationFn: (variables?: DeleteOrderMutationVariables) => axiosGraphQL<DeleteOrderMutation, DeleteOrderMutationVariables>(DeleteOrderDocument, variables)(),
+    ...options
+  }
+    )};
+
+export const UpdateStatusToPaidDocument = `
+    mutation UpdateStatusToPaid($updateStatusToPaidId: ID!) {
+  UpdateStatusToPaid(id: $updateStatusToPaidId) {
+    message
+    status
+  }
+}
+    `;
+
+export const useUpdateStatusToPaidMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateStatusToPaidMutation, TError, UpdateStatusToPaidMutationVariables, TContext>) => {
+    
+    return useMutation<UpdateStatusToPaidMutation, TError, UpdateStatusToPaidMutationVariables, TContext>(
+      {
+    mutationKey: ['UpdateStatusToPaid'],
+    mutationFn: (variables?: UpdateStatusToPaidMutationVariables) => axiosGraphQL<UpdateStatusToPaidMutation, UpdateStatusToPaidMutationVariables>(UpdateStatusToPaidDocument, variables)(),
     ...options
   }
     )};
@@ -1280,6 +1315,10 @@ export const OrderByIdDocument = `
     postcode
     productId {
       _id
+      name {
+        en
+        ms
+      }
       facebookPixel {
         enabled
         settings {

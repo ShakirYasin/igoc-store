@@ -1,14 +1,16 @@
 "use client";
 
 import { localizedData } from "@/constants/locales";
+import FacebookPixelProvider, {
+  trackPurchase,
+} from "@/provider/FacebookPixelProvider";
 import { localizeObject } from "@/utils/site.utils";
+import dayjs from "dayjs";
 import { FacebookPixel, useOrderByIdQuery } from "graphql/generated/hooks";
 import { CheckCircle } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
-import FacebookPixelProvider from "@/provider/FacebookPixelProvider";
 import Fallback from "../fallbacks/Fallback";
 
 const ReactConfetti = dynamic(() => import("react-confetti"), { ssr: false });
@@ -38,6 +40,27 @@ export default function ThankYouPage({
     { enabled: !!orderId }
   );
 
+  useEffect(() => {
+    if (
+      order?.orderById &&
+      order.orderById?.productId?.facebookPixel?.enabled &&
+      order.orderById?.productId?.facebookPixel?.settings?.events?.includes(
+        "PURCHASE"
+      )
+    ) {
+      trackPurchase({
+        content_name: order.orderById?.productId?.name?.en as string,
+        content_ids: [order.orderById.productId?._id as string],
+        content_type: "product",
+        value: order.orderById.orderPrice as number,
+        currency: "MYR",
+        order_id: order.orderById._id as string,
+        package: order.orderById.packageId as string,
+        payment_method: order.orderById.paymentOption as string,
+      });
+    }
+  }, [order]);
+
   if (isLoading) {
     return <Fallback text="Success" />;
   }
@@ -47,7 +70,6 @@ export default function ThankYouPage({
       facebookPixel={
         order?.orderById?.productId?.facebookPixel as FacebookPixel
       }
-      event="PURCHASE"
     >
       <div className="min-h-screen bg-white">
         {confettiRunning && (
