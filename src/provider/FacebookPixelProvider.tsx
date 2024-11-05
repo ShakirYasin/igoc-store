@@ -31,6 +31,20 @@ export type FacebookPixelPurchaseData = {
   order_id?: string;
   package?: string;
   payment_method?: string;
+  fbc: string | null;
+  fbp: string | null;
+  user_data?: FacebookPixelUserData;
+};
+
+export type FacebookPixelUserData = {
+  client_ip_address: null;
+  client_user_agent: string;
+  country: string;
+  ph: string | undefined;
+  zp: string | undefined;
+  fn: string | undefined;
+  ct: string | undefined;
+  st: string | undefined;
 };
 
 export const trackPurchase = (data: FacebookPixelPurchaseData) => {

@@ -4,6 +4,7 @@ import { localizedData } from "@/constants/locales";
 import {
   ConvertMultilingualToString,
   localizeObject,
+  setBrowserCookie,
 } from "@/utils/site.utils";
 import {
   ProductPageInfo,
@@ -11,10 +12,17 @@ import {
 } from "graphql/generated/hooks";
 import ProductsLoading from "../Loading/ProductsLoading";
 import ProductCard from "../ProductCard";
+import { useEffect } from "react";
 
 const ProductPage = ({ lang }: { lang: string }) => {
-  const { data, isLoading } = useProductsForPageQuery({ published: true });
+  useEffect(() => {
+    const fbclid = new URLSearchParams(window.location.search).get("fbclid");
+    if (fbclid) {
+      setBrowserCookie("_fbc", `fb.1.${Date.now()}.${fbclid}`, 90);
+    }
+  }, []);
 
+  const { data, isLoading } = useProductsForPageQuery({ published: true });
   const headings = localizeObject(localizedData.home, lang);
   return (
     <>

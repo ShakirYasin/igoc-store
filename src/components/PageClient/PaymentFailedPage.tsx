@@ -43,7 +43,7 @@ export default function PaymentFailedPage({
                 <p>
                   <strong>{pageMetaData.heading2 as string}</strong>
                 </p>
-                <p>#{order?.orderById?._id}</p>
+                <p>#{order?.orderById?._id?.slice(-5)}</p>
               </div>
               <div className="flex justify-between">
                 <p>

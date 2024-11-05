@@ -87,13 +87,50 @@ export const localizedData = {
   payment: {
     text1: { ms: "Kaedah", en: "Payment" },
     text2: { ms: "Pembayaran", en: "Methods" },
+    text3: { ms: "Pilih Kaedah Pembayaran", en: "Select Payment Method" },
+    text4: { ms: "Pilih Wilayah Penghantaran", en: "Select Shipping Region" },
+
     selectionText: {
-      ms: "BSP - Bayaran Semasa Penghantaran",
-      en: "COD - Cash On Delivery",
-    },
-    selectionText2: {
-      ms: "Pembayaran Dalam Talian / Kad Kredit",
-      en: "Online Payment / Credit Card",
+      cod: {
+        heading: {
+          ms: "Bayar Semasa Terima",
+          en: "Cash on Delivery",
+        },
+        subtitle: {
+          ms: "Bayar apabila terima",
+          en: "Pay when you receive",
+        },
+      },
+      online: {
+        heading: {
+          ms: "Bayaran Dalam Talian",
+          en: "Online Payment",
+        },
+        subtitle: {
+          ms: "Kad Kredit / Debit",
+          en: "Credit / Debit Card",
+        },
+      },
+      east: {
+        heading: {
+          ms: "Sarawak & Labuan",
+          en: "East Malaysia",
+        },
+        subtitle: {
+          ms: "Penghantaran ke Sabah, Sarawak & Labuan",
+          en: "Shipping to East Malaysia",
+        },
+      },
+      west: {
+        heading: {
+          ms: "Semenanjung",
+          en: "West Malaysia",
+        },
+        subtitle: {
+          ms: "Penghantaran ke Semenanjung Malaysia",
+          en: "Shipping to West Malaysia",
+        },
+      },
     },
     buttonText: { ms: "Beli Sekarang", en: "Buy Now" },
     package: { ms: "Pakej", en: "Package" },
@@ -168,17 +205,17 @@ export const localizedData = {
       en: "Order Details",
       ms: "Maklumat Pesanan",
     },
-    heading2: { 
-      en: "Order Number:", 
-      ms: "Nomor Pesanan:" 
+    heading2: {
+      en: "Order Number:",
+      ms: "Nomor Pesanan:",
     },
-    date: { 
-      en: "Date:", 
-      ms: "Tanggal:" 
+    date: {
+      en: "Date:",
+      ms: "Tanggal:",
     },
-    totalHeading: { 
-      en: "Total:", 
-      ms: "Jumlah:" 
+    totalHeading: {
+      en: "Total:",
+      ms: "Jumlah:",
     },
     paymentOption: {
       en: "Payment Status",

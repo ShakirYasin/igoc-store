@@ -1,6 +1,10 @@
 import { localizedData } from "@/constants/locales";
 
-import { localizeObject } from "@/utils/site.utils";
+import {
+  getBrowserCookie,
+  localizeObject,
+  sha256Hash,
+} from "@/utils/site.utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreateOrderInput,
@@ -29,21 +33,6 @@ import {
 } from "./ui/select";
 import { Separator } from "./ui/separator";
 import { trackInitiateCheckout } from "@/provider/FacebookPixelProvider";
-
-export type TPaymentMethodsHeading = {
-  text1: string;
-  text2: string;
-  selectionText: string;
-  selectionText2: string;
-  buttonText: string;
-  package: string;
-  name: string;
-  postcode: string;
-  fullAddress: string;
-  phoneNumber: string;
-  city: string;
-  state: string;
-};
 
 const orderSchema = z.object({
   packageId: z.string().min(1, "Package is required"),
@@ -131,18 +120,18 @@ const PaymentMethods = ({
       } as CreateOrderInput,
     });
   };
-
+  const metaData = localizeObject(localizedData.payment, lang);
   const paymentOptions = [
     {
       value: "COD",
-      title: "Cash On Delivery",
-      subtitle: "Pay when you receive",
+      title: metaData.selectionText.cod.heading as string,
+      subtitle: metaData.selectionText.cod.subtitle as string,
       badge: "COD",
     },
     {
       value: "ONLINE",
-      title: "Online Payment",
-      subtitle: "Credit/Debit Card",
+      title: metaData.selectionText.online.heading as string,
+      subtitle: metaData.selectionText.online.subtitle as string,
       badge: "Card",
     },
   ];
@@ -150,14 +139,14 @@ const PaymentMethods = ({
   const shippingOptions = [
     {
       value: "WEST",
-      title: "Semenanjung",
-      subtitle: "West Malaysia",
+      title: metaData.selectionText.west.heading as string,
+      subtitle: metaData.selectionText.west.subtitle as string,
       badge: "RM10",
     },
     {
       value: "EAST",
-      title: "Sarawak & Labuan",
-      subtitle: "East Malaysia",
+      title: metaData.selectionText.east.heading as string,
+      subtitle: metaData.selectionText.east.subtitle as string,
       badge: "RM15",
     },
   ];
@@ -168,6 +157,25 @@ const PaymentMethods = ({
 
     const { enabled, settings } = productData.facebookPixel ?? {};
     if (enabled && settings?.events?.includes("ORDER")) {
+      const fbc = getBrowserCookie("_fbc");
+      const fbp = getBrowserCookie("_fbp");
+      const hashedData = {
+        ph: form.getValues("phoneNumber")
+          ? await sha256Hash(form.getValues("phoneNumber"))
+          : undefined,
+        zp: form.getValues("postcode")
+          ? await sha256Hash(form.getValues("postcode"))
+          : undefined,
+        fn: form.getValues("name")
+          ? await sha256Hash(form.getValues("name"))
+          : undefined,
+        ct: form.getValues("city")
+          ? await sha256Hash(form.getValues("city"))
+          : undefined,
+        st: form.getValues("state")
+          ? await sha256Hash(form.getValues("state"))
+          : undefined,
+      };
       trackInitiateCheckout({
         content_name: productData.name as string,
         content_ids: [productData._id as string],
@@ -176,6 +184,14 @@ const PaymentMethods = ({
         currency: "MYR",
         package: form.getValues("packageId"),
         payment_method: form.getValues("paymentOption"),
+        fbc,
+        fbp,
+        user_data: {
+          ...hashedData,
+          client_ip_address: null,
+          client_user_agent: navigator.userAgent,
+          country: "my",
+        },
       });
     }
 
@@ -392,7 +408,7 @@ const PaymentMethods = ({
               <RadioCardGroup
                 name="paymentOption"
                 control={form.control}
-                label="Select Payment Method"
+                label={paymentMethodsHeading.text3 as string}
                 options={paymentOptions}
               />
 
@@ -408,7 +424,7 @@ const PaymentMethods = ({
                   <RadioCardGroup
                     name="shippingRegion"
                     control={form.control}
-                    label="Select Shipping Region"
+                    label={paymentMethodsHeading.text4 as string}
                     options={shippingOptions}
                   />
                 </>
