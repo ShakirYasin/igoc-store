@@ -114,7 +114,7 @@ export default function ProductListingPage() {
                 {product?.name?.en}
               </h3>
               <p className="text-gray-400 mb-3">
-                ${product?.price?.toFixed(2)}
+                RM {product?.price?.toFixed(2)}
               </p>
               <div className="flex justify-between items-center">
                 <Link href={`/admin/products/${product?._id}/edit`}>
