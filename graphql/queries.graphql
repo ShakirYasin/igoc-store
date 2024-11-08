@@ -4,6 +4,7 @@ query Products {
     createdAt
     published
     allowShipment
+    slug
     faqs {
       answer {
         en

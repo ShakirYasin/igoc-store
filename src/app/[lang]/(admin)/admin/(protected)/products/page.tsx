@@ -9,7 +9,7 @@ import {
   useProductsQuery,
   useTogglePublishMutation,
 } from "graphql/generated/hooks";
-import { Edit, Plus, Trash, Upload } from "lucide-react";
+import { Edit, Link2, Plus, Trash, Upload } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -64,6 +64,13 @@ export default function ProductListingPage() {
 
   const handleTogglePublish = (id: string) => {
     togglePublish({ input: id });
+  };
+
+  const handleCopyLink = (slug: string) => {
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/${slug}`
+    );
+    toast.success("Link copied to clipboard");
   };
 
   return (
@@ -126,6 +133,15 @@ export default function ProductListingPage() {
                     <Edit className="h-5 w-5" />
                   </LabeledButton>
                 </Link>
+
+                <LabeledButton
+                  label="Copy Link"
+                  variant="ghost"
+                  className="text-lime-400 hover:text-lime-300 p-2"
+                  onClick={() => handleCopyLink(product?.slug as string)}
+                >
+                  <Link2 className="h-5 w-5" />
+                </LabeledButton>
                 {product?.published ? (
                   <LabeledButton
                     label="Unpublish Product"

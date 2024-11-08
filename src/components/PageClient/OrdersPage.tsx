@@ -12,6 +12,13 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -20,18 +27,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useState } from "react";
 
 import dayjs from "dayjs";
 import {
+  PopulatedOrder,
   useOrdersQuery,
   useUpdateStatusToPaidMutation,
 } from "graphql/generated/hooks";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, FileDown } from "lucide-react";
 import { toast } from "react-toastify";
 import OrdersLoading from "../Loading/OrdersLoading";
 import { Button } from "../ui/button";
 
 const OrdersPage = () => {
+  const [selectedOrders, setSelectedOrders] = useState<Set<string>>(new Set());
   const { data: orders, isLoading } = useOrdersQuery();
 
   // Define theme colors for dark theme
@@ -60,6 +70,70 @@ const OrdersPage = () => {
     });
   };
 
+  const handleExportCSV = (orders: PopulatedOrder | PopulatedOrder[]) => {
+    const headers = [
+      "Order ID",
+      "Date",
+      "Customer Name",
+      "Email",
+      "Phone Number",
+      "Product Name",
+      "Region",
+      "Amount",
+      "Payment Mode",
+      "Payment Status",
+    ];
+
+    const ordersArray = Array.isArray(orders) ? orders : [orders];
+    const rows = ordersArray.map((order) => [
+      order._id?.slice(-8),
+      dayjs(order.createdAt).format("DD MMM YYYY"),
+      order.name,
+      order.email || "-",
+      order.phoneNumber || "-",
+      order.productId?.name?.en,
+      order.shippingRegion === "WEST" ? "West Malaysia" : "East Malaysia",
+      `RM ${order.orderPrice}`,
+      order.paymentOption === "ONLINE" ? "Online" : "COD",
+      order.paymentDetails?.status || "UNKNOWN",
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.join(",")),
+    ].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.setAttribute("href", url);
+    link.setAttribute("download", `orders-${dayjs().format("YYYY-MM-DD")}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleSelectAll = () => {
+    if (selectedOrders.size === orders?.orders?.length) {
+      setSelectedOrders(new Set());
+    } else {
+      setSelectedOrders(
+        new Set(orders?.orders?.map((order) => order._id as string))
+      );
+    }
+  };
+
+  const handleSelectOrder = (orderId: string) => {
+    const newSelected = new Set(selectedOrders);
+    if (newSelected.has(orderId)) {
+      newSelected.delete(orderId);
+    } else {
+      newSelected.add(orderId);
+    }
+    setSelectedOrders(newSelected);
+  };
+
   if (isLoading) {
     return <OrdersLoading />;
   }
@@ -70,9 +144,42 @@ const OrdersPage = () => {
     >
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className={`text-3xl md:text-4xl font-semibold ${colors.text}`}>
-            Orders History
-          </h1>
+          <div className="flex items-center gap-4">
+            <h1 className={`text-3xl md:text-4xl font-semibold ${colors.text}`}>
+              Orders History
+            </h1>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={`${colors.primary} rounded-full border-none hover:${colors.primary} hover:text-black transition-colors`}
+                >
+                  <FileDown className="h-4 w-4 mr-2" />
+                  Export Orders
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  onClick={() => handleExportCSV(orders?.orders || [])}
+                >
+                  Export All Orders
+                </DropdownMenuItem>
+                {selectedOrders.size > 0 && (
+                  <DropdownMenuItem
+                    onClick={() =>
+                      handleExportCSV(
+                        orders?.orders?.filter((order) =>
+                          selectedOrders.has(order._id as string)
+                        ) || []
+                      )
+                    }
+                  >
+                    Export Selected Orders ({selectedOrders.size})
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           <Badge className={`px-4 py-1.5 ${colors.primary}`} variant="outline">
             Total Orders: {orders?.orders?.length || 0}
           </Badge>
@@ -84,6 +191,12 @@ const OrdersPage = () => {
           <Table>
             <TableHeader>
               <TableRow className={colors.headerBg}>
+                <TableHead className="w-[50px]">
+                  <Checkbox
+                    checked={selectedOrders.size === orders?.orders?.length}
+                    onCheckedChange={handleSelectAll}
+                  />
+                </TableHead>
                 <TableHead className={`font-semibold ${colors.text}`}>
                   Order ID
                 </TableHead>
@@ -94,7 +207,7 @@ const OrdersPage = () => {
                   Customer
                 </TableHead>
                 <TableHead className={`font-semibold ${colors.text}`}>
-                  Package
+                  Product Name
                 </TableHead>
                 <TableHead className={`font-semibold ${colors.text}`}>
                   Region
@@ -120,6 +233,14 @@ const OrdersPage = () => {
             <TableBody>
               {orders?.orders?.map((order) => (
                 <TableRow key={order._id} className={colors.hoverBg}>
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedOrders.has(order._id as string)}
+                      onCheckedChange={() =>
+                        handleSelectOrder(order._id as string)
+                      }
+                    />
+                  </TableCell>
                   <TableCell className="font-medium">
                     #{order?._id?.slice(-8)}
                   </TableCell>
@@ -132,6 +253,9 @@ const OrdersPage = () => {
                       <div className="text-sm text-gray-500">
                         {order?.email as string}
                       </div>
+                      <div className="text-sm text-gray-500">
+                        {order?.phoneNumber as string}
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -139,9 +263,6 @@ const OrdersPage = () => {
                       <div className="font-medium">
                         {order?.productId?.name?.en}
                       </div>
-                      {/* <div className="text-sm text-gray-500">
-                        {order?.packageId?.name?.en}
-                      </div> */}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -169,13 +290,11 @@ const OrdersPage = () => {
                           : colors.secondary
                       }
                     >
-                      {order?.paymentDetails?.status}
+                      {order?.paymentDetails?.status || "UNKNOWN"}
                     </Badge>
                   </TableCell>
-                  {/* -- make this as a accept payment button */}
-
-                  {order.paymentDetails?.status === "PENDING" && (
-                    <TableCell className="text-right">
+                  <TableCell className="text-right space-x-2">
+                    {order.paymentDetails?.status === "PENDING" && (
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button
@@ -209,8 +328,8 @@ const OrdersPage = () => {
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
-                    </TableCell>
-                  )}
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
