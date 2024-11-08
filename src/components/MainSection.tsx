@@ -108,7 +108,9 @@ const MainSection = ({
             <h3 className="text-2xl font-semibold mb-4 text-white">
               {section.subheading}
             </h3>
-            <p className="text-white mb-6">{section.description}</p>
+            <p className="text-white mb-6 text-justify">
+              {section.description}
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
               {section?.images?.map((image, i) => (
                 <div

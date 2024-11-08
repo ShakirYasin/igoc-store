@@ -21,7 +21,9 @@ const WarningSection = ({
         <h2 className="text-3xl md:text-6xl font-bold mb-4  break-words">
           {warningSection.heading}
         </h2>
-        <p className="mt-5 text-[#1E282A]">{warningSection?.subheading}</p>
+        <p className="mt-5 text-[#1E282A] text-justify">
+          {warningSection?.subheading}
+        </p>
         <div className="flex flex-col md:flex-row items-start gap-10 mt-6">
           <Image
             src={warningSection?.images?.[0] as string}
