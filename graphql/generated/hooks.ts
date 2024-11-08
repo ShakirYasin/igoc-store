@@ -45,13 +45,13 @@ export type City = {
 
 export type CreateOrderInput = {
   city: Scalars['String']['input'];
-  email: Scalars['String']['input'];
+  email?: InputMaybe<Scalars['String']['input']>;
   fullAddress: Scalars['String']['input'];
   name: Scalars['String']['input'];
   orderPrice: Scalars['Float']['input'];
   packageId: Scalars['String']['input'];
   paymentOption: OrderPaymentOption;
-  phoneNumber: Scalars['String']['input'];
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
   postcode: Scalars['String']['input'];
   productId: Scalars['ID']['input'];
   shippingRegion?: InputMaybe<ShippingRegion>;

@@ -3,6 +3,7 @@ import { localizedData } from "@/constants/locales";
 import {
   getBrowserCookie,
   localizeObject,
+  phoneNumberSchema,
   sha256Hash,
 } from "@/utils/site.utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,24 +35,34 @@ import {
 import { Separator } from "./ui/separator";
 import { trackInitiateCheckout } from "@/provider/FacebookPixelProvider";
 
-const orderSchema = z.object({
-  packageId: z.string().min(1, "Package is required"),
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email").min(1, "Email is required"),
-  postcode: z.string().min(1, "Postcode is required"),
-  fullAddress: z.string().min(1, "Full address is required"),
-  phoneNumber: z.string().min(1, "Phone number is required"),
-  city: z.string().min(1, "City is required"),
-  state: z.string().min(1, "State is required"),
-  paymentOption: z.enum(["COD", "ONLINE"], {
-    required_error: "Payment method is required",
-  }),
-  shippingRegion: z
-    .enum(["WEST", "EAST"], {
-      required_error: "Shipping region is required",
-    })
-    .optional(),
-});
+const orderSchema = z
+  .object({
+    packageId: z.string().min(1, "Package is required"),
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Invalid email").optional(),
+    postcode: z.string().min(1, "Postcode is required"),
+    fullAddress: z.string().min(1, "Full address is required"),
+    phoneNumber: phoneNumberSchema,
+    city: z.string().min(1, "City is required"),
+    state: z.string().min(1, "State is required"),
+    paymentOption: z.enum(["COD", "ONLINE"], {
+      required_error: "Payment method is required",
+    }),
+    shippingRegion: z
+      .enum(["WEST", "EAST"], {
+        required_error: "Shipping region is required",
+      })
+      .optional(),
+  })
+  .refine(
+    (data) => {
+      return data.email || data.phoneNumber;
+    },
+    {
+      message: "Either email or phone number is required",
+      path: ["email"],
+    }
+  );
 
 type OrderFormValues = z.infer<typeof orderSchema>;
 
@@ -68,7 +79,6 @@ const PaymentMethods = ({
       packageId: "",
       name: "",
       postcode: "",
-      email: "",
       fullAddress: "",
       phoneNumber: "",
       city: "",
@@ -271,13 +281,16 @@ const PaymentMethods = ({
                 <FormField
                   control={form.control}
                   name="email"
-                  render={({ field }) => (
+                  render={({ field: { onChange, ...rest } }) => (
                     <FormItem>
                       <FormControl>
                         <Input
-                          {...field}
                           placeholder={paymentMethodsHeading.email as string}
                           className="h-[75px] text-xl font-medium px-8"
+                          onChange={(e) =>
+                            onChange(e.target.value || undefined)
+                          }
+                          {...rest}
                         />
                       </FormControl>
                       <FormMessage />

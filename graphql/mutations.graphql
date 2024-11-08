@@ -46,7 +46,6 @@ mutation CreateOrder($input: CreateOrderInput!) {
     paymentOption
   }
 }
-
 mutation DeleteOrder($deleteOrderId: ID!) {
   deleteOrder(id: $deleteOrderId) {
     _id

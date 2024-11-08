@@ -1,4 +1,5 @@
 import { MultilingualString } from "graphql/generated/hooks";
+import * as z from "zod";
 
 // interface LanguageObject {
 //   ms?: string;
@@ -44,7 +45,8 @@ export const localizeObject = <T extends Record<string, unknown>>(
   return result;
 };
 
-export async function sha256Hash(str: string): Promise<string> {
+export async function sha256Hash(str?: string): Promise<string | undefined> {
+  if (!str) return;
   const encoder = new TextEncoder();
   const data = encoder.encode(str);
   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
@@ -66,3 +68,23 @@ export function setBrowserCookie(
   date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
   document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
 }
+
+export const phoneNumberSchema = z.string()
+  .transform(val => val || undefined)
+  .optional()
+  .refine(
+    (val): val is string => {
+      if (!val) return true; // Allow undefined/empty since it's optional
+      
+      // Matches Malaysian phone numbers:
+      // - Starts with 01 (mobile) or 03/04/05/06/07/08/09 (landline)
+      // - Followed by 7-9 digits
+      // - Optional spaces or dashes between numbers
+      const malaysianPhoneRegex = /^(0[1-9][0-9][-\s]?[0-9]{6,8})$/;
+      const cleanNumber = val.replace(/[\s-]/g, '');
+      return malaysianPhoneRegex.test(cleanNumber);
+    },
+    {
+      message: "Invalid phone number format",
+    }
+  );

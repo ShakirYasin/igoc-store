@@ -21,7 +21,7 @@ interface RadioCardGroupProps {
   control: Control<{
     packageId: string;
     name: string;
-    email: string;
+    email?: string;
     postcode: string;
     fullAddress: string;
     phoneNumber: string;
