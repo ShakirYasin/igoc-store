@@ -218,11 +218,11 @@ const PaymentMethods = ({
 
   return (
     <div
-      className="py-10 md:py-20 px-10 md:px-0 "
+      className="py-6 md:py-20 px-4 md:px-0"
       style={{ backgroundColor: color || "lime" }}
     >
       <div className="max-w-screen-xl mx-auto">
-        <h2 className="text-3xl md:text-6xl font-bold  text-center">
+        <h2 className="text-2xl md:text-6xl font-bold text-center mb-6 md:mb-10">
           <span className="text-white">
             {paymentMethodsHeading.text1 as string}{" "}
           </span>
@@ -236,13 +236,13 @@ const PaymentMethods = ({
               control={form.control}
               name="packageId"
               render={({ field }) => (
-                <FormItem className="py-4">
+                <FormItem className="py-2 md:py-4">
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
-                      <SelectTrigger className="w-full h-[75px] text-xl font-medium px-8">
+                      <SelectTrigger className="w-full h-[60px] md:h-[75px] text-lg md:text-xl font-medium px-4 md:px-8">
                         <SelectValue
                           placeholder={paymentMethodsHeading.package as string}
                         />
@@ -260,7 +260,7 @@ const PaymentMethods = ({
                 </FormItem>
               )}
             />
-            <div className="flex flex-col md:flex-row md:space-x-4">
+            <div className="flex flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0">
               <div className="flex-1 space-y-4">
                 <FormField
                   control={form.control}
@@ -271,7 +271,7 @@ const PaymentMethods = ({
                         <Input
                           {...field}
                           placeholder={paymentMethodsHeading.name as string}
-                          className="h-[75px] text-xl font-medium px-8"
+                          className="h-[60px] md:h-[75px] text-lg md:text-xl font-medium px-4 md:px-8"
                         />
                       </FormControl>
                       <FormMessage />
@@ -286,7 +286,7 @@ const PaymentMethods = ({
                       <FormControl>
                         <Input
                           placeholder={paymentMethodsHeading.email as string}
-                          className="h-[75px] text-xl font-medium px-8"
+                          className="h-[60px] md:h-[75px] text-lg md:text-xl font-medium px-4 md:px-8"
                           onChange={(e) =>
                             onChange(e.target.value || undefined)
                           }
@@ -308,7 +308,7 @@ const PaymentMethods = ({
                           placeholder={
                             paymentMethodsHeading.fullAddress as string
                           }
-                          className="h-[75px] text-xl font-medium px-8"
+                          className="h-[60px] md:h-[75px] text-lg md:text-xl font-medium px-4 md:px-8"
                         />
                       </FormControl>
                       <FormMessage />
@@ -325,7 +325,7 @@ const PaymentMethods = ({
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
-                          <SelectTrigger className="w-full h-[75px] text-xl font-medium px-8">
+                          <SelectTrigger className="w-full h-[60px] md:h-[75px] text-lg md:text-xl font-medium px-4 md:px-8">
                             <SelectValue
                               placeholder={paymentMethodsHeading.city as string}
                             />
@@ -357,7 +357,7 @@ const PaymentMethods = ({
                         <Input
                           {...field}
                           placeholder={paymentMethodsHeading.postcode as string}
-                          className="h-[75px] text-xl font-medium px-8"
+                          className="h-[60px] md:h-[75px] text-lg md:text-xl font-medium px-4 md:px-8"
                         />
                       </FormControl>
                       <FormMessage />
@@ -375,7 +375,7 @@ const PaymentMethods = ({
                           placeholder={
                             paymentMethodsHeading.phoneNumber as string
                           }
-                          className="h-[75px] text-xl font-medium px-8"
+                          className="h-[60px] md:h-[75px] text-lg md:text-xl font-medium px-4 md:px-8"
                         />
                       </FormControl>
                       <FormMessage />
@@ -392,7 +392,7 @@ const PaymentMethods = ({
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
-                          <SelectTrigger className="w-full h-[75px] text-xl font-medium px-8">
+                          <SelectTrigger className="w-full h-[60px] md:h-[75px] text-lg md:text-xl font-medium px-4 md:px-8">
                             <SelectValue
                               placeholder={
                                 paymentMethodsHeading.state as string
@@ -417,7 +417,7 @@ const PaymentMethods = ({
                 />
               </div>
             </div>
-            <div className="space-y-8 md:space-y-0 md:grid md:grid-cols-[1fr_auto_1fr] md:gap-8 mb-12 md:mt-6">
+            <div className="space-y-6 md:space-y-0 md:grid md:grid-cols-[1fr_auto_1fr] md:gap-8 my-6 md:my-12">
               <RadioCardGroup
                 name="paymentOption"
                 control={form.control}
@@ -444,10 +444,10 @@ const PaymentMethods = ({
               )}
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-6 md:mt-0">
               <Button
                 type="submit"
-                className="bg-white text-lime-400 rounded-full px-14 py-6 text-lg font-medium hover:bg-gray-50"
+                className="w-full md:w-auto bg-white text-lime-400 rounded-full px-8 md:px-14 py-4 md:py-6 text-base md:text-lg font-medium hover:bg-gray-50"
               >
                 {paymentMethodsHeading.buttonText as string}
               </Button>
