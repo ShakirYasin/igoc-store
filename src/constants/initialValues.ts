@@ -13,7 +13,6 @@ export const productInitialValues: ProductFormValues = {
   name: { en: "", ms: "" },
   price: 0,
   salePrice: 0,
-  totalUnits: 0,
   images: [],
   allowShipment: false,
   sections: [

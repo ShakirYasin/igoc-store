@@ -54,15 +54,30 @@ const orderSchema = z
       })
       .optional(),
   })
-  .refine(
-    (data) => {
-      return data.email || data.phoneNumber;
-    },
-    {
-      message: "Either email or phone number is required",
-      path: ["email"],
+  .superRefine((data, ctx) => {
+    if (data.paymentOption === "COD") {
+      if (!data.email) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Email is required for COD orders",
+          path: ["email"],
+        });
+      }
+      if (!data.phoneNumber) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Phone number is required for COD orders",
+          path: ["phoneNumber"],
+        });
+      }
+    } else if (!data.email && !data.phoneNumber) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Either email or phone number is required",
+        path: ["email"],
+      });
     }
-  );
+  });
 
 type OrderFormValues = z.infer<typeof orderSchema>;
 
@@ -219,6 +234,7 @@ const PaymentMethods = ({
   return (
     <div
       className="py-6 md:py-20 px-4 md:px-0"
+      id="payment-methods"
       style={{ backgroundColor: color || "lime" }}
     >
       <div className="max-w-screen-xl mx-auto">
@@ -447,7 +463,7 @@ const PaymentMethods = ({
             <div className="flex justify-center mt-6 md:mt-0">
               <Button
                 type="submit"
-                className="w-full md:w-auto bg-white text-lime-400 rounded-full px-8 md:px-14 py-4 md:py-6 text-base md:text-lg font-medium hover:bg-gray-50"
+                className="w-full md:w-auto bg-lime-500 text-white rounded-full px-8 md:px-14 py-4 md:py-6 text-base md:text-lg font-medium hover:bg-green-600"
               >
                 {paymentMethodsHeading.buttonText as string}
               </Button>

@@ -85,24 +85,7 @@ const BasicInfoSection = ({ form, type }: BasicInfoSectionProps) => (
         </FormItem>
       )}
     />
-    <FormField
-      control={form.control}
-      name="totalUnits"
-      render={({ field: { onChange, ...restField } }) => (
-        <FormItem>
-          <FormLabel>Total Units</FormLabel>
-          <FormControl>
-            <Input
-              type="number"
-              onChange={(e) => onChange(Number(e.target.value))}
-              {...restField}
-              className="bg-gray-700 border-gray-600 text-white"
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
+
     {type === "create" && (
       <FormField
         control={form.control}

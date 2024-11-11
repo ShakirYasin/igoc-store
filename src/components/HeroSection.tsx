@@ -9,7 +9,7 @@ import {
   localizeObject,
 } from "@/utils/site.utils";
 import { Product } from "graphql/generated/hooks";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { localizedData } from "@/constants/locales";
 
 interface HeroSectionProps {
@@ -19,6 +19,7 @@ interface HeroSectionProps {
 
 const HeroSection = ({ product, color }: HeroSectionProps) => {
   const [selectedImage, setSelectedImage] = useState(product?.images?.[0]);
+  const router = useRouter();
   const { lang } = useParams();
   const heroSectionHeading = localizeObject(localizedData.hero, lang as string);
   return (
@@ -69,7 +70,7 @@ const HeroSection = ({ product, color }: HeroSectionProps) => {
                 {heroSectionHeading.text1 as string}
               </p>
               <p className="text-3xl font-bold text-lime-400">
-                {product?.totalUnits}
+                {product?.unitsSold}
               </p>
             </div>
             <div className="flex flex-col gap-5 min-h-[131px] items-center md:items-start">
@@ -81,7 +82,12 @@ const HeroSection = ({ product, color }: HeroSectionProps) => {
               </p>
             </div>
           </div>
-          <Button className="bg-lime-400 text-white px-24 py-5 mt-12 rounded-full text-md font-semibold hover:bg-green-600 transition duration-300">
+          <Button
+            onClick={() => {
+              router.push(`#payment-methods`);
+            }}
+            className="bg-lime-400 text-white px-24 py-5 mt-12 rounded-full text-md font-semibold hover:bg-green-600 transition duration-300"
+          >
             {heroSectionHeading.buttonText as string}
           </Button>
         </div>

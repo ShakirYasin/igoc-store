@@ -69,22 +69,24 @@ export function setBrowserCookie(
   document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
 }
 
-export const phoneNumberSchema = z.string()
-  .transform(val => val || undefined)
+export const phoneNumberSchema = z
+  .string()
+  .transform((val) => val || undefined)
   .optional()
   .refine(
     (val): val is string => {
       if (!val) return true; // Allow undefined/empty since it's optional
-      
+
       // Matches Malaysian phone numbers:
       // - Starts with 01 (mobile) or 03/04/05/06/07/08/09 (landline)
       // - Followed by 7-9 digits
       // - Optional spaces or dashes between numbers
       const malaysianPhoneRegex = /^(0[1-9][0-9][-\s]?[0-9]{6,8})$/;
-      const cleanNumber = val.replace(/[\s-]/g, '');
+      const cleanNumber = val.replace(/[\s-]/g, "");
       return malaysianPhoneRegex.test(cleanNumber);
     },
     {
-      message: "Invalid phone number format",
+      message:
+        "Invalid phone number format. Only Malaysian phone numbers are allowed.",
     }
   );

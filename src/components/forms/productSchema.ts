@@ -9,7 +9,6 @@ export const productSchema = z
     }),
     price: z.number().min(0, "Price must be non-negative"),
     salePrice: z.number().min(0, "Sale price must be non-negative"),
-    totalUnits: z.number().min(0, "Total units must be non-negative"),
     images: z.array(z.string()),
     allowShipment: z.boolean(),
     sections: z.array(

@@ -93,8 +93,8 @@ export const localizedData = {
     selectionText: {
       cod: {
         heading: {
-          ms: "Bayar Semasa Terima",
-          en: "Cash on Delivery",
+          ms: "COD - Barang Sampai Baru Bayar",
+          en: "COD - Cash on Delivery",
         },
         subtitle: {
           ms: "Bayar apabila terima",
@@ -103,11 +103,11 @@ export const localizedData = {
       },
       online: {
         heading: {
-          ms: "Bayaran Dalam Talian",
+          ms: "Online Payment",
           en: "Online Payment",
         },
         subtitle: {
-          ms: "Kad Kredit / Debit",
+          ms: "Credit / Debit Card",
           en: "Credit / Debit Card",
         },
       },

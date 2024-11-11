@@ -54,7 +54,7 @@ query Products {
     price
     salePrice
     satisfiedCustomers
-    totalUnits
+
     unitsSold
     updatedAt
     facebookPixel {
@@ -166,7 +166,7 @@ query ProductBySlug($slug: String!) {
     price
     salePrice
     satisfiedCustomers
-    totalUnits
+
     unitsSold
     updatedAt
     sections {
@@ -253,7 +253,7 @@ query ProductById($productId: ID!) {
     price
     salePrice
     satisfiedCustomers
-    totalUnits
+
     unitsSold
     updatedAt
     sections {
@@ -350,7 +350,7 @@ query OrderById($id: ID!) {
     postcode
     productId {
       _id
-      name{
+      name {
         en
         ms
       }
