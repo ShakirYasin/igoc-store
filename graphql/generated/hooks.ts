@@ -37,6 +37,12 @@ export type BaseOrder = {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
+export type ChangePasswordInput = {
+  confirmPassword: Scalars['String']['input'];
+  currentPassword: Scalars['String']['input'];
+  newPassword: Scalars['String']['input'];
+};
+
 export type City = {
   __typename?: 'City';
   id?: Maybe<Scalars['Int']['output']>;
@@ -183,6 +189,7 @@ export type Mutation = {
   UpdateStatusToPaid?: Maybe<Message>;
   addCollectionIdToAllProducts?: Maybe<Message>;
   addIdToAllPackages?: Maybe<Message>;
+  changePassword?: Maybe<Message>;
   createOrder?: Maybe<Order>;
   createProduct?: Maybe<Product>;
   createUser?: Maybe<User>;
@@ -203,6 +210,11 @@ export type MutationUpdateStatusToPaidArgs = {
 
 export type MutationAddCollectionIdToAllProductsArgs = {
   batchSize: Scalars['Int']['input'];
+};
+
+
+export type MutationChangePasswordArgs = {
+  input: ChangePasswordInput;
 };
 
 
@@ -329,6 +341,7 @@ export type Product = {
   __typename?: 'Product';
   _id?: Maybe<Scalars['ID']['output']>;
   allowShipment?: Maybe<Scalars['Boolean']['output']>;
+  collectionId?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   facebookPixel?: Maybe<FacebookPixel>;
   faqs?: Maybe<Array<Faq>>;
@@ -362,7 +375,9 @@ export type Query = {
   __typename?: 'Query';
   allStates?: Maybe<Array<State>>;
   currentUser?: Maybe<User>;
+  exportProductsData?: Maybe<Message>;
   getCitiesByState?: Maybe<Array<City>>;
+  importProductsData?: Maybe<Message>;
   orderById?: Maybe<PopulatedOrder>;
   orders?: Maybe<Array<PopulatedOrder>>;
   product?: Maybe<Product>;
@@ -545,6 +560,13 @@ export type UpdateStatusToPaidMutationVariables = Exact<{
 
 
 export type UpdateStatusToPaidMutation = { __typename?: 'Mutation', UpdateStatusToPaid?: { __typename?: 'Message', message?: string | null, status?: number | null } | null };
+
+export type ChangePasswordMutationVariables = Exact<{
+  input: ChangePasswordInput;
+}>;
+
+
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword?: { __typename?: 'Message', status?: number | null, message?: string | null } | null };
 
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -811,6 +833,28 @@ export const useUpdateStatusToPaidMutation = <
       {
     mutationKey: ['UpdateStatusToPaid'],
     mutationFn: (variables?: UpdateStatusToPaidMutationVariables) => axiosGraphQL<UpdateStatusToPaidMutation, UpdateStatusToPaidMutationVariables>(UpdateStatusToPaidDocument, variables)(),
+    ...options
+  }
+    )};
+
+export const ChangePasswordDocument = `
+    mutation ChangePassword($input: ChangePasswordInput!) {
+  changePassword(input: $input) {
+    status
+    message
+  }
+}
+    `;
+
+export const useChangePasswordMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<ChangePasswordMutation, TError, ChangePasswordMutationVariables, TContext>) => {
+    
+    return useMutation<ChangePasswordMutation, TError, ChangePasswordMutationVariables, TContext>(
+      {
+    mutationKey: ['ChangePassword'],
+    mutationFn: (variables?: ChangePasswordMutationVariables) => axiosGraphQL<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument, variables)(),
     ...options
   }
     )};

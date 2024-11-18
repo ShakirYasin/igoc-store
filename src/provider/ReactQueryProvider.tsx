@@ -15,7 +15,6 @@ const ReactQueryProvider = ({ children }: { children: React.ReactNode }) => {
   });
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
       <ToastContainer
         position="bottom-right"
         autoClose={3000}
@@ -28,6 +27,7 @@ const ReactQueryProvider = ({ children }: { children: React.ReactNode }) => {
         draggable
         pauseOnHover
       />
+      {children}
     </QueryClientProvider>
   );
 };

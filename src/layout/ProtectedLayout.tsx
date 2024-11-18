@@ -15,6 +15,13 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import ChangePasswordModal from "@/components/modals/ChangePasswordModal";
 
 const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   const { isLoading, error, isError } = useCurrentUserQuery();
@@ -22,6 +29,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [activeNavItem, setActiveNavItem] = useState("Products");
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
   const toggleSidebar = () => setIsSidebarCollapsed(!isSidebarCollapsed);
   const toggleMobileSidebar = () =>
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
@@ -144,9 +152,32 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-lime-400 rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium text-black">AA</span>
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div className="w-10 h-10 bg-lime-400 rounded-full flex items-center justify-center cursor-pointer hover:bg-lime-500 transition-colors duration-200">
+                    <span className="text-sm font-medium text-black">AA</span>
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="start"
+                  className="w-56 bg-gray-800 border-gray-700"
+                >
+                  <DropdownMenuItem
+                    onClick={() => setIsChangePasswordOpen(true)}
+                    className="text-gray-200 focus:text-lime-400 focus:bg-gray-700 cursor-pointer"
+                  >
+                    Change Password
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {isChangePasswordOpen && (
+                <ChangePasswordModal
+                  isOpen={isChangePasswordOpen}
+                  onClose={() => setIsChangePasswordOpen(false)}
+                />
+              )}
+
               <div
                 onClick={handleLogout}
                 className="flex items-center space-x-2 cursor-pointer group"
