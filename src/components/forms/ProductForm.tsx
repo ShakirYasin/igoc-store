@@ -1,29 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { productInitialValues } from "@/constants/initialValues";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-import { Form } from "../ui/form";
-import { Button } from "../ui/button";
-import { productSchema, ProductFormValues } from "./productSchema";
 import {
   CreateProductInput,
   UpdateProductInput,
   useCreateProductMutation,
   useUpdateProductByIdMutation,
 } from "graphql/generated/hooks";
-import { productInitialValues } from "@/constants/initialValues";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, useCallback } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { Button } from "../ui/button";
+import { Form } from "../ui/form";
 import FormAccordion from "./FormAccordion";
+import { ProductFormValues, productSchema } from "./productSchema";
 import BasicInfoSection from "./sections/BasicInfoSection";
 
-import SectionsSection from "./sections/SectionsSection";
 import FAQsSection from "./sections/FAQsSection";
+import SectionsSection from "./sections/SectionsSection";
 
 import FacebookPixelSection from "./sections/FacebookPixelSection";
-import ImagesSection from "./sections/ImagesSection";
 import FeedbackSection from "./sections/FeedbackSection";
+import ImagesSection from "./sections/ImagesSection";
 import PackagesSection from "./sections/PackagesSection";
 import SectionColorsSection from "./sections/SectionColorsSection";
 
@@ -42,6 +42,8 @@ const ProductForm = ({
   });
 
   const router = useRouter();
+  const [isKeyboardSave, setIsKeyboardSave] = useState(false);
+
   const { mutate: createProduct } = useCreateProductMutation({
     onSuccess: () => {
       toast.success("Product created successfully");
@@ -53,11 +55,17 @@ const ProductForm = ({
   });
   const { mutate: updateProduct } = useUpdateProductByIdMutation({
     onSuccess: () => {
-      toast.success("Product updated successfully");
-      router.push(`/admin`);
+      if (!isKeyboardSave) {
+        toast.success("Product updated successfully");
+        router.push(`/admin`);
+      } else {
+        toast.success("Product saved");
+        setIsKeyboardSave(false);
+      }
     },
     onError: (error) => {
       toast.error((error as Error).message);
+      setIsKeyboardSave(false);
     },
   });
 
@@ -72,19 +80,41 @@ const ProductForm = ({
     "facebook-pixel",
   ]);
 
-  const onSubmit = (data: ProductFormValues) => {
-    const { _id, slug, ...payload } = data;
+  const onSubmit = useCallback(
+    (data: ProductFormValues) => {
+      const { _id, slug, ...payload } = data;
 
-    if (type === "create") {
-      createProduct({ input: { ...payload, slug } as CreateProductInput });
-    } else if (_id) {
-      updateProduct({
-        input: { data: payload as UpdateProductInput, id: _id },
-      });
-    } else {
-      toast.error("Cannot update product without an ID");
+      if (type === "create") {
+        createProduct({ input: { ...payload, slug } as CreateProductInput });
+      } else if (_id) {
+        updateProduct({
+          input: { data: payload as UpdateProductInput, id: _id },
+        });
+      } else {
+        toast.error("Cannot update product without an ID");
+      }
+    },
+    [createProduct, updateProduct, type]
+  );
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
+        event.preventDefault();
+        setIsKeyboardSave(true);
+        form.handleSubmit(onSubmit)();
+      }
+    };
+    if (type === "update") {
+      document.addEventListener("keydown", handleKeyDown);
     }
-  };
+
+    return () => {
+      if (type === "update") {
+        document.removeEventListener("keydown", handleKeyDown);
+      }
+    };
+  }, [form, type, onSubmit]);
 
   return (
     <Form {...form}>

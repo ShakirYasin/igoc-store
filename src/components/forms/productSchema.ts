@@ -70,7 +70,7 @@ export const productSchema = z
           pixelId: z.string(),
           events: z.array(z.string()),
           accessToken: z.string(),
-          codeTestEvent: z.string(),
+          codeTestEvent: z.string().optional(),
         })
         .nullable(),
     }),
