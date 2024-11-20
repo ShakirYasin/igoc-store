@@ -36,7 +36,7 @@ export const FeedbackCard: React.FC<FeedbackCardProps> = ({ feedbackData }) => {
         )}
       </div>
       <Separator className="my-4 w-full bg-[#D9D9D9]" />
-      <p className=" text-[#D9D9D9] font-semibold">{feedbackData?.comment}</p>
+      <p className=" text-black font-semibold">{feedbackData?.comment}</p>
     </div>
   );
 };

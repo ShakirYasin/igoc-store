@@ -54,7 +54,14 @@ export const productSchema = z
         image: z.string(),
       })
     ),
-    slug: z.string().optional(),
+    slug: z
+      .string()
+      .optional()
+      .refine(
+        (val) => !val || (val.length <= 10 && /^[a-z0-9-]+$/.test(val)),
+        "Slug must be max 10 characters, lowercase, and contain only letters, numbers, and hyphens"
+      )
+      .transform((val) => val?.toLowerCase().replace(/\s+/g, "-")),
     sectionColors: z.object({
       faqSection: z.string(),
       feedbackSection: z.string(),

@@ -72,6 +72,7 @@ const ProductDetailComponent = ({
       <HeroSection
         product={productData}
         color={colors?.productSection as string}
+        satisfiedCustomers={feedbackSection?.length}
       />
 
       <MainSection

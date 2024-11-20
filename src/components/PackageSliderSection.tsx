@@ -75,7 +75,26 @@ const PackageSliderSection: React.FC<{
               .heading as string
           }
         </h2>
-        <div className="relative">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => swiperRef.current?.slidePrev()}
+            className="bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md shrink-0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-4 h-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 19.5L8.25 12l7.5-7.5"
+              />
+            </svg>
+          </button>
           <Swiper
             modules={[Navigation]}
             spaceBetween={30}
@@ -101,7 +120,7 @@ const PackageSliderSection: React.FC<{
             {packages &&
               packages?.map((pkg, index) => (
                 <SwiperSlide key={index}>
-                  <div className="border-[#D9D9D9] flex flex-col items-center justify-center border bg-white rounded-lg p-6">
+                  <div className="border-[#D9D9D9] md:max-h-[800px] max-h-[500px] flex flex-col items-center justify-center border bg-white rounded-lg p-6">
                     <Image
                       src={pkg.image as string}
                       alt={pkg.name as string}
@@ -124,6 +143,25 @@ const PackageSliderSection: React.FC<{
                 </SwiperSlide>
               ))}
           </Swiper>
+          <button
+            onClick={() => swiperRef.current?.slideNext()}
+            className="bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md shrink-0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-4 h-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8.25 4.5l7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
