@@ -21,9 +21,9 @@ const StylizedHeading: React.FC<StylizedHeadingProps> = ({
   return (
     <h1 className={className}>
       <span className={textColor}>{text1}</span>
-      {text2 && <span className="text-lime-400"> {text2}</span>}
+      {text2 && <span className="text-red-800"> {text2}</span>}
 
-      {text3 && <span className="text-lime-400"> {text3} </span>}
+      {text3 && <span className="text-red-800"> {text3} </span>}
 
       {text4 && <span className={textColor}> {text4}</span>}
     </h1>

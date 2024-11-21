@@ -81,6 +81,10 @@ export const productSchema = z
         })
         .nullable(),
     }),
+    unitsSold: z.number().min(0, "Units sold must be non-negative"),
+    satisfiedCustomers: z
+      .number()
+      .min(0, "Satisfied customers must be non-negative"),
   })
   .superRefine((data, ctx) => {
     if (!data._id && !data.slug) {

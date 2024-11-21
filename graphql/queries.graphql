@@ -4,6 +4,7 @@ query Products {
     createdAt
     published
     allowShipment
+    satisfiedCustomers
     slug
     faqs {
       answer {
@@ -115,6 +116,7 @@ query ProductBySlug($slug: String!) {
         ms
       }
     }
+    satisfiedCustomers
     published
     allowShipment
     sectionColors {
@@ -202,6 +204,7 @@ query ProductById($productId: ID!) {
       }
     }
     published
+    satisfiedCustomers
     allowShipment
     sectionColors {
       faqSection
@@ -250,7 +253,6 @@ query ProductById($productId: ID!) {
     }
     price
     salePrice
-
 
     unitsSold
     updatedAt

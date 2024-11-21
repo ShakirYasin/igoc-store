@@ -15,14 +15,9 @@ import { localizedData } from "@/constants/locales";
 interface HeroSectionProps {
   product: ConvertMultilingualToString<Product>;
   color: string;
-  satisfiedCustomers?: number;
 }
 
-const HeroSection = ({
-  product,
-  color,
-  satisfiedCustomers,
-}: HeroSectionProps) => {
+const HeroSection = ({ product, color }: HeroSectionProps) => {
   const [selectedImage, setSelectedImage] = useState(product?.images?.[0]);
   const router = useRouter();
   const { lang } = useParams();
@@ -74,7 +69,7 @@ const HeroSection = ({
               <p className="text-black text-xl md:text-3xl font-bold md:text-start text-center">
                 {heroSectionHeading.text1 as string}
               </p>
-              <p className="text-3xl font-bold text-lime-400">
+              <p className="text-3xl font-bold text-red-800">
                 {product?.unitsSold}
               </p>
             </div>
@@ -82,8 +77,8 @@ const HeroSection = ({
               <p className="text-black text-xl md:text-3xl font-bold md:text-start text-center">
                 {heroSectionHeading.text2 as string}
               </p>
-              <p className="text-3xl font-bold text-lime-400">
-                {satisfiedCustomers || 0}
+              <p className="text-3xl font-bold text-red-800">
+                {product.satisfiedCustomers || 0}
               </p>
             </div>
           </div>

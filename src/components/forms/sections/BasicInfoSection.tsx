@@ -104,6 +104,43 @@ const BasicInfoSection = ({ form, type }: BasicInfoSectionProps) => (
         )}
       />
     )}
+
+    <FormField
+      control={form.control}
+      name="unitsSold"
+      render={({ field: { onChange, ...restField } }) => (
+        <FormItem>
+          <FormLabel>Units Sold</FormLabel>
+          <FormControl>
+            <Input
+              {...restField}
+              type="number"
+              onChange={(e) => onChange(Number(e.target.value))}
+              className="bg-gray-700 border-gray-600 text-white"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+    <FormField
+      control={form.control}
+      name="satisfiedCustomers"
+      render={({ field: { onChange, ...restField } }) => (
+        <FormItem>
+          <FormLabel>Satisfied Customers</FormLabel>
+          <FormControl>
+            <Input
+              {...restField}
+              type="number"
+              onChange={(e) => onChange(Number(e.target.value))}
+              className="bg-gray-700 border-gray-600 text-white"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
     <FormField
       control={form.control}
       name="allowShipment"
