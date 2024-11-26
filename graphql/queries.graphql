@@ -368,3 +368,52 @@ query OrderById($id: ID!) {
     updatedAt
   }
 }
+
+query PaginatedOrders($limit: Int, $page: Int, $search: String) {
+  paginatedOrders(limit: $limit, page: $page, search: $search) {
+    results {
+      _id
+      city
+      createdAt
+      fullAddress
+      name
+      email
+      orderPrice
+      packageId
+      paymentOption
+      shippingRegion
+      paymentDetails {
+        billId
+        billUrl
+        status
+      }
+      phoneNumber
+      postcode
+      productId {
+        _id
+        name {
+          en
+          ms
+        }
+        facebookPixel {
+          enabled
+          settings {
+            accessToken
+            codeTestEvent
+            events
+            pixelId
+          }
+        }
+      }
+      state
+      updatedAt
+    }
+    paginatorInfo {
+      currentPage
+      hasNextPage
+      pageSize
+      pages
+      totalRecords
+    }
+  }
+}

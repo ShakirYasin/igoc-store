@@ -312,6 +312,21 @@ export type PackageInput = {
   price: Scalars['Float']['input'];
 };
 
+export type PaginatedOrderResponse = {
+  __typename?: 'PaginatedOrderResponse';
+  paginatorInfo?: Maybe<PaginatedResponse>;
+  results?: Maybe<Array<PopulatedOrder>>;
+};
+
+export type PaginatedResponse = {
+  __typename?: 'PaginatedResponse';
+  currentPage?: Maybe<Scalars['Int']['output']>;
+  hasNextPage?: Maybe<Scalars['Boolean']['output']>;
+  pageSize?: Maybe<Scalars['Int']['output']>;
+  pages?: Maybe<Scalars['Int']['output']>;
+  totalRecords?: Maybe<Scalars['Int']['output']>;
+};
+
 export type PaymentDetails = {
   __typename?: 'PaymentDetails';
   billId?: Maybe<Scalars['String']['output']>;
@@ -382,6 +397,7 @@ export type Query = {
   importProductsData?: Maybe<Message>;
   orderById?: Maybe<PopulatedOrder>;
   orders?: Maybe<Array<PopulatedOrder>>;
+  paginatedOrders?: Maybe<PaginatedOrderResponse>;
   product?: Maybe<Product>;
   productBySlug?: Maybe<Product>;
   products?: Maybe<Array<Product>>;
@@ -396,6 +412,13 @@ export type QueryGetCitiesByStateArgs = {
 
 export type QueryOrderByIdArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryPaginatedOrdersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -626,6 +649,15 @@ export type OrderByIdQueryVariables = Exact<{
 
 
 export type OrderByIdQuery = { __typename?: 'Query', orderById?: { __typename?: 'PopulatedOrder', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, email?: string | null, orderPrice?: number | null, packageId?: string | null, paymentOption?: OrderPaymentOption | null, phoneNumber?: string | null, postcode?: string | null, state?: string | null, updatedAt?: any | null, paymentDetails?: { __typename?: 'PaymentDetails', billId?: string | null, billUrl?: string | null, status?: OrderPaymentStatus | null } | null, productId?: { __typename?: 'Product', _id?: string | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null } | null } | null };
+
+export type PaginatedOrdersQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type PaginatedOrdersQuery = { __typename?: 'Query', paginatedOrders?: { __typename?: 'PaginatedOrderResponse', results?: Array<{ __typename?: 'PopulatedOrder', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, email?: string | null, orderPrice?: number | null, packageId?: string | null, paymentOption?: OrderPaymentOption | null, shippingRegion?: ShippingRegion | null, phoneNumber?: string | null, postcode?: string | null, state?: string | null, updatedAt?: any | null, paymentDetails?: { __typename?: 'PaymentDetails', billId?: string | null, billUrl?: string | null, status?: OrderPaymentStatus | null } | null, productId?: { __typename?: 'Product', _id?: string | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null } | null }> | null, paginatorInfo?: { __typename?: 'PaginatedResponse', currentPage?: number | null, hasNextPage?: boolean | null, pageSize?: number | null, pages?: number | null, totalRecords?: number | null } | null } | null };
 
 
 
@@ -1390,6 +1422,73 @@ export const useOrderByIdQuery = <
       {
     queryKey: ['OrderById', variables],
     queryFn: axiosGraphQL<OrderByIdQuery, OrderByIdQueryVariables>(OrderByIdDocument, variables),
+    ...options
+  }
+    )};
+
+export const PaginatedOrdersDocument = `
+    query PaginatedOrders($limit: Int, $page: Int, $search: String) {
+  paginatedOrders(limit: $limit, page: $page, search: $search) {
+    results {
+      _id
+      city
+      createdAt
+      fullAddress
+      name
+      email
+      orderPrice
+      packageId
+      paymentOption
+      shippingRegion
+      paymentDetails {
+        billId
+        billUrl
+        status
+      }
+      phoneNumber
+      postcode
+      productId {
+        _id
+        name {
+          en
+          ms
+        }
+        facebookPixel {
+          enabled
+          settings {
+            accessToken
+            codeTestEvent
+            events
+            pixelId
+          }
+        }
+      }
+      state
+      updatedAt
+    }
+    paginatorInfo {
+      currentPage
+      hasNextPage
+      pageSize
+      pages
+      totalRecords
+    }
+  }
+}
+    `;
+
+export const usePaginatedOrdersQuery = <
+      TData = PaginatedOrdersQuery,
+      TError = unknown
+    >(
+      variables?: PaginatedOrdersQueryVariables,
+      options?: Omit<UseQueryOptions<PaginatedOrdersQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<PaginatedOrdersQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<PaginatedOrdersQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['PaginatedOrders'] : ['PaginatedOrders', variables],
+    queryFn: axiosGraphQL<PaginatedOrdersQuery, PaginatedOrdersQueryVariables>(PaginatedOrdersDocument, variables),
     ...options
   }
     )};
