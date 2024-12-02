@@ -38,6 +38,9 @@ export const OrdersTableHeader = ({
         Product Name
       </TableHead>
       <TableHead className={`font-semibold ${colors.text} text-center`}>
+        Package Name
+      </TableHead>
+      <TableHead className={`font-semibold ${colors.text} text-center`}>
         Region
       </TableHead>
       <TableHead className={`font-semibold ${colors.text} text-center`}>

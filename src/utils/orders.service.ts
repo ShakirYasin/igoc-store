@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
-import { PopulatedOrder } from "graphql/generated/hooks";
+import { PopulatedOrderWithPackage } from "graphql/generated/hooks";
 
 export const formatOrderForCSV = (
-  orders: PopulatedOrder | PopulatedOrder[]
+  orders: PopulatedOrderWithPackage | PopulatedOrderWithPackage[]
 ) => {
   const headers = [
     "Order ID",
@@ -12,7 +12,11 @@ export const formatOrderForCSV = (
     "Phone Number",
     "Address",
     "Product Name",
+    "Package Name",
     "Region",
+    "State",
+    "Postcode",
+    "City",
     "Amount",
     "Payment Mode",
     "Payment Status",
@@ -27,7 +31,11 @@ export const formatOrderForCSV = (
     order.phoneNumber || "-",
     order.fullAddress || "-",
     order.productId?.name?.en,
+    order.packageId?.name?.en,
     order.shippingRegion === "WEST" ? "West Malaysia" : "East Malaysia",
+    order.state || "-",
+    order.postcode || "-",
+    order.city || "-",
     `RM ${order.orderPrice}`,
     order.paymentOption === "ONLINE" ? "Online" : "COD",
     order.paymentDetails?.status || "UNKNOWN",

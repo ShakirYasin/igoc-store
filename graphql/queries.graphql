@@ -379,7 +379,13 @@ query PaginatedOrders($limit: Int, $page: Int, $search: String) {
       name
       email
       orderPrice
-      packageId
+      packageId {
+        _id
+        name {
+          en
+          ms
+        }
+      }
       paymentOption
       shippingRegion
       paymentDetails {

@@ -1,14 +1,3 @@
-import { TableRow, TableCell } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { CheckCircle } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,13 +6,29 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTitle
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { TableCell, TableRow } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import dayjs from "dayjs";
 import { OrderRowProps } from "@/types/orders.types";
-import { memo, useCallback } from "react";
+import dayjs from "dayjs";
+import { CheckCircle, MoreVertical, Trash2 } from "lucide-react";
+import { memo, useCallback, useState } from "react";
 
 export const OrdersTableRow = memo(
   ({
@@ -32,7 +37,12 @@ export const OrdersTableRow = memo(
     onSelect,
     onPaymentConfirmation,
     colors,
+    handleDeleteOrder,
   }: OrderRowProps) => {
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
     const handlePaymentConfirmation = useCallback(() => {
       onPaymentConfirmation(order._id as string);
     }, [order._id, onPaymentConfirmation]);
@@ -64,10 +74,28 @@ export const OrdersTableRow = memo(
             <Tooltip>
               <TooltipTrigger className="max-w-[200px] truncate block mx-auto">
                 {order?.fullAddress}
+                <div className="text-sm text-gray-500 text-center truncate">
+                  Postcode: {order?.postcode as string}
+                </div>
+                <div className="text-sm text-gray-500 text-center truncate">
+                  City: {order?.city as string}
+                </div>
+                <div className="text-sm text-gray-500 text-center truncate">
+                  State: {order?.state as string}
+                </div>
               </TooltipTrigger>
               <TooltipContent>
                 <p className="max-w-[300px] whitespace-normal">
                   {order?.fullAddress}
+                  <div className="text-sm text-gray-500 text-center ">
+                    Postcode: {order?.postcode as string}
+                  </div>
+                  <div className="text-sm text-gray-500 text-center ">
+                    City: {order?.city as string}
+                  </div>
+                  <div className="text-sm text-gray-500 text-center ">
+                    State: {order?.state as string}
+                  </div>
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -77,6 +105,13 @@ export const OrdersTableRow = memo(
           <div className="space-y-1">
             <div className="font-medium text-center">
               {order?.productId?.name?.en}
+            </div>
+          </div>
+        </TableCell>
+        <TableCell className="text-center">
+          <div className="space-y-1">
+            <div className="font-medium text-center">
+              {order?.packageId?.name?.en}
             </div>
           </div>
         </TableCell>
@@ -110,40 +145,90 @@ export const OrdersTableRow = memo(
             {order?.paymentDetails?.status || "UNKNOWN"}
           </Badge>
         </TableCell>
-        <TableCell className="text-right space-x-2">
-          {order.paymentDetails?.status === "PENDING" && (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={`${colors.primary} border-none hover:${colors.primary} hover:text-black transition-colors`}
+        <TableCell className="text-right">
+          <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {order.paymentDetails?.status === "PENDING" && (
+                <DropdownMenuItem
+                  onClick={() => {
+                    setDropdownOpen(false);
+                    setConfirmDialogOpen(true);
+                  }}
                 >
-                  <CheckCircle className="h-4 w-4" />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Confirm Payment</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Are you sure you want to mark this order (#
-                    {order?._id?.slice(-8)}) as paid? This action cannot be
-                    undone.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel className="border-gray-700">
-                    Cancel
-                  </AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={handlePaymentConfirmation}
-                    className={`${colors.primary} border-none hover:opacity-90`}
-                  >
-                    Confirm Payment
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          )}
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Confirm Payment
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem
+                onClick={() => {
+                  setDropdownOpen(false);
+                  setDeleteDialogOpen(true);
+                }}
+                className="text-red-600"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete Order
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <AlertDialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Confirm Payment</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to mark this order (#
+                  {order?._id?.slice(-8)}) as paid? This action cannot be
+                  undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="border-gray-700" onClick={() => setConfirmDialogOpen(false)}>
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => {
+                    handlePaymentConfirmation();
+                    setConfirmDialogOpen(false);
+                  }}
+                  className={`${colors.primary} border-none hover:opacity-90`}
+                >
+                  Confirm Payment
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Order</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete this order (#
+                  {order?._id?.slice(-8)})? This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="border-gray-700" onClick={() => setDeleteDialogOpen(false)}>
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => {
+                    handleDeleteOrder();
+                    setDeleteDialogOpen(false);
+                  }}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Delete Order
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </TableCell>
       </TableRow>
     );

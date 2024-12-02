@@ -1,31 +1,29 @@
 "use client";
 
+import { ORDERS_COLORS } from "@/constants/orders.constants";
+import { downloadCSV, formatOrderForCSV } from "@/utils/orders.service";
+import { useInfinitePaginatedOrdersQuery } from "graphql/created/hooks";
+import {
+  PopulatedOrderWithPackage,
+  useUpdateStatusToPaidMutation
+} from "graphql/generated/hooks";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import {
-  useUpdateStatusToPaidMutation,
-  PopulatedOrder,
-} from "graphql/generated/hooks";
 import { toast } from "react-toastify";
-import { ORDERS_COLORS } from "@/constants/orders.constants";
-import { formatOrderForCSV, downloadCSV } from "@/utils/orders.service";
 import OrdersLoading from "../Loading/OrdersLoading";
-import { useInfinitePaginatedOrdersQuery } from "graphql/created/hooks";
 
+import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
+import { FileDown } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { OrdersTable } from "../Orders/OrdersTable";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { FileDown } from "lucide-react";
-import OnScrollLoader from "../Loading/OnScrollLoader";
-import TableEntriesLoader from "../Loading/TableEntriesLoader";
 import SearchBar from "../ui/search-bar";
-import { useSearchParams } from "next/navigation";
 
 const INITIAL_PAGE_SIZE = 10;
 const PAGE_SIZE_INCREMENT = 5;
@@ -33,10 +31,16 @@ const PAGE_SIZE_INCREMENT = 5;
 const OrdersPage = () => {
   const searchParams = useSearchParams();
   const [selectedOrders, setSelectedOrders] = useState<Set<string>>(new Set());
-  const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
-    useInfinitePaginatedOrdersQuery(INITIAL_PAGE_SIZE, {
-      search: searchParams.get("search") ?? "",
-    });
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    refetch,
+  } = useInfinitePaginatedOrdersQuery(INITIAL_PAGE_SIZE, {
+    search: searchParams.get("search") ?? "",
+  });
 
   const { ref: targetRef, inView } = useInView({
     threshold: 0,
@@ -46,7 +50,9 @@ const OrdersPage = () => {
   });
 
   // Add this helper function to deduplicate orders by ID
-  const deduplicateOrders = (orders: PopulatedOrder[]): PopulatedOrder[] => {
+  const deduplicateOrders = (
+    orders: PopulatedOrderWithPackage[]
+  ): PopulatedOrderWithPackage[] => {
     const seen = new Map();
     return orders.filter((order) => {
       const id = order._id;
@@ -59,7 +65,7 @@ const OrdersPage = () => {
   };
 
   // Update the orders extraction
-  const orders: PopulatedOrder[] = deduplicateOrders(
+  const orders: PopulatedOrderWithPackage[] = deduplicateOrders(
     data?.pages?.flatMap((page) => page.paginatedOrders?.results ?? []) ?? []
   );
 
@@ -94,7 +100,9 @@ const OrdersPage = () => {
     });
   };
 
-  const handleExportCSV = (orders: PopulatedOrder | PopulatedOrder[]) => {
+  const handleExportCSV = (
+    orders: PopulatedOrderWithPackage | PopulatedOrderWithPackage[]
+  ) => {
     const { headers, rows } = formatOrderForCSV(orders);
     downloadCSV(headers, rows as string[][]);
   };
@@ -123,15 +131,24 @@ const OrdersPage = () => {
 
   return (
     <div
-      className={`max-w-[1440px] mx-auto ${ORDERS_COLORS.background} py-10 md:py-24 px-4 md:px-8`}
+      className={`xl:max-w-7xl md:max-w-3xl max-w-sm max-h-[90vh]  mx-auto ${ORDERS_COLORS.background} py-10 md:py-24 px-4 md:px-8`}
     >
-      <div className="flex justify-between items-center mb-8">
-        <div className="flex items-center gap-4">
+      <div className="flex  gap-3 justify-between flex-col items-center mb-8">
+        <div className="flex items-center justify-between gap-4 w-full">
           <h1
             className={`text-3xl md:text-4xl font-semibold ${ORDERS_COLORS.text}`}
           >
             Orders History
           </h1>
+          <Badge
+            className={`px-4 py-1.5 ${ORDERS_COLORS.primary} hover:${ORDERS_COLORS.primary}`}
+            variant="default"
+          >
+            Total Orders: {totalOrders || 0}
+          </Badge>
+        </div>
+        <div className="flex items-center justify-between gap-4 w-full">
+          <SearchBar />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -162,15 +179,6 @@ const OrdersPage = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex items-center gap-4">
-          <SearchBar />
-          <Badge
-            className={`px-4 py-1.5 ${ORDERS_COLORS.primary}`}
-            variant="default"
-          >
-            Total Orders: {totalOrders || 0}
-          </Badge>
-        </div>
       </div>
       <div className="">
         <OrdersTable
@@ -180,31 +188,15 @@ const OrdersPage = () => {
           onSelectOrder={handleSelectOrder}
           onPaymentConfirmation={handlePaymentConfirmation}
           colors={ORDERS_COLORS}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          targetRef={targetRef}
+          refetch={refetch}
+          currentEntries={
+            INITIAL_PAGE_SIZE + (data?.pages?.length || 0) * PAGE_SIZE_INCREMENT
+          }
+          totalOrders={totalOrders}
         />
-
-        <div ref={targetRef} className="h-40 flex items-center justify-center">
-          {hasNextPage ? (
-            <div className="relative flex flex-col items-center">
-              {isFetchingNextPage ? (
-                <OnScrollLoader />
-              ) : (
-                <TableEntriesLoader
-                  currentEntries={
-                    INITIAL_PAGE_SIZE +
-                    (data?.pages?.length || 0) * PAGE_SIZE_INCREMENT
-                  }
-                  totalOrders={totalOrders}
-                />
-              )}
-            </div>
-          ) : (
-            <div
-              className={`${ORDERS_COLORS.text} font-medium text-sm opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards]`}
-            >
-              You&apos;ve reached the end of the list!
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );

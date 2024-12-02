@@ -27,7 +27,6 @@ export type BaseOrder = {
   fullAddress?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   orderPrice?: Maybe<Scalars['Float']['output']>;
-  packageId?: Maybe<Scalars['ID']['output']>;
   paymentDetails?: Maybe<PaymentDetails>;
   paymentOption?: Maybe<OrderPaymentOption>;
   phoneNumber?: Maybe<Scalars['String']['output']>;
@@ -315,7 +314,7 @@ export type PackageInput = {
 export type PaginatedOrderResponse = {
   __typename?: 'PaginatedOrderResponse';
   paginatorInfo?: Maybe<PaginatedResponse>;
-  results?: Maybe<Array<PopulatedOrder>>;
+  results?: Maybe<Array<PopulatedOrderWithPackage>>;
 };
 
 export type PaginatedResponse = {
@@ -344,6 +343,26 @@ export type PopulatedOrder = BaseOrder & {
   name?: Maybe<Scalars['String']['output']>;
   orderPrice?: Maybe<Scalars['Float']['output']>;
   packageId?: Maybe<Scalars['ID']['output']>;
+  paymentDetails?: Maybe<PaymentDetails>;
+  paymentOption?: Maybe<OrderPaymentOption>;
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  postcode?: Maybe<Scalars['String']['output']>;
+  productId?: Maybe<Product>;
+  shippingRegion?: Maybe<ShippingRegion>;
+  state?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type PopulatedOrderWithPackage = BaseOrder & {
+  __typename?: 'PopulatedOrderWithPackage';
+  _id?: Maybe<Scalars['ID']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  fullAddress?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  orderPrice?: Maybe<Scalars['Float']['output']>;
+  packageId?: Maybe<Package>;
   paymentDetails?: Maybe<PaymentDetails>;
   paymentOption?: Maybe<OrderPaymentOption>;
   phoneNumber?: Maybe<Scalars['String']['output']>;
@@ -657,7 +676,7 @@ export type PaginatedOrdersQueryVariables = Exact<{
 }>;
 
 
-export type PaginatedOrdersQuery = { __typename?: 'Query', paginatedOrders?: { __typename?: 'PaginatedOrderResponse', results?: Array<{ __typename?: 'PopulatedOrder', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, email?: string | null, orderPrice?: number | null, packageId?: string | null, paymentOption?: OrderPaymentOption | null, shippingRegion?: ShippingRegion | null, phoneNumber?: string | null, postcode?: string | null, state?: string | null, updatedAt?: any | null, paymentDetails?: { __typename?: 'PaymentDetails', billId?: string | null, billUrl?: string | null, status?: OrderPaymentStatus | null } | null, productId?: { __typename?: 'Product', _id?: string | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null } | null }> | null, paginatorInfo?: { __typename?: 'PaginatedResponse', currentPage?: number | null, hasNextPage?: boolean | null, pageSize?: number | null, pages?: number | null, totalRecords?: number | null } | null } | null };
+export type PaginatedOrdersQuery = { __typename?: 'Query', paginatedOrders?: { __typename?: 'PaginatedOrderResponse', results?: Array<{ __typename?: 'PopulatedOrderWithPackage', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, email?: string | null, orderPrice?: number | null, paymentOption?: OrderPaymentOption | null, shippingRegion?: ShippingRegion | null, phoneNumber?: string | null, postcode?: string | null, state?: string | null, updatedAt?: any | null, packageId?: { __typename?: 'Package', _id?: string | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null } | null, paymentDetails?: { __typename?: 'PaymentDetails', billId?: string | null, billUrl?: string | null, status?: OrderPaymentStatus | null } | null, productId?: { __typename?: 'Product', _id?: string | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null } | null }> | null, paginatorInfo?: { __typename?: 'PaginatedResponse', currentPage?: number | null, hasNextPage?: boolean | null, pageSize?: number | null, pages?: number | null, totalRecords?: number | null } | null } | null };
 
 
 
@@ -1437,7 +1456,13 @@ export const PaginatedOrdersDocument = `
       name
       email
       orderPrice
-      packageId
+      packageId {
+        _id
+        name {
+          en
+          ms
+        }
+      }
       paymentOption
       shippingRegion
       paymentDetails {
