@@ -27,7 +27,6 @@ export type BaseOrder = {
   fullAddress?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   orderPrice?: Maybe<Scalars['Float']['output']>;
-  packageId?: Maybe<Scalars['ID']['output']>;
   paymentDetails?: Maybe<PaymentDetails>;
   paymentOption?: Maybe<OrderPaymentOption>;
   phoneNumber?: Maybe<Scalars['String']['output']>;
@@ -35,6 +34,12 @@ export type BaseOrder = {
   shippingRegion?: Maybe<ShippingRegion>;
   state?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type ChangePasswordInput = {
+  confirmPassword: Scalars['String']['input'];
+  currentPassword: Scalars['String']['input'];
+  newPassword: Scalars['String']['input'];
 };
 
 export type City = {
@@ -68,9 +73,11 @@ export type CreateProductInput = {
   packages?: InputMaybe<Array<PackageInput>>;
   price: Scalars['Float']['input'];
   salePrice?: InputMaybe<Scalars['Float']['input']>;
+  satisfiedCustomers?: InputMaybe<Scalars['Int']['input']>;
   sectionColors?: InputMaybe<SectionColorsInput>;
   sections?: InputMaybe<Array<SectionInput>>;
   slug: Scalars['String']['input'];
+  unitsSold?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type CreateUserInput = {
@@ -136,7 +143,7 @@ export type FacebookPixelSettings = {
 
 export type FacebookPixelSettingsInput = {
   accessToken: Scalars['String']['input'];
-  codeTestEvent: Scalars['String']['input'];
+  codeTestEvent?: InputMaybe<Scalars['String']['input']>;
   events: Array<FacebookPixelEvents>;
   pixelId: Scalars['String']['input'];
 };
@@ -183,6 +190,7 @@ export type Mutation = {
   UpdateStatusToPaid?: Maybe<Message>;
   addCollectionIdToAllProducts?: Maybe<Message>;
   addIdToAllPackages?: Maybe<Message>;
+  changePassword?: Maybe<Message>;
   createOrder?: Maybe<Order>;
   createProduct?: Maybe<Product>;
   createUser?: Maybe<User>;
@@ -192,6 +200,7 @@ export type Mutation = {
   deleteProductBySlug?: Maybe<Product>;
   login?: Maybe<Scalars['String']['output']>;
   togglePublish?: Maybe<Message>;
+  updateAdminInfo?: Maybe<User>;
   updateProductById?: Maybe<Product>;
 };
 
@@ -203,6 +212,11 @@ export type MutationUpdateStatusToPaidArgs = {
 
 export type MutationAddCollectionIdToAllProductsArgs = {
   batchSize: Scalars['Int']['input'];
+};
+
+
+export type MutationChangePasswordArgs = {
+  input: ChangePasswordInput;
 };
 
 
@@ -243,6 +257,11 @@ export type MutationLoginArgs = {
 
 export type MutationTogglePublishArgs = {
   input: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateAdminInfoArgs = {
+  input: UpdateAdminInfoInput;
 };
 
 
@@ -298,6 +317,21 @@ export type PackageInput = {
   price: Scalars['Float']['input'];
 };
 
+export type PaginatedOrderResponse = {
+  __typename?: 'PaginatedOrderResponse';
+  paginatorInfo?: Maybe<PaginatedResponse>;
+  results?: Maybe<Array<PopulatedOrderWithPackage>>;
+};
+
+export type PaginatedResponse = {
+  __typename?: 'PaginatedResponse';
+  currentPage?: Maybe<Scalars['Int']['output']>;
+  hasNextPage?: Maybe<Scalars['Boolean']['output']>;
+  pageSize?: Maybe<Scalars['Int']['output']>;
+  pages?: Maybe<Scalars['Int']['output']>;
+  totalRecords?: Maybe<Scalars['Int']['output']>;
+};
+
 export type PaymentDetails = {
   __typename?: 'PaymentDetails';
   billId?: Maybe<Scalars['String']['output']>;
@@ -325,10 +359,31 @@ export type PopulatedOrder = BaseOrder & {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
+export type PopulatedOrderWithPackage = BaseOrder & {
+  __typename?: 'PopulatedOrderWithPackage';
+  _id?: Maybe<Scalars['ID']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  fullAddress?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  orderPrice?: Maybe<Scalars['Float']['output']>;
+  packageId?: Maybe<Package>;
+  paymentDetails?: Maybe<PaymentDetails>;
+  paymentOption?: Maybe<OrderPaymentOption>;
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  postcode?: Maybe<Scalars['String']['output']>;
+  productId?: Maybe<Product>;
+  shippingRegion?: Maybe<ShippingRegion>;
+  state?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
 export type Product = {
   __typename?: 'Product';
   _id?: Maybe<Scalars['ID']['output']>;
   allowShipment?: Maybe<Scalars['Boolean']['output']>;
+  collectionId?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   facebookPixel?: Maybe<FacebookPixel>;
   faqs?: Maybe<Array<Faq>>;
@@ -362,9 +417,12 @@ export type Query = {
   __typename?: 'Query';
   allStates?: Maybe<Array<State>>;
   currentUser?: Maybe<User>;
+  exportProductsData?: Maybe<Message>;
   getCitiesByState?: Maybe<Array<City>>;
+  importProductsData?: Maybe<Message>;
   orderById?: Maybe<PopulatedOrder>;
   orders?: Maybe<Array<PopulatedOrder>>;
+  paginatedOrders?: Maybe<PaginatedOrderResponse>;
   product?: Maybe<Product>;
   productBySlug?: Maybe<Product>;
   products?: Maybe<Array<Product>>;
@@ -379,6 +437,13 @@ export type QueryGetCitiesByStateArgs = {
 
 export type QueryOrderByIdArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryPaginatedOrdersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -446,10 +511,31 @@ export enum ShippingRegion {
   West = 'WEST'
 }
 
+export enum ShippingStatus {
+  Delivered = 'DELIVERED',
+  Failed = 'FAILED',
+  InTransit = 'IN_TRANSIT',
+  OutForDelivery = 'OUT_FOR_DELIVERY',
+  Pending = 'PENDING',
+  PendingPickup = 'PENDING_PICKUP',
+  PickedUp = 'PICKED_UP',
+  Returned = 'RETURNED'
+}
+
 export type State = {
   __typename?: 'State';
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+};
+
+export type UpdateAdminInfoInput = {
+  address: Scalars['String']['input'];
+  city: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  phoneNumber: Scalars['String']['input'];
+  postcode: Scalars['String']['input'];
+  state: Scalars['String']['input'];
 };
 
 export type UpdateProductByIdInput = {
@@ -467,14 +553,23 @@ export type UpdateProductInput = {
   packages?: InputMaybe<Array<PackageInput>>;
   price?: InputMaybe<Scalars['Float']['input']>;
   salePrice?: InputMaybe<Scalars['Float']['input']>;
+  satisfiedCustomers?: InputMaybe<Scalars['Int']['input']>;
   sectionColors?: InputMaybe<SectionColorsInput>;
   sections?: InputMaybe<Array<SectionInput>>;
+  unitsSold?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type User = {
   __typename?: 'User';
+  address?: Maybe<Scalars['String']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   isAdmin?: Maybe<Scalars['Boolean']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  postcode?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['String']['output']>;
   username?: Maybe<Scalars['String']['output']>;
 };
 
@@ -546,6 +641,13 @@ export type UpdateStatusToPaidMutationVariables = Exact<{
 
 export type UpdateStatusToPaidMutation = { __typename?: 'Mutation', UpdateStatusToPaid?: { __typename?: 'Message', message?: string | null, status?: number | null } | null };
 
+export type UpdateAdminInfoMutationVariables = Exact<{
+  input: UpdateAdminInfoInput;
+}>;
+
+
+export type UpdateAdminInfoMutation = { __typename?: 'Mutation', updateAdminInfo?: { __typename?: 'User', id?: string | null, email?: string | null, city?: string | null, address?: string | null, name?: string | null, phoneNumber?: string | null, postcode?: string | null, state?: string | null } | null };
+
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -575,7 +677,7 @@ export type ProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id?: string | null, isAdmin?: boolean | null, username?: string | null } | null };
+export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id?: string | null, isAdmin?: boolean | null, username?: string | null, name?: string | null, phoneNumber?: string | null, address?: string | null, city?: string | null, postcode?: string | null, state?: string | null, email?: string | null } | null };
 
 export type AllStatesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -811,6 +913,34 @@ export const useUpdateStatusToPaidMutation = <
       {
     mutationKey: ['UpdateStatusToPaid'],
     mutationFn: (variables?: UpdateStatusToPaidMutationVariables) => axiosGraphQL<UpdateStatusToPaidMutation, UpdateStatusToPaidMutationVariables>(UpdateStatusToPaidDocument, variables)(),
+    ...options
+  }
+    )};
+
+export const UpdateAdminInfoDocument = `
+    mutation UpdateAdminInfo($input: UpdateAdminInfoInput!) {
+  updateAdminInfo(input: $input) {
+    id
+    email
+    city
+    address
+    name
+    phoneNumber
+    postcode
+    state
+  }
+}
+    `;
+
+export const useUpdateAdminInfoMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateAdminInfoMutation, TError, UpdateAdminInfoMutationVariables, TContext>) => {
+    
+    return useMutation<UpdateAdminInfoMutation, TError, UpdateAdminInfoMutationVariables, TContext>(
+      {
+    mutationKey: ['UpdateAdminInfo'],
+    mutationFn: (variables?: UpdateAdminInfoMutationVariables) => axiosGraphQL<UpdateAdminInfoMutation, UpdateAdminInfoMutationVariables>(UpdateAdminInfoDocument, variables)(),
     ...options
   }
     )};
@@ -1170,6 +1300,13 @@ export const CurrentUserDocument = `
     id
     isAdmin
     username
+    name
+    phoneNumber
+    address
+    city
+    postcode
+    state
+    email
   }
 }
     `;

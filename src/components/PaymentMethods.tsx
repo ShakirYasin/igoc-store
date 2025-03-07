@@ -4,6 +4,7 @@ import {
   getBrowserCookie,
   localizeObject,
   phoneNumberSchema,
+  postcodeSchema,
   sha256Hash,
 } from "@/utils/site.utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,7 +41,7 @@ const orderSchema = z
     packageId: z.string().min(1, "Package is required"),
     name: z.string().min(1, "Name is required"),
     email: z.string().email("Invalid email").optional(),
-    postcode: z.string().min(1, "Postcode is required"),
+    postcode: postcodeSchema,
     fullAddress: z.string().min(1, "Full address is required"),
     phoneNumber: phoneNumberSchema,
     city: z.string().min(1, "City is required"),
