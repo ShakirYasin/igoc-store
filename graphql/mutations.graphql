@@ -66,3 +66,15 @@ mutation ChangePassword($input: ChangePasswordInput!) {
     message
   }
 }
+mutation UpdateAdminInfo($input: UpdateAdminInfoInput!) {
+  updateAdminInfo(input: $input) {
+    id
+    email
+    city
+    address
+    name
+    phoneNumber
+    postcode
+    state
+  }
+}

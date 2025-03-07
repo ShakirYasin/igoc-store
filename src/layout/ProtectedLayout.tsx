@@ -10,6 +10,7 @@ import {
   ChevronRight,
   LogOut,
   Menu,
+  Settings,
   Shield,
   ShoppingCart,
 } from "lucide-react";
@@ -37,6 +38,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   const navItems = [
     { name: "Products", icon: Shield, link: "/admin/products" },
     { name: "Orders", icon: ShoppingCart, link: "/admin/orders" },
+    { name: "Settings", icon: Settings, link: "/admin/settings" },
   ];
 
   const handleNavItemClick = (item: string, link: string) => {

@@ -90,3 +90,19 @@ export const phoneNumberSchema = z
         "Invalid phone number format. Only Malaysian phone numbers are allowed.",
     }
   );
+
+export const postcodeSchema = z
+  .string()
+  .transform((val) => val || undefined)
+  .refine(
+    (val): val is string => {
+      if (!val) return false; // Postcode is required
+      
+      // Malaysian postcodes are 5 digits
+      const malaysianPostcodeRegex = /^(0[1-9]|[1-9][0-9])\d{3}$/;
+      return malaysianPostcodeRegex.test(val);
+    },
+    {
+      message: "Invalid postcode format. Enter correct 5 digitsMalaysian postcode",
+    }
+  );

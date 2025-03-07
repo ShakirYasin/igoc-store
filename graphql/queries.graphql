@@ -282,6 +282,13 @@ query CurrentUser {
     id
     isAdmin
     username
+    name
+    phoneNumber
+    address
+    city
+    postcode
+    state
+    email
   }
 }
 

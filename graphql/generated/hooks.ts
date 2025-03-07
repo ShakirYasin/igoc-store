@@ -200,6 +200,7 @@ export type Mutation = {
   deleteProductBySlug?: Maybe<Product>;
   login?: Maybe<Scalars['String']['output']>;
   togglePublish?: Maybe<Message>;
+  updateAdminInfo?: Maybe<User>;
   updateProductById?: Maybe<Product>;
 };
 
@@ -256,6 +257,11 @@ export type MutationLoginArgs = {
 
 export type MutationTogglePublishArgs = {
   input: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateAdminInfoArgs = {
+  input: UpdateAdminInfoInput;
 };
 
 
@@ -505,10 +511,31 @@ export enum ShippingRegion {
   West = 'WEST'
 }
 
+export enum ShippingStatus {
+  Delivered = 'DELIVERED',
+  Failed = 'FAILED',
+  InTransit = 'IN_TRANSIT',
+  OutForDelivery = 'OUT_FOR_DELIVERY',
+  Pending = 'PENDING',
+  PendingPickup = 'PENDING_PICKUP',
+  PickedUp = 'PICKED_UP',
+  Returned = 'RETURNED'
+}
+
 export type State = {
   __typename?: 'State';
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+};
+
+export type UpdateAdminInfoInput = {
+  address: Scalars['String']['input'];
+  city: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  phoneNumber: Scalars['String']['input'];
+  postcode: Scalars['String']['input'];
+  state: Scalars['String']['input'];
 };
 
 export type UpdateProductByIdInput = {
@@ -534,8 +561,15 @@ export type UpdateProductInput = {
 
 export type User = {
   __typename?: 'User';
+  address?: Maybe<Scalars['String']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   isAdmin?: Maybe<Scalars['Boolean']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  postcode?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['String']['output']>;
   username?: Maybe<Scalars['String']['output']>;
 };
 
@@ -614,6 +648,13 @@ export type ChangePasswordMutationVariables = Exact<{
 
 export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword?: { __typename?: 'Message', status?: number | null, message?: string | null } | null };
 
+export type UpdateAdminInfoMutationVariables = Exact<{
+  input: UpdateAdminInfoInput;
+}>;
+
+
+export type UpdateAdminInfoMutation = { __typename?: 'Mutation', updateAdminInfo?: { __typename?: 'User', id?: string | null, email?: string | null, city?: string | null, address?: string | null, name?: string | null, phoneNumber?: string | null, postcode?: string | null, state?: string | null } | null };
+
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -643,7 +684,7 @@ export type ProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id?: string | null, isAdmin?: boolean | null, username?: string | null } | null };
+export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id?: string | null, isAdmin?: boolean | null, username?: string | null, name?: string | null, phoneNumber?: string | null, address?: string | null, city?: string | null, postcode?: string | null, state?: string | null, email?: string | null } | null };
 
 export type AllStatesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -894,11 +935,26 @@ export const useUpdateStatusToPaidMutation = <
 
 export const ChangePasswordDocument = `
     mutation ChangePassword($input: ChangePasswordInput!) {
-  changePassword(input: $input) {
-    status
-    message
-  }
-}
+      changePassword(input: $input) {
+        status
+        message
+      }
+    }
+    `;
+
+export const UpdateAdminInfoDocument = `
+    mutation UpdateAdminInfo($input: UpdateAdminInfoInput!) {
+      updateAdminInfo(input: $input) {
+        id
+        email
+        city
+        address
+        name
+        phoneNumber
+        postcode
+        state
+      }
+    }
     `;
 
 export const useChangePasswordMutation = <
@@ -908,8 +964,21 @@ export const useChangePasswordMutation = <
     
     return useMutation<ChangePasswordMutation, TError, ChangePasswordMutationVariables, TContext>(
       {
-    mutationKey: ['ChangePassword'],
-    mutationFn: (variables?: ChangePasswordMutationVariables) => axiosGraphQL<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument, variables)(),
+        mutationKey: ['ChangePassword'],
+        mutationFn: (variables?: ChangePasswordMutationVariables) => axiosGraphQL<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument, variables)(),
+        ...options
+      }
+)};
+
+export const useUpdateAdminInfoMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateAdminInfoMutation, TError, UpdateAdminInfoMutationVariables, TContext>) => {
+    
+    return useMutation<UpdateAdminInfoMutation, TError, UpdateAdminInfoMutationVariables, TContext>(
+      {
+    mutationKey: ['UpdateAdminInfo'],
+    mutationFn: (variables?: UpdateAdminInfoMutationVariables) => axiosGraphQL<UpdateAdminInfoMutation, UpdateAdminInfoMutationVariables>(UpdateAdminInfoDocument, variables)(),
     ...options
   }
     )};
@@ -1269,6 +1338,13 @@ export const CurrentUserDocument = `
     id
     isAdmin
     username
+    name
+    phoneNumber
+    address
+    city
+    postcode
+    state
+    email
   }
 }
     `;
