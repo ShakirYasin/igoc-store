@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 const config: CodegenConfig = {
   config: { reactQueryVersion: 5 },
 
-  schema: "http://localhost:8000/graphql",
+  schema: "http://localhost:3029/graphql",
   // schema: "https://node.hostingladz.com:3125/graphql",
 
  
