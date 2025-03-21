@@ -50,7 +50,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
     return <AdminFallback />;
   }
   if (isError) {
-    if ((error as Error[])?.[0].message.includes("Not authorized")) {
+    if ((error as Error[])?.[0]?.message.includes("Not authorized")) {
       if (localStorage.getItem(AUTH_KEY)) {
         localStorage.removeItem(AUTH_KEY);
       }
