@@ -641,6 +641,13 @@ export type UpdateStatusToPaidMutationVariables = Exact<{
 
 export type UpdateStatusToPaidMutation = { __typename?: 'Mutation', UpdateStatusToPaid?: { __typename?: 'Message', message?: string | null, status?: number | null } | null };
 
+export type ChangePasswordMutationVariables = Exact<{
+  input: ChangePasswordInput;
+}>;
+
+
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword?: { __typename?: 'Message', status?: number | null, message?: string | null } | null };
+
 export type UpdateAdminInfoMutationVariables = Exact<{
   input: UpdateAdminInfoInput;
 }>;
@@ -651,7 +658,7 @@ export type UpdateAdminInfoMutation = { __typename?: 'Mutation', updateAdminInfo
 export type ProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', _id?: string | null, createdAt?: any | null, published?: boolean | null, allowShipment?: boolean | null, slug?: string | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', _id?: string | null, image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null }> | null };
+export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typename?: 'Product', _id?: string | null, createdAt?: any | null, published?: boolean | null, allowShipment?: boolean | null, satisfiedCustomers?: number | null, slug?: string | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', _id?: string | null, image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null }> | null };
 
 export type ProductsForPageQueryVariables = Exact<{
   published?: InputMaybe<Scalars['Boolean']['input']>;
@@ -665,14 +672,14 @@ export type ProductBySlugQueryVariables = Exact<{
 }>;
 
 
-export type ProductBySlugQuery = { __typename?: 'Query', productBySlug?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, published?: boolean | null, allowShipment?: boolean | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', _id?: string | null, image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
+export type ProductBySlugQuery = { __typename?: 'Query', productBySlug?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, satisfiedCustomers?: number | null, published?: boolean | null, allowShipment?: boolean | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', _id?: string | null, image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
 
 export type ProductByIdQueryVariables = Exact<{
   productId: Scalars['ID']['input'];
 }>;
 
 
-export type ProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, published?: boolean | null, allowShipment?: boolean | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, satisfiedCustomers?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', _id?: string | null, image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
+export type ProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', _id?: string | null, createdAt?: any | null, published?: boolean | null, satisfiedCustomers?: number | null, allowShipment?: boolean | null, images?: Array<string> | null, price?: number | null, salePrice?: number | null, unitsSold?: number | null, updatedAt?: any | null, faqs?: Array<{ __typename?: 'FAQ', answer?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, question?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, sectionColors?: { __typename?: 'SectionColors', faqSection?: string | null, feedbackSection?: string | null, freeGiftSection?: string | null, packageSection?: string | null, paymentSection?: string | null, productSection?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null, feedback?: Array<{ __typename?: 'Feedback', comment?: string | null, rating?: number | null, isGoogleReview?: boolean | null, customer?: { __typename?: 'Customer', name?: string | null, image?: string | null, location?: string | null } | null }> | null, packages?: Array<{ __typename?: 'Package', _id?: string | null, image?: string | null, price?: number | null, description?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, sections?: Array<{ __typename?: 'Section', sectionColor?: string | null, images?: Array<string> | null, orderIndex?: number | null, type?: string | null, description?: { __typename?: 'MultilingualString', ms?: string | null, en?: string | null } | null, heading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, subheading?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null }> | null } | null };
 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -702,6 +709,15 @@ export type OrderByIdQueryVariables = Exact<{
 
 
 export type OrderByIdQuery = { __typename?: 'Query', orderById?: { __typename?: 'PopulatedOrder', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, email?: string | null, orderPrice?: number | null, packageId?: string | null, paymentOption?: OrderPaymentOption | null, phoneNumber?: string | null, postcode?: string | null, state?: string | null, updatedAt?: any | null, paymentDetails?: { __typename?: 'PaymentDetails', billId?: string | null, billUrl?: string | null, status?: OrderPaymentStatus | null } | null, productId?: { __typename?: 'Product', _id?: string | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null } | null } | null };
+
+export type PaginatedOrdersQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type PaginatedOrdersQuery = { __typename?: 'Query', paginatedOrders?: { __typename?: 'PaginatedOrderResponse', results?: Array<{ __typename?: 'PopulatedOrderWithPackage', _id?: string | null, city?: string | null, createdAt?: any | null, fullAddress?: string | null, name?: string | null, email?: string | null, orderPrice?: number | null, paymentOption?: OrderPaymentOption | null, shippingRegion?: ShippingRegion | null, phoneNumber?: string | null, postcode?: string | null, state?: string | null, updatedAt?: any | null, packageId?: { __typename?: 'Package', _id?: string | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null } | null, paymentDetails?: { __typename?: 'PaymentDetails', billId?: string | null, billUrl?: string | null, status?: OrderPaymentStatus | null } | null, productId?: { __typename?: 'Product', _id?: string | null, name?: { __typename?: 'MultilingualString', en?: string | null, ms?: string | null } | null, facebookPixel?: { __typename?: 'FacebookPixel', enabled?: boolean | null, settings?: { __typename?: 'FacebookPixelSettings', accessToken?: string | null, codeTestEvent?: string | null, events?: Array<string> | null, pixelId?: string | null } | null } | null } | null }> | null, paginatorInfo?: { __typename?: 'PaginatedResponse', currentPage?: number | null, hasNextPage?: boolean | null, pageSize?: number | null, pages?: number | null, totalRecords?: number | null } | null } | null };
 
 
 
@@ -917,20 +933,42 @@ export const useUpdateStatusToPaidMutation = <
   }
     )};
 
+export const ChangePasswordDocument = `
+    mutation ChangePassword($input: ChangePasswordInput!) {
+      changePassword(input: $input) {
+        status
+        message
+      }
+    }
+    `;
+
 export const UpdateAdminInfoDocument = `
     mutation UpdateAdminInfo($input: UpdateAdminInfoInput!) {
-  updateAdminInfo(input: $input) {
-    id
-    email
-    city
-    address
-    name
-    phoneNumber
-    postcode
-    state
-  }
-}
+      updateAdminInfo(input: $input) {
+        id
+        email
+        city
+        address
+        name
+        phoneNumber
+        postcode
+        state
+      }
+    }
     `;
+
+export const useChangePasswordMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<ChangePasswordMutation, TError, ChangePasswordMutationVariables, TContext>) => {
+    
+    return useMutation<ChangePasswordMutation, TError, ChangePasswordMutationVariables, TContext>(
+      {
+        mutationKey: ['ChangePassword'],
+        mutationFn: (variables?: ChangePasswordMutationVariables) => axiosGraphQL<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument, variables)(),
+        ...options
+      }
+)};
 
 export const useUpdateAdminInfoMutation = <
       TError = unknown,
@@ -952,6 +990,7 @@ export const ProductsDocument = `
     createdAt
     published
     allowShipment
+    satisfiedCustomers
     slug
     faqs {
       answer {
@@ -1001,7 +1040,6 @@ export const ProductsDocument = `
     }
     price
     salePrice
-    satisfiedCustomers
     unitsSold
     updatedAt
     facebookPixel {
@@ -1099,6 +1137,7 @@ export const ProductBySlugDocument = `
         ms
       }
     }
+    satisfiedCustomers
     published
     allowShipment
     sectionColors {
@@ -1148,7 +1187,6 @@ export const ProductBySlugDocument = `
     }
     price
     salePrice
-    satisfiedCustomers
     unitsSold
     updatedAt
     sections {
@@ -1205,6 +1243,7 @@ export const ProductByIdDocument = `
       }
     }
     published
+    satisfiedCustomers
     allowShipment
     sectionColors {
       faqSection
@@ -1253,7 +1292,6 @@ export const ProductByIdDocument = `
     }
     price
     salePrice
-    satisfiedCustomers
     unitsSold
     updatedAt
     sections {
@@ -1479,6 +1517,79 @@ export const useOrderByIdQuery = <
       {
     queryKey: ['OrderById', variables],
     queryFn: axiosGraphQL<OrderByIdQuery, OrderByIdQueryVariables>(OrderByIdDocument, variables),
+    ...options
+  }
+    )};
+
+export const PaginatedOrdersDocument = `
+    query PaginatedOrders($limit: Int, $page: Int, $search: String) {
+  paginatedOrders(limit: $limit, page: $page, search: $search) {
+    results {
+      _id
+      city
+      createdAt
+      fullAddress
+      name
+      email
+      orderPrice
+      packageId {
+        _id
+        name {
+          en
+          ms
+        }
+      }
+      paymentOption
+      shippingRegion
+      paymentDetails {
+        billId
+        billUrl
+        status
+      }
+      phoneNumber
+      postcode
+      productId {
+        _id
+        name {
+          en
+          ms
+        }
+        facebookPixel {
+          enabled
+          settings {
+            accessToken
+            codeTestEvent
+            events
+            pixelId
+          }
+        }
+      }
+      state
+      updatedAt
+    }
+    paginatorInfo {
+      currentPage
+      hasNextPage
+      pageSize
+      pages
+      totalRecords
+    }
+  }
+}
+    `;
+
+export const usePaginatedOrdersQuery = <
+      TData = PaginatedOrdersQuery,
+      TError = unknown
+    >(
+      variables?: PaginatedOrdersQueryVariables,
+      options?: Omit<UseQueryOptions<PaginatedOrdersQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<PaginatedOrdersQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<PaginatedOrdersQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['PaginatedOrders'] : ['PaginatedOrders', variables],
+    queryFn: axiosGraphQL<PaginatedOrdersQuery, PaginatedOrdersQueryVariables>(PaginatedOrdersDocument, variables),
     ...options
   }
     )};

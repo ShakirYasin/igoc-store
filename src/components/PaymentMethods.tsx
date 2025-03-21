@@ -131,12 +131,17 @@ const PaymentMethods = ({
   });
   const productData = localizeObject(product?.productBySlug as Product, lang);
   const onSubmit = (data: OrderFormValues) => {
-    const orderPrice =
-      (productData?.packages?.find((pkg) => pkg._id === data.packageId)
-        ?.price ??
-        productData?.price ??
-        productData?.salePrice ??
-        0) + (data.shippingRegion === "EAST" ? 15 : 10);
+    const productPrice =
+      productData?.packages?.find((pkg) => pkg._id === data.packageId)?.price ??
+      productData?.price ??
+      productData?.salePrice ??
+      0;
+    const shipmentPrice = productData.allowShipment
+      ? data.shippingRegion === "EAST"
+        ? 15
+        : 10
+      : 0;
+    const orderPrice = productPrice + shipmentPrice;
 
     mutate({
       input: {

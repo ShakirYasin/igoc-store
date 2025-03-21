@@ -4,6 +4,7 @@ query Products {
     createdAt
     published
     allowShipment
+    satisfiedCustomers
     slug
     faqs {
       answer {
@@ -53,7 +54,6 @@ query Products {
     }
     price
     salePrice
-    satisfiedCustomers
 
     unitsSold
     updatedAt
@@ -116,6 +116,7 @@ query ProductBySlug($slug: String!) {
         ms
       }
     }
+    satisfiedCustomers
     published
     allowShipment
     sectionColors {
@@ -165,7 +166,6 @@ query ProductBySlug($slug: String!) {
     }
     price
     salePrice
-    satisfiedCustomers
 
     unitsSold
     updatedAt
@@ -204,6 +204,7 @@ query ProductById($productId: ID!) {
       }
     }
     published
+    satisfiedCustomers
     allowShipment
     sectionColors {
       faqSection
@@ -252,7 +253,6 @@ query ProductById($productId: ID!) {
     }
     price
     salePrice
-    satisfiedCustomers
 
     unitsSold
     updatedAt
@@ -373,5 +373,60 @@ query OrderById($id: ID!) {
     }
     state
     updatedAt
+  }
+}
+
+query PaginatedOrders($limit: Int, $page: Int, $search: String) {
+  paginatedOrders(limit: $limit, page: $page, search: $search) {
+    results {
+      _id
+      city
+      createdAt
+      fullAddress
+      name
+      email
+      orderPrice
+      packageId {
+        _id
+        name {
+          en
+          ms
+        }
+      }
+      paymentOption
+      shippingRegion
+      paymentDetails {
+        billId
+        billUrl
+        status
+      }
+      phoneNumber
+      postcode
+      productId {
+        _id
+        name {
+          en
+          ms
+        }
+        facebookPixel {
+          enabled
+          settings {
+            accessToken
+            codeTestEvent
+            events
+            pixelId
+          }
+        }
+      }
+      state
+      updatedAt
+    }
+    paginatorInfo {
+      currentPage
+      hasNextPage
+      pageSize
+      pages
+      totalRecords
+    }
   }
 }

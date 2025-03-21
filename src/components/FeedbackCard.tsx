@@ -11,12 +11,12 @@ interface FeedbackCardProps {
 export const FeedbackCard: React.FC<FeedbackCardProps> = ({ feedbackData }) => {
   return (
     <div className="border bg-white border-[#D9D9D9] rounded-2xl p-10">
-      <div className="flex items-center justify-between">
+      <div className="grid grid-cols-[auto_1fr_auto] gap-4 items-center">
         <Avatar className="w-16 h-16">
           <AvatarImage src={feedbackData?.customer?.image || ""} alt="avatar" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-        <div className="ml-4">
+        <div>
           <h3 className="text-2xl font-bold">
             {feedbackData?.customer?.name +
               ", " +
@@ -36,7 +36,7 @@ export const FeedbackCard: React.FC<FeedbackCardProps> = ({ feedbackData }) => {
         )}
       </div>
       <Separator className="my-4 w-full bg-[#D9D9D9]" />
-      <p className=" text-[#D9D9D9] font-semibold">{feedbackData?.comment}</p>
+      <p className=" text-black font-semibold">{feedbackData?.comment}</p>
     </div>
   );
 };

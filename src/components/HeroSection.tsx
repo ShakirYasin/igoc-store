@@ -69,7 +69,7 @@ const HeroSection = ({ product, color }: HeroSectionProps) => {
               <p className="text-black text-xl md:text-3xl font-bold md:text-start text-center">
                 {heroSectionHeading.text1 as string}
               </p>
-              <p className="text-3xl font-bold text-lime-400">
+              <p className="text-3xl font-bold text-red-800">
                 {product?.unitsSold}
               </p>
             </div>
@@ -77,8 +77,8 @@ const HeroSection = ({ product, color }: HeroSectionProps) => {
               <p className="text-black text-xl md:text-3xl font-bold md:text-start text-center">
                 {heroSectionHeading.text2 as string}
               </p>
-              <p className="text-3xl font-bold text-lime-400">
-                {product?.satisfiedCustomers}
+              <p className="text-3xl font-bold text-red-800">
+                {product.satisfiedCustomers || 0}
               </p>
             </div>
           </div>

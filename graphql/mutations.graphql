@@ -59,6 +59,13 @@ mutation UpdateStatusToPaid($updateStatusToPaidId: ID!) {
   }
 }
 
+
+mutation ChangePassword($input: ChangePasswordInput!) {
+  changePassword(input: $input) {
+    status
+    message
+  }
+}
 mutation UpdateAdminInfo($input: UpdateAdminInfoInput!) {
   updateAdminInfo(input: $input) {
     id

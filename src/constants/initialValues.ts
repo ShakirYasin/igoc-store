@@ -62,6 +62,8 @@ export const productInitialValues: ProductFormValues = {
     },
   },
   slug: "",
+  unitsSold: 0,
+  satisfiedCustomers: 0,
   sectionColors: {
     faqSection: "#000000",
     feedbackSection: "#000000",
