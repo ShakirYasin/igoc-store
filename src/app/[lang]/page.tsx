@@ -1,10 +1,36 @@
-import React from 'react'
-
+import React from "react";
+import { FaShoppingBag } from "react-icons/fa";
+import Section1 from "./components/Section1";
 
 const page = () => {
   return (
-    <div>Home Page</div>
-  )
-}
+    <div className="max-w-[440px] mx-auto">
+      <div className="bg-[#1F1F1F] text-white py-1 px-8 uppercase sticky top-0">
+        <div className="flex justify-between items-center">
+          <p className="font-bold text-sm">Premium</p>
+          <h1 className="font-extrabold text-[#ecef5c] shadow-lg text-2xl">
+            Close
+          </h1>
+          <p className="font-bold text-sm shadow-lg">Premium high quality</p>
+        </div>
+        <div className="flex justify-between pb-1 my-1">
+          <h4 className="font-bold">Tawaran terhad</h4>
+          <div className="flex gap-4 items-center">
+            <h1 className="flex items-center gap-2">
+              <FaShoppingBag size={40} />
+            </h1>
+            <button className="bg-white text-black text-base px-4 py-2 font-bold rounded-full  animate-zoom">
+              Beli sekarang
+            </button>
+          </div>
+        </div>
+      </div>
+      <Section1 />
+      {/* <div className="bg-gray-900/70 text-center font-bold text-lg uppercase text-white p-4 sticky bottom-0">
+        <h2>beli sekarang</h2>
+      </div> */}
+    </div>
+  );
+};
 
-export default page
+export default page;
