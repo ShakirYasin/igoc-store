@@ -2,7 +2,6 @@
 import { Eye } from "lucide-react";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { CProgress, CProgressBar } from "@coreui/react";
 
 type FormData = {
   "Nama Penuh": string;

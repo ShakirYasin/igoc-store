@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 
-let CountdownTimer = () => {
-  let [timeLeft, setTimeLeft] = useState({
+const CountdownTimer = () => {
+  const [timeLeft, setTimeLeft] = useState({
     days: 1,
     hours: 0,
     minutes: 5,
@@ -10,9 +10,9 @@ let CountdownTimer = () => {
   });
 
   useEffect(() => {
-    let timer = setInterval(() => {
+    const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
-        let { days, hours, minutes, seconds } = prevTime;
+        const { days, hours, minutes, seconds } = prevTime;
 
         if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
           clearInterval(timer);
