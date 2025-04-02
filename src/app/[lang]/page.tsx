@@ -5,22 +5,24 @@ import Section2 from "./components/Section2";
 
 const page = () => {
   return (
-    <div className="max-w-[440px] mx-auto ">
-      <div className="bg-[#1F1F1F] text-white py-1 px-6 uppercase sticky top-0">
-        <div className="flex justify-between items-center">
+    <div className=" mx-auto max-w-[380px]">
+      <div className="bg-[#1F1F1F] text-white py-1 px-2  uppercase sticky top-0">
+        <div className="flex gap-2 items-center px-4">
           <p className="font-bold text-sm">PROMOSI</p>
           <h1 className="font-extrabold text-[#ecef5c] shadow-lg text-3xl animate-zoom-in-out">
             KAW
           </h1>
-          <p className="font-bold text-sm shadow-lg">Premium high quality</p>
+          <p className="font-bold text-sm shadow-lg uppercase">
+            sempena ramadan
+          </p>
         </div>
-        <div className="flex justify-between pb-1 my-1">
+        <div className="flex justify-around my-1">
           <h4 className="font-bold">Tawaran terhad</h4>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-2 items-center">
             <h1 className="flex items-center gap-2">
               <FaShoppingBag size={32} />
             </h1>
-            <button className="bg-white text-black text-base px-2 py-2 uppercase animate-zoom-in-out font-bold rounded-full  animate-zoom">
+            <button className="bg-white text-black  px-2 text-sm py-2 uppercase animate-zoom-in-out font-bold rounded-full  animate-zoom">
               Beli sekarang
             </button>
           </div>

@@ -37,7 +37,7 @@ export default function Section2() {
         <h1 className="text-white bg-[#1f1f1f] px-6 py-3 text-center font-bold text-2xl uppercase">
           jaminan keselamatan
         </h1>
-        <ul className="flex flex-col gap-4 py-2 px-5 max-w-[85%] mx-auto">
+        <ul className="flex flex-col gap-4 py-2 px-5 max-w-[90%] mx-auto">
           {data.map((item) => (
             <li
               key={item.id}
@@ -56,14 +56,14 @@ export default function Section2() {
         </ul>
       </div>
       <div className="border-b-[18px] border-t-[18px] border-[#1f1f1f]">
-        <h1 className=" text-center font-bold text-3xl text-red-400 py-3 uppercase">
+        <h1 className=" text-center font-bold text-2xl text-red-400 py-3 uppercase">
           tak perlu tunggu lagi!{" "}
         </h1>
         <div>
-          <p className="text-center leading-normal text-black font-extrabold text-xl px-4">
+          <p className="text-center leading-normal text-black font-bold text-xl px-1">
             Stop buang masa sental sofa tak hilang kesan! Bertindak sekarang!{" "}
           </p>
-          <p className="text-center leading-normal text-black font-extrabold text-xl px-4 my-6">
+          <p className="text-center leading-normal text-black font-bold text-xl px-1 my-4">
             Isi maklumat di bawah untuk buat pembelian sekarang!
           </p>
         </div>
@@ -74,9 +74,9 @@ export default function Section2() {
           <OrderForm />
           <Accordion />
         </div>
-        <div className="bg-[#1f1f1f] px-2 py-3 text-white">
+        <div className="bg-[#1f1f1f] px-2 py-3 text-white ">
           <h1 className="font-bold">Disclaimer</h1>
-          <p className="mt-3 text-sm pr-6">
+          <p className="mt-3 text-sm">
             Facebook™ or FB is a Registered Trademark of Facebook.com. The site
             is not affiliated with Facebook.com in any way, nor does they
             sponsor or approve any of products. All trademarks mentioned here

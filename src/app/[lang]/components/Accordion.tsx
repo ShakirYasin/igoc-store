@@ -38,7 +38,7 @@ export default function Accordion() {
       >
         {AccordionData.map((item) => (
           <AccordionItem value={item.id} key={item.id}>
-            <AccordionTrigger className="bg-[#dcdcdc] font-extrabold px-4 mb-3">
+            <AccordionTrigger className="bg-[#dcdcdc] font-bold px-4 mb-3">
               {item.question}
             </AccordionTrigger>
             <AccordionContent className="bg-[#dcdcdc] px-4 py-3 mb-3">

@@ -5,7 +5,7 @@ export default function Section1() {
   return (
     <>
       <div>
-        <div className="text-center max-w-[80%] mx-auto font-bold uppercase mt-2">
+        <div className="text-center max-w-[90%] mx-auto font-bold uppercase mt-2">
           <h1 className="text-2xl">pernah tak hadapi situasi di mana </h1>
           <h1 className="text-2xl text-red-600 underline">
             kotoran degil melekat pada fabrik{" "}
@@ -23,7 +23,7 @@ export default function Section1() {
             className=" h-auto mt-2 object-contain"
           />
         </div>
-        <div className=" bg-[#1f1f1f] mt-3 max-w-[100%] text-center text-white p-2">
+        <div className=" bg-[#1f1f1f] max-w-[100%] text-center text-white p-2">
           <h1 className="px-3 py-3 text-xl font-semibold ">
             Rendam, gosok, tapi tetap tak bersih sepenuhnya. Akhirnya, perabot
             nampak kusam dan tak menarik lagi.
@@ -40,8 +40,8 @@ export default function Section1() {
             className=" h-auto object-contain"
           />
         </div>
-        <div className="max-w-[95%] mx-auto mt-3 text-center  p-2">
-          <h1 className="px-3 py-3 text-xl font-bold ">
+        <div className="mx-auto mt-1 text-center  p-2">
+          <h1 className="px-2 py-3 text-xl font-bold ">
             Bayangkan anda sedang bersiap untuk tetamu datang, tapi sofa penuh
             dengan kesan kotoran
           </h1>
@@ -74,13 +74,12 @@ export default function Section1() {
             jom tengok macam mana ia bergungis
           </h1>
         </div>
-        <div className="py-2">
+        <div>
           <iframe
             width="560"
             height="310"
             src="https://www.youtube.com/embed/ufaQuuuvqyw?si=1VUYX4dceegrtoQt"
             title="YouTube video player"
-            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
@@ -94,7 +93,7 @@ export default function Section1() {
           </h1>
         </div>
         <div>
-          <h1 className="text-center font-bold text-3xl uppercase bg-black text-white py-7 border-t-8 border-gray-400">
+          <h1 className="text-center font-semibold text-2xl uppercase bg-[#1f1f1f] text-white py-5 border-t-8 border-gray-400">
             Testimoni pelanggan
           </h1>
           <div className="relative w-full h-[350px]">
@@ -108,7 +107,7 @@ export default function Section1() {
           </div>
         </div>
         <div>
-          <h1 className="font-extrabold text-3xl text-center py-2 max-w-[85%] leading-relaxed mx-auto">
+          <h1 className="font-extrabold text-3xl text-center py-2 max-w-[90%] leading-relaxed mx-auto">
             Terima kasih atas sokongan luar biasa anda!
           </h1>
         </div>
@@ -122,7 +121,7 @@ export default function Section1() {
           />
         </div>
         <div>
-          <h1 className="font-extrabold text-3xl text-center py-2 max-w-[85%] leading-relaxed mx-auto">
+          <h1 className="font-extrabold text-3xl text-center py-2 max-w-[90%] leading-relaxed mx-auto">
             <div>
               <h1 className="font-extrabold text-2xl text-center py-2 leading-relaxed mx-auto">
                 berpuluh-puluh parcel keluar untuk <br />

@@ -1,10 +1,9 @@
 "use client";
-import { Eye } from "lucide-react";
+import { Eye, Zap } from "lucide-react";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ProgressBar from "@ramonak/react-progress-bar";
 import "../globals.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 type FormData = {
   "Nama Penuh": string;
   "Nombar Phone": string;
@@ -16,18 +15,21 @@ type FormData = {
   Quantity:
     | "(1 PCS) RM29 + RM10 COD - RM39"
     | "(2 PCS) RM39 + RM10 COD - RM49"
-    | "(3 PCS) RM49 + RM10 COD - RM59";
+    | "(3 PCS) RM49 + RM10 COD - RM59"
+    | "mmm";
 };
 
 export default function OrderForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
+    reset();
   };
 
   return (
@@ -49,7 +51,7 @@ export default function OrderForm() {
               placeholder="Nama Penuh"
               className="w-full px-2 py-3 border border-gray-400 placeholder-black"
               {...register("Nama Penuh", {
-                required: "Nama Penuh is required",
+                required: "required",
                 maxLength: {
                   value: 30,
                   message: "Nama Penuh should be less than 30 characters",
@@ -65,20 +67,20 @@ export default function OrderForm() {
 
           <div className="flex gap-2 ">
             {/* Nombar Phone */}
-            <div className="flex-2">
+            <div className="w-[60%]">
               <input
                 type="tel"
                 placeholder="Nombar Phone"
                 className="w-full px-2 py-3 border border-gray-400  placeholder-black"
                 {...register("Nombar Phone", {
-                  required: "Nombar Phone is required",
+                  required: "required",
                   minLength: {
                     value: 6,
-                    message: "Nombar Phone should be at least 6 digits",
+                    message: "at least 6 digits",
                   },
                   maxLength: {
-                    value: 100,
-                    message: "Nombar Phone should be less than 100 characters",
+                    value: 20,
+                    message: "not allowed more then 20 characters",
                   },
                 })}
               />
@@ -90,20 +92,20 @@ export default function OrderForm() {
             </div>
 
             {/* Poskod */}
-            <div className="flex-1">
+            <div className="w-[40%]">
               <input
                 type="text"
                 placeholder="Poskod"
                 className="w-full px-2 py-3 border border-gray-400  placeholder-black"
                 {...register("Poskod", {
-                  required: "Poskod is required",
+                  required: "required",
                   pattern: {
                     value: /^[0-9]+$/,
                     message: "Poskod must be a number",
                   },
                   maxLength: {
-                    value: 5,
-                    message: "Poskod should be less than 6 characters",
+                    value: 6,
+                    message: "must be 6 characters",
                   },
                 })}
               />
@@ -122,7 +124,7 @@ export default function OrderForm() {
               placeholder="Alamat"
               className="w-full px-2 py-3 border border-gray-400  placeholder-black"
               {...register("Alamat", {
-                required: "Alamat is required",
+                required: "required",
                 maxLength: {
                   value: 100,
                   message: "Alamat should be less than 100 characters",
@@ -139,7 +141,7 @@ export default function OrderForm() {
             <div>
               <select
                 className="w-full focus:outline-none"
-                {...register("Negeri", { required: "Negeri is required" })}
+                {...register("Negeri", { required: "required" })}
               >
                 <option value="">Negeri</option>
                 <option value="">Pilih Negeri</option>
@@ -171,7 +173,7 @@ export default function OrderForm() {
             <div>
               <select
                 className="w-full focus:outline-none"
-                {...register("Bandar", { required: "Bandar is required" })}
+                {...register("Bandar", { required: "required" })}
               >
                 <option value="">Bandar</option>
                 <option value="Kuala Lumpur">Kuala Lumpur</option>
@@ -243,6 +245,16 @@ export default function OrderForm() {
               />
               <span>(3 PCS) RM49 + RM10 COD - RM59</span>
             </label>
+            <label className="flex items-center gap-1">
+              <input
+                {...register("Quantity", {
+                  required: "Please select a quantity",
+                })}
+                type="radio"
+                value="mmm"
+              />
+              <span>mmm</span>
+            </label>
             {errors["Quantity"] && (
               <span className="text-red-500">
                 {errors["Quantity"]?.message}
@@ -261,26 +273,34 @@ export default function OrderForm() {
         </form>
         <div className="flex justify-center items-center gap-2 text-center mt-4">
           <Eye className="text-green-500" size={20} />
-          <h1 className="text-white text-sm flex items-center ">
+          <h1 className="text-white text-xs flex items-center ">
             terdapat &nbsp; <span className="text-md text-yellow-300">209</span>
             &nbsp; orang yang melihat produk ini
           </h1>
         </div>
-        <div className="max-w-[90%] mx-auto">
-          <ProgressBar
-            completed={80}
-            customLabel="CEPAT!"
-            completedClassName="barCompleted"
-            labelClassName="label"
-            bgColor={"#ff4500"}
-            className="progress-bar-container" // Added our custom class
-            height="32px" // Directly setting the height
-          />
-          <div className="px-4">
-            <h1 className="text-white text-sm flex items-center ">
+        <div className=" max-w-[100%] mx-auto">
+          <div className="flex gap-2 items-center">
+            <div className="w-[5%]">
+              <Zap className="text-orange-600" />
+            </div>
+            <div className="w-[90%]">
+              {" "}
+              <ProgressBar
+                completed={80}
+                customLabel="CEPAT!"
+                completedClassName="barCompleted"
+                labelClassName="label"
+                bgColor={"#ff4500"}
+                className="progress-bar-container"
+                height="24px"
+              />
+            </div>
+          </div>
+          <div className="px-8 ">
+            <h1 className="text-white text-xs flex items-center  ">
               Hampir kehabisan stok!
             </h1>
-            <h1 className="text-white text-sm flex items-center text-center ">
+            <h1 className="text-white text-xs flex items-center text-center ">
               stock tinggal &nbsp;{" "}
               <span className="text-md text-yellow-300 font-semibold">23</span>
             </h1>

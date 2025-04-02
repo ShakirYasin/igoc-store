@@ -41,6 +41,7 @@ export default function RootLayout({ children, params: { lang } }: Props) {
   return (
     <html lang={lang}>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/images/favicons/favicon.ico" sizes="any" />
       </head>
       <body className={`${montserrat.variable} font-sans antialiased`}>
