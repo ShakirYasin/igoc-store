@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 
-const CountdownTimer = () => {
-  const [timeLeft, setTimeLeft] = useState({
+let CountdownTimer = () => {
+  let [timeLeft, setTimeLeft] = useState({
     days: 1,
     hours: 0,
     minutes: 5,
@@ -10,9 +10,9 @@ const CountdownTimer = () => {
   });
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    let timer = setInterval(() => {
       setTimeLeft((prevTime) => {
-        const { days, hours, minutes, seconds } = prevTime;
+        let { days, hours, minutes, seconds } = prevTime;
 
         if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
           clearInterval(timer);
@@ -40,9 +40,9 @@ const CountdownTimer = () => {
         Tawaran masa terhad
       </h1>
       <div className="flex justify-center gap-2">
-        {Object.entries(timeLeft).map(([time], index) => (
+        {Object.values(timeLeft).map((time, index) => (
           <div key={index} className="flex flex-col items-center">
-            <div className="bg-[#d3d3d3] text-black font-bold text-3xl px-4 py-3 min-w-[65px] text-center">
+            <div className="bg-[#d3d3d3] text-black font-bold text-3xl py-3 min-w-[65px] text-center">
               {String(time).padStart(2, "0")}
             </div>
           </div>

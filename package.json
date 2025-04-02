@@ -10,6 +10,8 @@
     "generate": "graphql-codegen"
   },
   "dependencies": {
+    "@coreui/coreui-pro": "^5.9.0",
+    "@coreui/react": "^5.5.0",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@graphql-codegen/cli": "^5.0.2",
@@ -50,7 +52,7 @@
     "react-confetti": "^6.1.0",
     "react-dom": "^18",
     "react-facebook-pixel": "^1.0.4",
-    "react-hook-form": "^7.53.0",
+    "react-hook-form": "^7.55.0",
     "react-icons": "^5.5.0",
     "react-intersection-observer": "^9.13.1",
     "react-toastify": "^10.0.5",

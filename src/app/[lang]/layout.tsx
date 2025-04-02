@@ -44,9 +44,7 @@ export default function RootLayout({ children, params: { lang } }: Props) {
         <link rel="icon" href="/images/favicons/favicon.ico" sizes="any" />
       </head>
       <body className={`${montserrat.variable} font-sans antialiased`}>
-        <ReactQueryProvider>
-         {children}
-        </ReactQueryProvider>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );
