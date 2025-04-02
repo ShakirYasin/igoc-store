@@ -2,7 +2,9 @@
 import { Eye } from "lucide-react";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-
+import ProgressBar from "@ramonak/react-progress-bar";
+import "../globals.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 type FormData = {
   "Nama Penuh": string;
   "Nombar Phone": string;
@@ -29,7 +31,7 @@ export default function OrderForm() {
   };
 
   return (
-    <div className="bg-[#1f1f1f] mt-4 p-3">
+    <div className="bg-[#1f1f1f] mt-4 mb-3 p-3">
       <div className="py-3 w-4/5 mx-auto text-center text-white">
         <h1 className="underline text-2xl shadow-md font-bold uppercase">
           untuk membuat pesanan
@@ -264,7 +266,26 @@ export default function OrderForm() {
             &nbsp; orang yang melihat produk ini
           </h1>
         </div>
-        <div></div>
+        <div className="max-w-[90%] mx-auto">
+          <ProgressBar
+            completed={80}
+            customLabel="CEPAT!"
+            completedClassName="barCompleted"
+            labelClassName="label"
+            bgColor={"#ff4500"}
+            className="progress-bar-container" // Added our custom class
+            height="32px" // Directly setting the height
+          />
+          <div className="px-4">
+            <h1 className="text-white text-sm flex items-center ">
+              Hampir kehabisan stok!
+            </h1>
+            <h1 className="text-white text-sm flex items-center text-center ">
+              stock tinggal &nbsp;{" "}
+              <span className="text-md text-yellow-300 font-semibold">23</span>
+            </h1>
+          </div>
+        </div>
       </div>
     </div>
   );

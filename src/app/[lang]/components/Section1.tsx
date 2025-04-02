@@ -23,7 +23,7 @@ export default function Section1() {
             className=" h-auto mt-2 object-contain"
           />
         </div>
-        <div className=" bg-black mt-3 max-w-[100%] text-center text-white p-2">
+        <div className=" bg-[#1f1f1f] mt-3 max-w-[100%] text-center text-white p-2">
           <h1 className="px-3 py-3 text-xl font-semibold ">
             Rendam, gosok, tapi tetap tak bersih sepenuhnya. Akhirnya, perabot
             nampak kusam dan tak menarik lagi.
@@ -47,7 +47,7 @@ export default function Section1() {
           </h1>
         </div>
         <div>
-          <div className="bg-black text-white px-2 py-3 ">
+          <div className="bg-[#1f1f1f] text-white px-2 py-3 ">
             <h1 className="font-bold text-2xl text-center">
               MempperKenalkan <br />{" "}
               <span className="underline uppercase py-4 text-yellow-200">
@@ -69,7 +69,7 @@ export default function Section1() {
             />
           </div>
         </div>
-        <div className="bg-black text-white text-2xl ">
+        <div className="bg-[#1f1f1f] text-white text-2xl ">
           <h1 className="uppercase text-center font-bold max-w-[80%] mx-auto py-3">
             jom tengok macam mana ia bergungis
           </h1>
@@ -88,7 +88,7 @@ export default function Section1() {
             loading="lazy"
           />
         </div>
-        <div className="bg-black text-white text-2xl  py-2">
+        <div className="bg-[#1f1f1f] text-white text-2xl  py-2">
           <h1 className="text-center font-bold  max-w-[80%]  uppercase mx-auto">
             Ramai dah cuba dan berpuas hat!
           </h1>
@@ -131,7 +131,7 @@ export default function Section1() {
             </div>{" "}
           </h1>
         </div>
-        <div className="bg-black text-white text-2xl  py-2">
+        <div className="bg-[#1f1f1f] text-white text-2xl  py-2">
           <h1 className="text-center font-bold  max-w-[80%] leading-relaxed  uppercase mx-auto">
             potongan harga dan pakej berbalo!
           </h1>
@@ -160,7 +160,7 @@ export default function Section1() {
           {/* Second Box */}
           <div className="mt-2 flex">
             <div
-              className="bg-black text-white text-center font-semibold px-2 text-lg w-full uppercase 
+              className="bg-[#1f1f1f] text-white text-center font-semibold px-2 text-lg w-full uppercase 
                  border-8 border-gray-500 
                  border-t-gray-400 border-l-gray-400 flex flex-col justify-center items-center shadow-2xl shadow-gray-900 cursor-pointer
 "
