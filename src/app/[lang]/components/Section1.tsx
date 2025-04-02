@@ -145,23 +145,27 @@ export default function Section1() {
             loading="lazy"
           />
         </div>
-        <div className="flex items-center justify-center">
-          <div className="mt-2">
+        <div className="flex justify-center mb-4">
+          {/* First Box */}
+          <div className="mt-2  flex">
             <h1
-              className="bg-red-600 text-white text-center font-semibold px-1.5 py-5 text-lg w-fit uppercase 
+              className="bg-red-600 text-white text-center font-semibold px-1.5 py-4 text-lg w-fit uppercase 
                  border-8 border-black 
-                 border-t-gray-600 00 border-l-gray-600"
+                 border-t-gray-600 border-l-gray-600 flex items-center justify-center"
             >
               1 UNIT
             </h1>
           </div>
-          <div className="mt-2">
+
+          {/* Second Box */}
+          <div className="mt-2 flex">
             <div
-              className="bg-black text-white text-center font-semibold px-2 text-lg w-fit uppercase 
+              className="bg-black text-white text-center font-semibold px-2 text-lg w-full uppercase 
                  border-8 border-gray-500 
-                 border-t-gray-400 border-l-gray-400 cursor-pointer "
+                 border-t-gray-400 border-l-gray-400 flex flex-col justify-center items-center shadow-2xl shadow-gray-900 cursor-pointer
+"
             >
-              <p>harga asal: rm60</p>
+              <p className="line-through text-base">harga asal: rm60</p>
               <h1 className="text-4xl font-extrabold">RM29&nbsp;!</h1>
             </div>
           </div>

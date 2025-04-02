@@ -1,6 +1,7 @@
 import React from "react";
 import { FaShoppingBag } from "react-icons/fa";
 import Section1 from "./components/Section1";
+import Section2 from "./components/Section2";
 
 const page = () => {
   return (
@@ -26,9 +27,10 @@ const page = () => {
         </div>
       </div>
       <Section1 />
-      {/* <div className="bg-gray-900/70 text-center font-bold text-lg uppercase text-white p-4 sticky bottom-0">
-        <h2>beli sekarang</h2>
-      </div> */}
+      <Section2 />
+      <div className="bg-[#4c4a4f]/90 text-center font-bold text-lg uppercase text-white py-6 sticky bottom-0">
+        <button>beli sekarang</button>
+      </div>
     </div>
   );
 };
