@@ -56,7 +56,7 @@ export default function Section2() {
         </ul>
       </div>
       <div className="border-b-[18px] border-t-[18px] border-[#1f1f1f]">
-        <h1 className=" text-center font-bold text-2xl text-red-400 py-3 uppercase">
+        <h1 className="animate-fadeInText  text-center font-bold text-2xl text-red-500 py-3 uppercase">
           tak perlu tunggu lagi!{" "}
         </h1>
         <div>

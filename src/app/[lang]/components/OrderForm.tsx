@@ -287,7 +287,11 @@ export default function OrderForm() {
               {" "}
               <ProgressBar
                 completed={80}
-                customLabel="CEPAT!"
+                customLabel={
+                  <span className="animate-fadeInText inline-block overflow-hidden ">
+                    CEPAT!
+                  </span>
+                }
                 completedClassName="barCompleted"
                 labelClassName="label"
                 bgColor={"#ff4500"}
