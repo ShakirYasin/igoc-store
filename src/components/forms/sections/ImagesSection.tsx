@@ -18,7 +18,10 @@ const ImagesSection = ({ form }: ImagesSectionProps) => (
         <FormControl>
           <div className="grid grid-cols-1 items-center md:grid-cols-3 gap-6">
             {field.value.map((image: string, imgIndex: number) => (
-              <div key={imgIndex} className="flex gap-6 items-center space-x-2 mb-2">
+              <div
+                key={imgIndex}
+                className="flex gap-6 items-center space-x-2 mb-2"
+              >
                 <ImageUploadField
                   value={image}
                   onChange={(url: string) => {
@@ -27,7 +30,9 @@ const ImagesSection = ({ form }: ImagesSectionProps) => (
                     field.onChange(newImages);
                   }}
                   onRemove={() => {
-                    const newImages = field.value.filter((_: string, i: number) => i !== imgIndex);
+                    const newImages = field.value.filter(
+                      (_: string, i: number) => i !== imgIndex
+                    );
                     field.onChange(newImages);
                   }}
                   fieldName={`product-image-${imgIndex}`}
@@ -39,7 +44,9 @@ const ImagesSection = ({ form }: ImagesSectionProps) => (
                     variant="destructive"
                     size="icon"
                     onClick={() => {
-                      const newImages = field.value.filter((_: string, i: number) => i !== imgIndex);
+                      const newImages = field.value.filter(
+                        (_: string, i: number) => i !== imgIndex
+                      );
                       field.onChange(newImages);
                     }}
                   >

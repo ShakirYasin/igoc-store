@@ -93,11 +93,13 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
         name={fieldName}
         render={({ field: formField }) => (
           <FormItem
-            className={
-              field.type === "image-array" || field.type === "color"
-                ? "md:col-span-2 col-span-1"
-                : ""
-            }
+          // className={
+          //   field.type === "image-array" ||
+          //   field.type === "color" ||
+          //   field.type === "image"
+          //     ? "col-span-2"
+          //     : "cols-span-2"
+          // }
           >
             <FormLabel>{field.label}</FormLabel>
             {field.type === "text" && (
@@ -108,7 +110,7 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                 />
               </FormControl>
             )}
-            {field.type === "number" && (
+            {/* {field.type === "number" && (
               <FormControl>
                 <Input
                   {...formField}
@@ -122,6 +124,26 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                   className="bg-gray-700 border-gray-600 text-white"
                 />
               </FormControl>
+            )} */}
+
+            {field.type === "image" && (
+              <FormControl>
+                <div className="flex items-center space-x-2 mb-2">
+                  <div className=" ">
+                    <ImageUploadField
+                      value={formField.value}
+                      onChange={(url: string) => {
+                        form.setValue(fieldName, url);
+                      }}
+                      onRemove={() => {
+                        form.setValue(fieldName, "");
+                      }}
+                      fieldName={fieldName}
+                      // value={}
+                    />
+                  </div>
+                </div>
+              </FormControl>
             )}
 
             {field.type === "textarea" && (
@@ -132,7 +154,7 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                 />
               </FormControl>
             )}
-            {field.type === "select" && (
+            {/* {field.type === "select" && (
               <FormControl>
                 <Select
                   onValueChange={formField.onChange}
@@ -150,8 +172,8 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                   </SelectContent>
                 </Select>
               </FormControl>
-            )}
-            {field.type === "switch" && (
+            )} */}
+            {/* {field.type === "switch" && (
               <FormControl>
                 <>
                   <br />
@@ -161,22 +183,8 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                   />
                 </>
               </FormControl>
-            )}
-            {field.type === "image" && (
-              <FormControl>
-                <ImageUploadField
-                  value={formField.value}
-                  onChange={(url: string) => {
-                    form.setValue(fieldName, url);
-                  }}
-                  onRemove={() => {
-                    form.setValue(fieldName, "");
-                  }}
-                  fieldName={fieldName}
-                />
-              </FormControl>
-            )}
-            {field.type === "image-array" && (
+            )} */}
+            {/* {field.type === "image-array" && (
               <FormControl className="">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {formField.value.map((image: string, imgIndex: number) => (
@@ -230,8 +238,8 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                   </Button>
                 </div>
               </FormControl>
-            )}
-            {field.type === "color" && (
+            )} */}
+            {/* {field.type === "color" && (
               <FormControl>
                 <ColorPicker
                   value={formField.value}
@@ -240,7 +248,7 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                   }}
                 />
               </FormControl>
-            )}
+            )} */}
             <FormMessage />
           </FormItem>
         )}
@@ -267,20 +275,20 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   {fields.map((field) => renderField(field, index, name))}
                 </div>
-                <Button
+                {/* <Button
                   type="button"
                   variant="destructive"
                   onClick={() => remove(index)}
                   className="mt-4"
                 >
                   Remove {label}
-                </Button>
+                </Button> */}
               </div>
             </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
-      <Button
+      {/* <Button
         type="button"
         variant="outline"
         onClick={() => {
@@ -293,7 +301,7 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
         className="mt-2 text-black"
       >
         <Plus className="h-4 w-4 mr-2" /> Add {label}
-      </Button>
+      </Button> */}
     </div>
   );
 };

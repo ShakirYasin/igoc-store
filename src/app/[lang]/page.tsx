@@ -6,14 +6,14 @@ import Section2 from "./components/Section2";
 const page = () => {
   return (
     <div className=" mx-auto max-w-[380px]">
-      <div className="bg-[#1F1F1F] text-white py-1 px-2  uppercase sticky top-0">
+      <div className="bg-[#1F1F1F] text-white py-1 px-1 uppercase sticky top-0 z-50">
         <div className="flex gap-2 items-center px-4">
           <p className="font-bold text-sm">PROMOSI</p>
-          <h1 className="font-extrabold text-[#ecef5c] shadow-lg text-3xl animate-zoom-in-out">
+          <h1 className="font-extrabold text-[#ecef5c] shadow-lg text-2xl animate-zoom-in-out">
             KAW
           </h1>
           <p className="font-bold text-sm shadow-lg uppercase">
-            sempena ramadan
+            PREMIUM HIGH QUALITY
           </p>
         </div>
         <div className="flex justify-around my-1">

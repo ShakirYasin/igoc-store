@@ -16,7 +16,7 @@ const CountdownTimer = () => {
 
         if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
           clearInterval(timer);
-          return prevTime; // Stop at 00:00:00:00
+          return prevTime; //* Stops and return
         }
 
         if (seconds > 0) {
@@ -31,7 +31,7 @@ const CountdownTimer = () => {
       });
     }, 1000);
 
-    return () => clearInterval(timer); // Cleanup on unmount
+    return () => clearInterval(timer); //? Cleanup on unmount
   }, []);
 
   return (
@@ -40,13 +40,18 @@ const CountdownTimer = () => {
         Tawaran masa terhad
       </h1>
       <div className="flex justify-center gap-2">
-        {Object.values(timeLeft).map((time, index) => (
-          <div key={index} className="flex flex-col items-center">
-            <div className="bg-[#d3d3d3] text-black font-bold text-3xl py-3 min-w-[65px] text-center">
-              {String(time).padStart(2, "0")}
+        {Object.values(timeLeft).map(
+          (
+            time,
+            index // item > or curElem and index
+          ) => (
+            <div key={index} className="flex flex-col items-center">
+              <div className="bg-[#d3d3d3] text-black font-bold text-3xl py-3 min-w-[65px] text-center">
+                {String(time).padStart(2, "0")}
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        )}
       </div>
     </div>
   );

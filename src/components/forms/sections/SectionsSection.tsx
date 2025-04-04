@@ -13,48 +13,37 @@ const SectionsSection = ({ form }: SectionsSectionProps) => (
     form={form}
     fields={[
       {
-        name: "type",
-        label: "Type",
-        type: "select",
-        options: ["NORMAL", "WARNING"],
-      },
-      { name: "orderIndex", label: "Order Index", type: "number" },
-      {
-        name: "heading.en",
-        label: "Heading (English)",
-        type: "text",
+        name: "images1",
+        label: "Image 1",
+        type: "image",
       },
       {
-        name: "heading.ms",
-        label: "Heading (Malay)",
-        type: "text",
+        name: "images2",
+        label: "Image 2",
+        type: "image",
       },
       {
-        name: "subheading.en",
-        label: "Subheading (English)",
-        type: "text",
-      },
-      {
-        name: "subheading.ms",
-        label: "Subheading (Malay)",
-        type: "text",
-      },
-      {
-        name: "description.en",
-        label: "Description (English)",
+        name: "image1Description",
+        label: "Image 1 Description (Malay)",
         type: "textarea",
       },
       {
-        name: "description.ms",
-        label: "Description (Malay)",
+        name: "image2Description",
+        label: "Image 2 Description (Malay)",
         type: "textarea",
       },
-      { name: "images", label: "Images", type: "image-array" },
+
       {
-        name: "sectionColor",
-        label: "Section Color",
-        type: "color",
+        name: "reviewImage",
+        label: "Review Image",
+        type: "image",
       },
+      // {
+      //   name: "sectionColor",
+      //   label: "Section Color",
+      //   type: "color",
+      // },
+      // { name: "images", label: "Images", type: "image-array" },
     ]}
   />
 );

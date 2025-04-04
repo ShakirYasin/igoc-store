@@ -26,6 +26,8 @@ import FeedbackSection from "./sections/FeedbackSection";
 import ImagesSection from "./sections/ImagesSection";
 import PackagesSection from "./sections/PackagesSection";
 import SectionColorsSection from "./sections/SectionColorsSection";
+import ImagesSection2 from "./sections/GraphicAndYoutube";
+import GraphicAndYoutube from "./sections/GraphicAndYoutube";
 
 interface IProductFormProps {
   initialData?: ProductFormValues;
@@ -80,21 +82,36 @@ const ProductForm = ({
     "facebook-pixel",
   ]);
 
+  // const onSubmit = useCallback(
+  //   (data: ProductFormValues) => {
+  //     const { _id, slug, ...payload } = data;
+
+  //     if (type === "create") {
+  //       createProduct({ input: { ...payload, slug } as CreateProductInput });
+  //     } else if (_id) {
+  //       updateProduct({
+  //         input: { data: payload as UpdateProductInput, id: _id },
+  //       });
+  //     } else {
+  //       toast.error("Cannot update product without an ID");
+  //     }
+  //   },
+  //   [createProduct, updateProduct, type]
+  // );
+
   const onSubmit = useCallback(
     (data: ProductFormValues) => {
       const { _id, slug, ...payload } = data;
 
-      if (type === "create") {
-        createProduct({ input: { ...payload, slug } as CreateProductInput });
-      } else if (_id) {
+      if (_id) {
         updateProduct({
           input: { data: payload as UpdateProductInput, id: _id },
         });
       } else {
-        toast.error("Cannot update product without an ID");
+        createProduct({ input: { ...payload, slug } as CreateProductInput });
       }
     },
-    [createProduct, updateProduct, type]
+    [createProduct, updateProduct]
   );
 
   useEffect(() => {
@@ -129,40 +146,45 @@ const ProductForm = ({
               content: <BasicInfoSection form={form} type={type} />,
             },
             {
-              value: "images",
-              title: "Images",
-              content: <ImagesSection form={form} />,
-            },
-            {
               value: "sections",
               title: "Sections",
               content: <SectionsSection form={form} />,
             },
             {
-              value: "faqs",
-              title: "FAQs",
-              content: <FAQsSection form={form} />,
+              value: "images",
+              title: "Add Detailed images for the product",
+              content: <ImagesSection form={form} />,
             },
             {
-              value: "feedback",
-              title: "Feedback",
-              content: <FeedbackSection form={form} />,
+              value: "images",
+              title: "Graphic Images",
+              content: <GraphicAndYoutube form={form} />,
             },
-            {
-              value: "packages",
-              title: "Packages",
-              content: <PackagesSection form={form} />,
-            },
+            // {
+            //   value: "faqs",
+            //   title: "FAQs",
+            //   content: <FAQsSection form={form} />,
+            // },
+            // {
+            //   value: "feedback",
+            //   title: "Feedback",
+            //   content: <FeedbackSection form={form} />,
+            // },
+            // {
+            //   value: "packages",
+            //   title: "Packages",
+            //   content: <PackagesSection form={form} />,
+            // },
             {
               value: "section-colors",
               title: "Section Colors",
               content: <SectionColorsSection form={form} />,
             },
-            {
-              value: "facebook-pixel",
-              title: "Facebook Pixel",
-              content: <FacebookPixelSection form={form} />,
-            },
+            // {
+            //   value: "facebook-pixel",
+            //   title: "Facebook Pixel",
+            //   content: <FacebookPixelSection form={form} />,
+            // },
           ]}
         />
 

@@ -7,8 +7,20 @@ export const productSchema = z
       en: z.string().min(1, "English name is required"),
       ms: z.string().min(1, "Malay name is required"),
     }),
+    headline: z.string().min(1, "Add Headline"),
+    marketingMessage: z.string().min(1, "Add Marketing Message"),
+    instruction: z.string().min(1, "Add Instruction"),
+    dynamicFields: z
+      .array(
+        z.object({
+          value: z.string().min(1, "Add price and Quantity here"), // Ensure each field has a value
+        })
+      )
+      .optional(),
     price: z.number().min(0, "Price must be non-negative"),
     salePrice: z.number().min(0, "Sale price must be non-negative"),
+    unit: z.number().min(1, "Unit must be non-negative"),
+
     images: z.array(z.string()),
     allowShipment: z.boolean(),
     sections: z.array(
@@ -70,6 +82,16 @@ export const productSchema = z
       paymentSection: z.string(),
       productSection: z.string(),
     }),
+    video: z
+      .string()
+      .min(5, "URL is too short")
+      .url("Invalid URL format")
+      .refine(
+        (url) => url.includes("youtube.com/embed") || url.includes("vimeo.com"),
+        {
+          message: "URL must be a valid YouTube or Vimeo embed link",
+        }
+      ),
     facebookPixel: z.object({
       enabled: z.boolean(),
       settings: z
