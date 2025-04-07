@@ -2,7 +2,6 @@ import DynamicFieldArray from "../../DynamicFieldArray";
 import { UseFormReturn } from "react-hook-form";
 import { ProductFormValues } from "../productSchema";
 
-
 interface FeedbackSectionProps {
   form: UseFormReturn<ProductFormValues>;
 }

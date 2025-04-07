@@ -12,7 +12,6 @@
   }
 }
 
-
 body {
   color: var(--background);
   background: var(--foreground);
@@ -24,11 +23,11 @@ body {
     text-wrap: balance;
   }
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
   .scrollbar-hide::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari and Opera */
+    display: none; /* Chrome, Safari and Opera */
   }
 }
 
@@ -99,7 +98,6 @@ body {
   }
 }
 
-
 /* Webkit (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
   width: 6px;
@@ -123,4 +121,47 @@ body {
 * {
   scrollbar-width: thin;
   scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+}
+
+.barCompleted {
+  background-color: #ff4500;
+  width: 95%;
+}
+
+/* Container styles (replaces Tailwind's py-4 with py-2) */
+.progress-bar-container {
+  padding-top: 0.5rem; /* py-2 equivalent */
+  padding-bottom: 0.5rem;
+}
+
+/* Progress bar wrapper */
+.progress-bar-container > div {
+  height: 12px; /* Increased bar height */
+  border-radius: 6px; /* Rounded ends */
+  overflow: hidden;
+  background-color: gray;
+}
+
+/* Completed progress bar */
+.barCompleted {
+  background-color: #ff4500;
+  height: 100%;
+  border-radius: 14px;
+  transition: width 1s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Label text styling */
+.label {
+  color: white;
+  font-size: 0.85rem; /* text-xs */
+  font-weight: bold;
+  padding-right: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }

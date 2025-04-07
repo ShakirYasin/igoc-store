@@ -84,11 +84,22 @@ const config: Config = {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
+        zoomInOut: {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.1)" },
+        },
+        fadeInText: {
+          "0%": { opacity: "0" },
+          "50%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         fadeIn: "fadeIn 0.5s ease-in-out forwards",
+        "zoom-in-out": "zoomInOut 0.8s ease-in-out infinite",
+        fadeInText: "fadeIn 1.2s ease-in-out infinite",
       },
     },
   },

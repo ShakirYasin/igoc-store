@@ -7,9 +7,9 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 interface ImageUploadFieldProps {
-  value: string;
+  value?: string;
   onChange: (url: string) => void;
-  onRemove: () => void;
+  onRemove?: () => void;
   fieldName: string;
   isArray?: boolean;
 }
@@ -21,17 +21,19 @@ const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
 }) => {
   const [isUploading, setIsUploading] = useState(false);
 
+  console.log({ imageValue: value });
+
   return (
-    <div className="flex-grow">
-      {value ? (
+    <div className="flex-grow  ">
+      {value && !Array.isArray(value) ? (
         <div className="relative inline-block group">
           <Image
             src={value}
-            alt="Uploaded image"
+            alt="Upload an image"
             width={0}
             height={0}
             sizes="100vw"
-            className="w-auto h-auto max-w-full max-h-[500px] object-contain rounded-md"
+            className="w-auto h-auto max-w-[300px]  object-cover rounded-md"
           />
 
           <div className="absolute inset-0  bg-black bg-opacity-50 rounded-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">

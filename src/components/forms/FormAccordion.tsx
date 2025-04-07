@@ -16,7 +16,11 @@ interface FormAccordionProps {
   }[];
 }
 
-const FormAccordion = ({ openSections, setOpenSections, sections }: FormAccordionProps) => {
+const FormAccordion = ({
+  openSections,
+  setOpenSections,
+  sections,
+}: FormAccordionProps) => {
   return (
     <Accordion
       type="multiple"
