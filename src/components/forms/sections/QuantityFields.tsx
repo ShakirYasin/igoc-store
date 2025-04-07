@@ -23,10 +23,13 @@ const QuantityInput = ({ form }: QuantityInputProps) => {
   return (
     <div className="bg-gray-800 p-4 mt-4 rounded-lg">
       <div className="mb-4">
-        <h3 className="text-white font-semibold mb-2">
+        <h3 className="text-white font-semibold mb-2 text-lg">
           Quantity and Price Fields
         </h3>
-        <p className="text-sm text-gray-500">(1 PCS) RM29 + RM10 COD - RM39</p>
+        <p className="text-base bg-gray-300/10 text-white p-2 rounded-md w-fit  ">
+          For Reference:{" "}
+          <span className="text-white/70">(1 PCS) RM29 + RM10 COD - RM39</span>
+        </p>
       </div>
 
       {/* Dynamic Fields Grid */}

@@ -18,7 +18,6 @@ const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
   value,
   onChange,
   onRemove,
-  fieldName,
 }) => {
   const [isUploading, setIsUploading] = useState(false);
 

@@ -13,15 +13,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useCurrentUserQuery, useUpdateAdminInfoMutation } from "graphql/generated/hooks";
+import {
+  useCurrentUserQuery,
+  useUpdateAdminInfoMutation,
+} from "graphql/generated/hooks";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 
 const adminSettingsSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  phoneNumber: z.string().min(10, { message: "Please enter a valid phone number" }),
-  address: z.string().min(5, { message: "Address must be at least 5 characters" }),
+  phoneNumber: z
+    .string()
+    .min(10, { message: "Please enter a valid phone number" }),
+  address: z
+    .string()
+    .min(5, { message: "Address must be at least 5 characters" }),
   city: z.string().min(2, { message: "City must be at least 2 characters" }),
   postcode: z.string().min(5, { message: "Please enter a valid postcode" }),
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -32,10 +39,10 @@ type AdminSettingsFormValues = z.infer<typeof adminSettingsSchema>;
 
 export function AdminSettingsForm() {
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Fetch current user data
   const { data: userData, isLoading: isLoadingUser } = useCurrentUserQuery();
-  
+
   const form = useForm<AdminSettingsFormValues>({
     resolver: zodResolver(adminSettingsSchema),
     defaultValues: {
@@ -71,7 +78,9 @@ export function AdminSettingsForm() {
       setIsLoading(false);
     },
     onError: (error) => {
-      toast.error((error as Error[])?.[0]?.message || "Failed to update admin information");
+      toast.error(
+        (error as Error[])?.[0]?.message || "Failed to update admin information"
+      );
       setIsLoading(false);
     },
   });
@@ -80,8 +89,8 @@ export function AdminSettingsForm() {
     setIsLoading(true);
     updateAdminInfo({
       input: {
-        ...data
-      }
+        ...data,
+      },
     });
   }
 
@@ -105,9 +114,9 @@ export function AdminSettingsForm() {
               <FormItem>
                 <FormLabel className="text-lime-400">Name</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="Enter your name" 
-                    {...field} 
+                  <Input
+                    placeholder="Enter your name"
+                    {...field}
                     className="bg-gray-800 border-gray-700 text-white focus:border-lime-400"
                   />
                 </FormControl>
@@ -115,7 +124,7 @@ export function AdminSettingsForm() {
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="email"
@@ -123,10 +132,10 @@ export function AdminSettingsForm() {
               <FormItem>
                 <FormLabel className="text-lime-400">Email</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="Enter your email" 
-                    type="email" 
-                    {...field} 
+                  <Input
+                    placeholder="Enter your email"
+                    type="email"
+                    {...field}
                     className="bg-gray-800 border-gray-700 text-white focus:border-lime-400"
                   />
                 </FormControl>
@@ -134,7 +143,7 @@ export function AdminSettingsForm() {
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="phoneNumber"
@@ -142,9 +151,9 @@ export function AdminSettingsForm() {
               <FormItem>
                 <FormLabel className="text-lime-400">Phone Number</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="Enter your phone number" 
-                    {...field} 
+                  <Input
+                    placeholder="Enter your phone number"
+                    {...field}
                     className="bg-gray-800 border-gray-700 text-white focus:border-lime-400"
                   />
                 </FormControl>
@@ -152,7 +161,7 @@ export function AdminSettingsForm() {
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="address"
@@ -160,9 +169,9 @@ export function AdminSettingsForm() {
               <FormItem>
                 <FormLabel className="text-lime-400">Address</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="Enter your address" 
-                    {...field} 
+                  <Input
+                    placeholder="Enter your address"
+                    {...field}
                     className="bg-gray-800 border-gray-700 text-white focus:border-lime-400"
                   />
                 </FormControl>
@@ -170,7 +179,7 @@ export function AdminSettingsForm() {
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="city"
@@ -178,9 +187,9 @@ export function AdminSettingsForm() {
               <FormItem>
                 <FormLabel className="text-lime-400">City</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="Enter your city" 
-                    {...field} 
+                  <Input
+                    placeholder="Enter your city"
+                    {...field}
                     className="bg-gray-800 border-gray-700 text-white focus:border-lime-400"
                   />
                 </FormControl>
@@ -188,7 +197,7 @@ export function AdminSettingsForm() {
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="state"
@@ -196,9 +205,9 @@ export function AdminSettingsForm() {
               <FormItem>
                 <FormLabel className="text-lime-400">State</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="Enter your state" 
-                    {...field} 
+                  <Input
+                    placeholder="Enter your state"
+                    {...field}
                     className="bg-gray-800 border-gray-700 text-white focus:border-lime-400"
                   />
                 </FormControl>
@@ -206,7 +215,7 @@ export function AdminSettingsForm() {
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="postcode"
@@ -214,9 +223,9 @@ export function AdminSettingsForm() {
               <FormItem>
                 <FormLabel className="text-lime-400">Postcode</FormLabel>
                 <FormControl>
-                  <Input 
-                    placeholder="Enter your postcode" 
-                    {...field} 
+                  <Input
+                    placeholder="Enter your postcode"
+                    {...field}
                     className="bg-gray-800 border-gray-700 text-white focus:border-lime-400"
                   />
                 </FormControl>
@@ -225,9 +234,9 @@ export function AdminSettingsForm() {
             )}
           />
         </div>
-        
-        <Button 
-          type="submit" 
+
+        <Button
+          type="submit"
           disabled={isLoading}
           className="bg-lime-400 text-gray-900 hover:bg-lime-500 transition-colors w-full md:w-auto"
         >
@@ -236,4 +245,4 @@ export function AdminSettingsForm() {
       </form>
     </Form>
   );
-} 
+}

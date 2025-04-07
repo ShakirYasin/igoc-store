@@ -1,8 +1,6 @@
 "use client";
-
 import React from "react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import {
   FormControl,
   FormField,
@@ -12,18 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Plus, Trash } from "lucide-react";
 import ImageUploadField from "@/components/ImageUploadField";
-import { productInitialValues } from "@/constants/initialValues";
-import { ColorPicker } from "@/components/ui/color-picker";
 import {
   Accordion,
   AccordionContent,
@@ -31,10 +18,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useState, useEffect } from "react";
-
 interface FieldConfig {
   name: string;
-  label: string;
+  label?: string;
   type:
     | "text"
     | "number"
@@ -52,7 +38,7 @@ interface FieldConfig {
 
 interface DynamicFieldArrayProps {
   name: string;
-  label: string;
+  label?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturn<any>;
   fields: FieldConfig[];
@@ -64,11 +50,7 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
   form,
   fields,
 }) => {
-  const {
-    fields: arrayFields,
-    append,
-    remove,
-  } = useFieldArray({
+  const { fields: arrayFields } = useFieldArray({
     control: form.control,
     name,
   });
@@ -92,15 +74,7 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
         control={form.control}
         name={fieldName}
         render={({ field: formField }) => (
-          <FormItem
-          // className={
-          //   field.type === "image-array" ||
-          //   field.type === "color" ||
-          //   field.type === "image"
-          //     ? "col-span-2"
-          //     : "cols-span-2"
-          // }
-          >
+          <FormItem>
             <FormLabel>{field.label}</FormLabel>
             {field.type === "text" && (
               <FormControl>
@@ -110,22 +84,6 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                 />
               </FormControl>
             )}
-            {/* {field.type === "number" && (
-              <FormControl>
-                <Input
-                  {...formField}
-                  onChange={(e) => {
-                    formField.onChange(e.target.valueAsNumber);
-                  }}
-                  type="number"
-                  min={field.min}
-                  max={field.max}
-                  step={field.step}
-                  className="bg-gray-700 border-gray-600 text-white"
-                />
-              </FormControl>
-            )} */}
-
             {field.type === "image" && (
               <FormControl>
                 <div className="flex items-center space-x-2 mb-2">
@@ -139,7 +97,6 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                         form.setValue(fieldName, "");
                       }}
                       fieldName={fieldName}
-                      // value={}
                     />
                   </div>
                 </div>
@@ -154,36 +111,6 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
                 />
               </FormControl>
             )}
-            {/* {field.type === "select" && (
-              <FormControl>
-                <Select
-                  onValueChange={formField.onChange}
-                  defaultValue={formField.value}
-                >
-                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {field.options?.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-            )} */}
-            {/* {field.type === "switch" && (
-              <FormControl>
-                <>
-                  <br />
-                  <Switch
-                    checked={formField.value}
-                    onCheckedChange={formField.onChange}
-                  />
-                </>
-              </FormControl>
-            )} */}
             {/* {field.type === "image-array" && (
               <FormControl className="">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -267,10 +194,10 @@ const DynamicFieldArray: React.FC<DynamicFieldArrayProps> = ({
       >
         {arrayFields.map((item, index) => (
           <AccordionItem key={item.id} value={`${name}-${index}`}>
-            <AccordionTrigger className="p-4">{`${label} ${
+            <AccordionTrigger className="mt-3">{`${label} ${
               index + 1
             }`}</AccordionTrigger>
-            <AccordionContent className="p-4">
+            <AccordionContent className="">
               <div className="bg-gray-800 p-4 rounded-lg mb-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   {fields.map((field) => renderField(field, index, name))}
